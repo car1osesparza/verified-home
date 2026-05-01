@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SPORTS } from "../lib/site-data";
 import { getSelectedSport, setSelectedSport } from "../lib/sport-preference";
+import { assetPath } from "../lib/asset-path";
 
 const SPORT_GRID_SPORTS = [
   "Football",
@@ -74,24 +75,24 @@ const QUOTES = [
     q: "Verified has been a great asset to our recruiting efforts for several years. They have the most complete information in the industry and serve as the foundation for our prospect database.",
     name: "Andy Frank",
     role: "General Manager, Virginia Tech Football",
-    img: "/legacy/Verified homepage_files/andy_vt.jpg",
+    img: assetPath("/legacy/Verified homepage_files/andy_vt.jpg"),
   },
   {
     q: "Verified helps us find players who fit our program with speed and efficiency. With help from Verified, we offered 5 transfers and signed all 5.",
     name: "John Lorenzo",
     role: "Associate Head Coach, Wright State Women's Basketball",
-    img: "/legacy/Verified homepage_files/john_l.jpg",
+    img: assetPath("/legacy/Verified homepage_files/john_l.jpg"),
   },
   {
     q: "Amount and quality of contact information and data is everything. Verified has provided this more accurately than any other recruiting tool we have used.",
     name: "Brad Spencer",
     role: "Head Coach, North Central College Football (D3)",
-    img: "/legacy/Verified homepage_files/rick_spencer.png",
+    img: assetPath("/legacy/Verified homepage_files/rick_spencer.png"),
   },
 ];
 
-const MAP_URL = "/legacy/Verified homepage_files/usa_map_4+6+26.png";
-const PORTAL_URL = "/legacy/Verified homepage_files/website_portal2.png";
+const MAP_URL = assetPath("/legacy/Verified homepage_files/usa_map_4+6+26.png");
+const PORTAL_URL = assetPath("/legacy/Verified homepage_files/website_portal2.png");
 
 export default function HomePage() {
   const [sport, setSport] = useState("");

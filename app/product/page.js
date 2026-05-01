@@ -5,9 +5,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, Col, Row, Typography } from "antd";
 import { SPORTS } from "../../lib/site-data";
 import { getSelectedSport } from "../../lib/sport-preference";
+import { assetPath } from "../../lib/asset-path";
 
 const { Title, Paragraph } = Typography;
-const PRODUCT_HERO_IMAGE = "/legacy/Verified homepage_files/website_portal2.png";
+const PRODUCT_HERO_IMAGE = assetPath("/legacy/Verified homepage_files/website_portal2.png");
 
 const HOW_IT_WORKS = [
   {
