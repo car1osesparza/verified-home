@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { SPORTS } from "../lib/site-data";
+import { assetPath } from "../lib/asset-path";
 
 function NavLogo() {
   return (
     <div className="nav-logo-wrap">
-      <img src="/brand/logomarkStacked_small_w.svg" alt="Verified Athletics" className="nav-logo-image" />
+      <img src={assetPath("/brand/logomarkStacked_small_w.svg")} alt="Verified Athletics" className="nav-logo-image" />
     </div>
   );
 }
