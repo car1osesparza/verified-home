@@ -137,7 +137,7 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <section className="about-contact-band">
+      <section id="contact" className="about-contact-band about-anchor">
         <div className="container about-contact-grid">
           <div>
             <h3>Contact us.</h3>
@@ -178,7 +178,7 @@ export default function AboutPage() {
             </button>
           </div>
           <small>We respect your privacy.</small>
-          <div className="about-jobs">
+          <div id="careers" className="about-jobs about-anchor">
             <strong>Join the team</strong>{" "}
             <span>
               See available opportunities on our <Link href="/jobs">Jobs</Link> page.

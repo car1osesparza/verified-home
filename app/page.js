@@ -2,73 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import ProductPageContent from "../components/marketing/ProductPageContent";
+import PricingPageContent, { PricingDynamicsAndFaqs } from "../components/marketing/PricingPageContent";
+import { CoachesFooterSection } from "../components/marketing/ForCoachesPageContent";
 import { SPORTS } from "../lib/site-data";
 import { getSelectedSport, setSelectedSport } from "../lib/sport-preference";
 import { assetPath } from "../lib/asset-path";
-
-const SPORT_GRID_SPORTS = [
-  "Football",
-  "Men's Basketball",
-  "Women's Basketball",
-  "Baseball",
-  "Softball",
-  "Men's Soccer",
-  "Lacrosse",
-  "Swimming & Diving",
-  "Track & Field",
-  "Wrestling",
-];
-
-const SPORT_COUNTS = {
-  Football: 11240,
-  "Men's Basketball": 4820,
-  "Women's Basketball": 4310,
-  Baseball: 6780,
-  Softball: 3940,
-  "Men's Soccer": 5230,
-  Lacrosse: 2180,
-  "Swimming & Diving": 1670,
-  "Track & Field": 3440,
-  Wrestling: 1280,
-};
-
-const CAPS = [
-  {
-    title: "Data",
-    desc: "Transfer portal entries, commitments, and program activity in one searchable place.",
-    icon: <path d="M2 4h12M2 8h12M2 12h12" />,
-  },
-  {
-    title: "Alerts",
-    desc: "Real-time notifications the moment targets enter or exit the portal.",
-    icon: (
-      <>
-        <circle cx="8" cy="8" r="3.5" />
-        <path d="M8 2v2M8 12v2M2 8h2M12 8h2" />
-      </>
-    ),
-  },
-  {
-    title: "Speed",
-    desc: "First-mover advantage - Verified delivers portal events faster than any other service.",
-    icon: <path d="M3 8h10M10 5l3 3-3 3" />,
-  },
-  {
-    title: "Inside Info",
-    desc: "Depth chart analysis and roster intelligence by school so you know who's actually available.",
-    icon: (
-      <>
-        <circle cx="8" cy="5" r="3" />
-        <path d="M3 14c0-2.76 2.24-5 5-5s5 2.24 5 5" />
-      </>
-    ),
-  },
-  {
-    title: "AI Targets",
-    desc: "Sport-specific recommendations matched to your roster needs and recruiting priorities.",
-    icon: <path d="M2 10l4-4 3 3 5-6" />,
-  },
-];
 
 const QUOTES = [
   {
@@ -92,7 +31,6 @@ const QUOTES = [
 ];
 
 const MAP_URL = assetPath("/legacy/Verified homepage_files/usa_map_4+6+26.png");
-const PORTAL_URL = assetPath("/legacy/Verified homepage_files/website_portal2.png");
 
 export default function HomePage() {
   const [sport, setSport] = useState("");
@@ -103,6 +41,18 @@ export default function HomePage() {
     if (stored) {
       setSport(stored);
     }
+  }, []);
+
+  useEffect(() => {
+    const onSportUpdated = (event) => {
+      const nextSport = event.detail?.sport;
+      if (nextSport && SPORTS.includes(nextSport)) {
+        setSport(nextSport);
+      }
+    };
+
+    window.addEventListener("va:selected-sport", onSportUpdated);
+    return () => window.removeEventListener("va:selected-sport", onSportUpdated);
   }, []);
 
   const onSportChange = (event) => {
@@ -157,43 +107,9 @@ export default function HomePage() {
         </div>
       </div>
 
-      <section className="sec" style={{ background: "#fff" }}>
-        <div className="sec-inner">
-          <div className="eyebrow dark">The Platform</div>
-          <div className="sec-head">Five capabilities. One platform.</div>
-          <div className="sec-sub">
-            Data, Alerts, Speed, Inside Info, and AI Targets - calibrated to your sport's portal dynamics.
-          </div>
-          <div className="cap-grid">
-            {CAPS.map((c) => (
-              <div className="cap-card" key={c.title}>
-                <div className="cap-icon">
-                  <svg viewBox="0 0 16 16">{c.icon}</svg>
-                </div>
-                <div className="cap-title">{c.title}</div>
-                <div className="cap-desc">{c.desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="sec" style={{ backgroundColor: "rgba(2, 62, 114, 1)" }}>
-        <div className="sec-inner portal-split">
-          <img src={PORTAL_URL} alt="Portal" className="portal-img" />
-          <div>
-            <div className="eyebrow pale">Transfer Portal</div>
-            <div className="sec-head white">Fast. More information. Searchable.</div>
-            <p className="sec-sub pale">
-              A unified portal view with depth chart context, measurables, and direct contact data. Your
-              staff spends time recruiting, not searching.
-            </p>
-            <button className={`btn red${hasSport ? " sport-selected" : ""}`} data-requires-sport="true">
-              Book a Demo
-            </button>
-          </div>
-        </div>
-      </section>
+      <div id="product" className="home-marketing-anchor">
+        <ProductPageContent />
+      </div>
 
       <section className="map-sec">
         <div className="map-inner">
@@ -218,51 +134,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="sec" style={{ background: "var(--off-white)" }}>
-        <div className="sec-inner">
-          <div className="eyebrow">Sport Coverage</div>
-          <div className="sec-head">
-            Recruiting isn't the same across sports.
-            <br />
-            Your tools shouldn't be either.
-          </div>
-          <div className="sec-sub">
-            Football, basketball, baseball&mdash;each has different timelines, data, and transfer dynamics.
-            Verified Athletics adapts to that.
-          </div>
-          <div className="sport-grid">
-            {SPORT_GRID_SPORTS.map((s) => (
-              <div
-                key={s}
-                className={`sport-card${sport === s ? " active" : ""}`}
-                onClick={() => {
-                  setSport(s);
-                  setSelectedSport(s);
-                }}
-              >
-                <div className="sport-pip" />
-                <div className="sport-name">{s}</div>
-                <div className="sport-count">{SPORT_COUNTS[s].toLocaleString()} transfers</div>
-              </div>
-            ))}
-          </div>
-          <div className="sport-coverage-cta-row">
-            <button className={`btn red${hasSport ? " sport-selected" : ""}`} data-requires-sport="true">
-              Book a Demo
-            </button>
-            <Link
-              href="/pricing"
-              className={`btn light${hasSport ? " sport-selected" : ""}`}
-              data-requires-sport="true"
-              data-redirect-url="/pricing"
-            >
-              See Pricing for {hasSport ? sport : "Sport"}
-            </Link>
-          </div>
-        </div>
-      </section>
+      <div id="pricing" className="home-marketing-anchor home-pricing-stack">
+        <PricingPageContent deferContextAndFaq tightSectionBottom />
+      </div>
 
-      <section className="sec" style={{ background: "#fff" }}>
+      <section className="sec sec-after-coaches-home" style={{ background: "#fff" }}>
         <div className="sec-inner">
           <div className="eyebrow">Trusted By Programs</div>
           <div className="sec-head" style={{ marginBottom: 4 }}>
@@ -287,10 +163,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="sec" style={{ background: "#fff" }}>
+      <section className="sec home-role-path-sec">
         <div className="sec-inner">
-          <div className="eyebrow">Who It's For</div>
-          <div className="sec-head">The right path for your role.</div>
+          <div className="sec-head home-role-path-head">The right path for your role.</div>
           <div className="res-grid">
             <div className="res-card dark">
               <div className="res-tag">For College Coaches</div>
@@ -320,23 +195,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="cta-band">
-        <div className="cta-inner">
-          <div className="cta-head">1,701 programs can't be wrong.</div>
-          <div className="cta-sub">Select your sport and book a personalized demo.</div>
-          <div className="cta-row">
-            <button className={`btn red${hasSport ? " sport-selected" : ""}`} data-requires-sport="true">
-              Book a Demo
-            </button>
-            <Link href="/resources" className="btn ghost">
-              Explore Free Resources
-            </Link>
+      <section
+        className="sec home-pricing-faq-tail pricing-page"
+        style={{ background: hasSport ? "var(--off-white)" : "#f0f4fa" }}
+      >
+        <div className="sec-inner home-faq-prefooter">
+          <div className="coaches-page coaches-page-embedded marketing-page">
+            <div className="container">
+              <CoachesFooterSection />
+            </div>
           </div>
-          <div className="cta-note">
-            {hasSport
-              ? `${sport} selected. We'll route your demo request accordingly.`
-              : "Select your sport to help route your demo correctly."}
-          </div>
+          {hasSport ? <PricingDynamicsAndFaqs sport={sport} /> : null}
         </div>
       </section>
 

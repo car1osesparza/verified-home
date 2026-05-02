@@ -21,6 +21,12 @@
   box-sizing: border-box;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   margin: 0;
   background: #f6f8fb;
@@ -465,7 +471,7 @@ textarea,
 
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 32px;
   max-width: var(--max);
   margin: 0 auto 40px;
@@ -693,8 +699,13 @@ textarea,
   margin-bottom: 12px;
 }
 
+/* Label on light backgrounds (homepage sections, marketing pages). */
 .eyebrow.dark {
-  display: none;
+  color: var(--blue);
+}
+
+.artboard .eyebrow.pale {
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .heroStat {
@@ -728,6 +739,45 @@ textarea,
 
 .section {
   padding: 72px 0;
+}
+
+.section.section-pricing-tight-bottom {
+  padding-bottom: 0;
+}
+
+.sec.sec-after-coaches-home {
+  padding-top: 16px;
+}
+
+.home-role-path-sec {
+  background: var(--blue);
+  padding: 72px 40px;
+}
+
+.home-role-path-sec .home-role-path-head {
+  color: #fff;
+}
+
+.home-role-path-sec .res-card.dark {
+  background: rgba(10, 28, 48, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.home-role-path-sec .res-card.light {
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.home-faq-prefooter .coaches-page-embedded {
+  padding: 0 0 20px;
+  margin-bottom: 8px;
+}
+
+.home-faq-prefooter .coaches-page-embedded .container {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .lead {
@@ -952,6 +1002,187 @@ textarea,
   background: var(--off-white);
   font-family: var(--font-body, Inter, sans-serif);
   color: var(--text);
+}
+
+/* #product / #pricing: no scroll-margin — marketing nav is not fixed; hash scroll targets viewport top. */
+.home-marketing-anchor {
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-marketing-anchor:target {
+    animation: va-home-anchor-ring 1.15s ease-out both;
+  }
+}
+
+@keyframes va-home-anchor-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(202, 37, 43, 0.28);
+  }
+  100% {
+    box-shadow: 0 0 0 14px rgba(202, 37, 43, 0);
+  }
+}
+
+.resources-page .resources-hero {
+  padding-bottom: 8px;
+}
+
+.resources-page .resources-hero-sub {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--gray-600);
+  margin: 0 0 8px;
+  max-width: 720px;
+}
+
+.resources-page .resources-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  padding: 14px 0 16px;
+  margin: 0 0 12px;
+  border-bottom: 1px solid var(--gray-200);
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  background: linear-gradient(to bottom, #f6f8fb 88%, rgba(246, 248, 251, 0.96) 100%);
+}
+
+.resources-page .resources-toc a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--gray-200);
+  background: #fff;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.resources-page .resources-toc a:hover {
+  color: var(--blue);
+  border-color: rgba(2, 62, 114, 0.25);
+}
+
+.resources-page .resources-toc a.is-active {
+  color: var(--blue);
+  border-color: var(--blue);
+  background: rgba(2, 62, 114, 0.06);
+}
+
+.resources-page .resources-checklist {
+  margin: 0 0 16px;
+  padding-left: 1.2rem;
+  color: var(--gray-600);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.resources-page .resources-checklist li {
+  margin-bottom: 6px;
+}
+
+.resources-page .resources-prose-strong {
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px !important;
+}
+
+.resources-page .resources-card-cta {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.resources-page .resources-support-cta-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 20px 0 8px;
+}
+
+.resources-page .resources-funnel {
+  margin-top: 48px;
+  padding: 32px 0 56px;
+  border-top: 1px solid var(--gray-200);
+}
+
+.resources-page .resources-funnel-heading {
+  font-family: var(--font-head, "Montserrat", sans-serif);
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0 0 16px;
+  color: var(--text);
+}
+
+.resources-page .resources-funnel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.resources-page .resources-section {
+  padding: 40px 0 8px;
+}
+
+.resources-page .resources-anchor {
+  scroll-margin-top: 0;
+}
+
+.resources-page .resources-ext-link {
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.resources-page .resources-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.resources-page .resources-h1 {
+  font-family: var(--font-head, "Montserrat", sans-serif);
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0 0 10px;
+}
+
+.resources-page .resources-h2 {
+  font-family: var(--font-head, "Montserrat", sans-serif);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+.resources-page .resources-prose {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--gray-600);
+  margin: 0 0 12px;
+}
+
+.resources-page .resources-prose:last-child {
+  margin-bottom: 0;
+}
+
+.about-anchor {
+  scroll-margin-top: 88px;
 }
 
 .dark-nav {
@@ -1459,6 +1690,52 @@ textarea,
   margin: 0 0 10px;
   color: var(--gray-600);
   line-height: 1.55;
+}
+
+.pricing-page-tail {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.pricing-faq-collapse {
+  margin-top: 20px;
+}
+
+.pricing-faq-accordion.ant-collapse {
+  background: transparent;
+}
+
+.pricing-faq-accordion .ant-collapse-item {
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.pricing-faq-accordion .ant-collapse-header {
+  font-weight: 600;
+  color: var(--text);
+  padding: 14px 0 !important;
+}
+
+.pricing-faq-accordion .ant-collapse-content-box {
+  padding: 0 0 14px !important;
+}
+
+.pricing-faq-accordion .ant-collapse-content-box p {
+  margin: 0;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+.coaches-page-embedded {
+  padding: 8px 0 0;
+}
+
+.coaches-page-embedded .container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.home-pricing-faq-tail .pricing-page-tail {
+  padding-top: 8px;
 }
 
 .about-main {

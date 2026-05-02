@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ConfigProvider, Modal, Select } from "antd";
 import { SPORTS } from "../lib/site-data";
 import { getSelectedSport, setSelectedSport } from "../lib/sport-preference";
+import HashScroll from "./HashScroll";
 import { MarketingFooter, MarketingTopNav } from "./MarketingChromeParts";
 
 export default function SiteChrome({ children }) {
@@ -125,13 +126,14 @@ export default function SiteChrome({ children }) {
     >
       <div style={{ minHeight: "100vh" }}>
         <MarketingTopNav sport={sport} hasSport={Boolean(sport)} onSportChange={handleSportChange} />
+        <HashScroll />
         <main>{children}</main>
 
         <Modal
           title="Select your sport"
           open={sportModalOpen}
           closable={false}
-          maskClosable={false}
+          mask={{ closable: false }}
           keyboard={false}
           cancelButtonProps={{ style: { display: "none" } }}
           onCancel={() => {}}

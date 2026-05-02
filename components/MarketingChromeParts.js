@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { SPORTS } from "../lib/site-data";
 import { assetPath } from "../lib/asset-path";
+
+const homeProductHref = { pathname: "/", hash: "product" };
+const homePricingHref = { pathname: "/", hash: "pricing" };
 
 function NavLogo() {
   return (
@@ -13,15 +17,40 @@ function NavLogo() {
 }
 
 export function MarketingTopNav({ sport, hasSport, onSportChange }) {
+  const pathname = usePathname();
+  const onHome = pathname === "/" || pathname === "";
+
   return (
     <nav className="dark-nav">
       <Link href="/" aria-label="Verified Athletics home" className="nav-logo-link">
         <NavLogo />
       </Link>
       <div className="dark-nav-links">
-        <Link href="/product">Product</Link>
-        <Link href="/pricing">Pricing</Link>
-        <Link href="/for-coaches">For Coaches</Link>
+        <Link
+          href={homeProductHref}
+          onClick={(e) => {
+            if (!onHome) {
+              return;
+            }
+            e.preventDefault();
+            window.location.hash = "product";
+          }}
+        >
+          Product
+        </Link>
+        <Link
+          href={homePricingHref}
+          onClick={(e) => {
+            if (!onHome) {
+              return;
+            }
+            e.preventDefault();
+            window.location.hash = "pricing";
+          }}
+        >
+          Pricing
+        </Link>
+        <Link href="/resources">Resources</Link>
         <Link href="/about">About Us</Link>
       </div>
       <div className="dark-nav-cta">
@@ -55,20 +84,18 @@ export function MarketingFooter() {
     <footer className="footer">
       <div className="footer-grid">
         <div>
-          <div className="footer-col-head">Product</div>
-          <Link href="/product">Product</Link>
-          <Link href="/pricing">Pricing</Link>
-          <Link href="/for-coaches">For Coaches</Link>
-          <Link href="/hs-coaches">HS Coaches</Link>
-        </div>
-        <div>
           <div className="footer-col-head">Resources</div>
-          <Link href="/resources">Resources Hub</Link>
-          <Link href="/resources#academy">Recruiting Academy</Link>
+          <Link href="/resources">Overview</Link>
+          <Link href="/resources#hs-football-coaches">HS football coaches</Link>
+          <Link href="/resources#recruiting-academy">Recruiting Academy</Link>
+          <Link href="/resources#athletes-transfers">Athletes &amp; transfers</Link>
+          <Link href="/resources#juco-more">JUCO context</Link>
           <Link href="/for-athletes">For Athletes</Link>
         </div>
         <div>
           <div className="footer-col-head">Company</div>
+          <Link href={{ pathname: "/", hash: "product" }}>Product</Link>
+          <Link href={{ pathname: "/", hash: "pricing" }}>Pricing</Link>
           <Link href="/about">About Us</Link>
           <Link href="/about#careers">Careers</Link>
           <Link href="/about#contact">Contact</Link>
