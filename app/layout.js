@@ -1,5 +1,6 @@
 import "antd/dist/reset.css";
 import "./globals.css";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Montserrat } from "next/font/google";
 import SiteChrome from "../components/SiteChrome";
 
@@ -24,7 +25,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${montserrat.variable} ${montserratHead.variable}`}>
-        <SiteChrome>{children}</SiteChrome>
+        <AntdRegistry hashPriority="high">
+          <SiteChrome>{children}</SiteChrome>
+        </AntdRegistry>
       </body>
     </html>
   );

@@ -34,8 +34,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build static export
-        run: npm run build
+      # Project Pages serves at /<repo>; chunk/CSS URLs must include this prefix.
+      # Do not rely only on GITHUB_REPOSITORY during next.config evaluation—set explicitly.
+      - name: Build static HTML export (out/)
+        run: npm run build:static
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
