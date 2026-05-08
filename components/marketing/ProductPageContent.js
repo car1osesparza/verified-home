@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Card, Col, Row, Typography } from "antd";
-import { SPORTS } from "../../lib/site-data";
-import { getSelectedSport } from "../../lib/sport-preference";
+import { Typography } from "antd";
 import { assetPath } from "../../lib/asset-path";
 
-const { Title, Paragraph } = Typography;
-const PRODUCT_HERO_IMAGE = assetPath("/legacy/Verified homepage_files/website_portal2.png");
+const { Title } = Typography;
+const WORKFLOW_SCREENSHOT_BOARD = assetPath("/workflow/workflow-board.png");
+const WORKFLOW_SCREENSHOT_PROFILE = assetPath("/workflow/workflow-profile.png");
 
 const PLATFORM_MODULES = [
   {
@@ -94,55 +92,42 @@ const PLATFORM_BENEFITS = [
   },
 ];
 
+const WORKFLOW_SHOWCASES = [
+  {
+    title: "Strategy to recruiting action",
+    description:
+      "Connect board priorities to real athlete targets so your staff can move from planning to execution without disconnected tools.",
+    points: ["Prioritize by tier and position groups", "Track offers, movement, and assignment status in one view"],
+    image: WORKFLOW_SCREENSHOT_BOARD,
+  },
+  {
+    title: "Goals to staff accountability",
+    description:
+      "Give coaches a shared view of updates, movement, and next actions so everyone is aligned on where to focus every week.",
+    points: ["Keep contact and eligibility context visible", "Review profile-level details without leaving workflow"],
+    image: WORKFLOW_SCREENSHOT_PROFILE,
+  },
+];
+
 export default function ProductPageContent() {
-  const [sport, setSport] = useState();
-  const hasSport = Boolean(sport);
-
-  useEffect(() => {
-    const stored = getSelectedSport(SPORTS);
-    if (stored) {
-      setSport(stored);
-    }
-  }, []);
-
-  useEffect(() => {
-    const onSportUpdated = (event) => {
-      const nextSport = event.detail?.sport;
-      if (nextSport && SPORTS.includes(nextSport)) {
-        setSport(nextSport);
-      }
-    };
-
-    window.addEventListener("va:selected-sport", onSportUpdated);
-    return () => window.removeEventListener("va:selected-sport", onSportUpdated);
-  }, []);
+  const workflowCards = [
+    ...WORKFLOW_SHOWCASES,
+    ...PLATFORM_MODULES.map((module, index) => ({
+      ...module,
+      image: index % 2 === 0 ? WORKFLOW_SCREENSHOT_BOARD : WORKFLOW_SCREENSHOT_PROFILE,
+    })),
+  ];
 
   return (
     <div className="section marketing-page product-page">
       <div className="container">
-        <section className="product-block product-hero-split">
-          <div className="product-hero-left">
-            <Title>One platform for recruiting intelligence</Title>
-            <Paragraph className="lead product-body-copy">
-              Search, evaluate, and track athletes across high school and transfer data—without relying on
-              fragmented tools or outdated lists.
-            </Paragraph>
-            <div className="product-hero-actions">
-              <button className={`btn red${hasSport ? " sport-selected" : ""}`} data-requires-sport="true">
-                Book a Demo
-              </button>
-            </div>
-          </div>
-          <div className="product-hero-right">
-            <img src={PRODUCT_HERO_IMAGE} alt="Verified Athletics product interface" className="product-hero-image" />
-          </div>
-        </section>
-
         <section
           id="product-replace"
           className="product-block product-surface-blue product-replace-hero"
         >
-          <Title level={2}>Replace fragmented workflows</Title>
+          <Title level={2} className="headline-match-pricing">
+            Replace fragmented workflows
+          </Title>
           <div className="product-benefits-grid">
             {PLATFORM_BENEFITS.map((item) => (
               <article className="product-benefit-item" key={item.title}>
@@ -157,21 +142,27 @@ export default function ProductPageContent() {
         </section>
 
         <section className="product-block">
-          <Title level={3}>Built for the full recruiting workflow</Title>
-          <Row gutter={[16, 16]}>
-            {PLATFORM_MODULES.map((module) => (
-              <Col xs={24} md={12} lg={8} key={module.title}>
-                <Card title={module.title}>
-                  <p className="product-body-copy">{module.description}</p>
+          <Title level={3} className="headline-match-pricing">
+            Built for the full recruiting workflow
+          </Title>
+          <div className="product-workflow-showcases">
+            {workflowCards.map((item) => (
+              <article className="product-workflow-card" key={item.title}>
+                <div className="product-workflow-copy">
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
                   <ul className="tier-list">
-                    {module.points.map((point) => (
+                    {item.points.map((point) => (
                       <li key={point}>{point}</li>
                     ))}
                   </ul>
-                </Card>
-              </Col>
+                </div>
+                <div className="product-workflow-media">
+                  <img src={item.image} alt={item.title} className="product-workflow-image" />
+                </div>
+              </article>
             ))}
-          </Row>
+          </div>
         </section>
       </div>
     </div>

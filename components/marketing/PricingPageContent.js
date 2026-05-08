@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { Card, Col, Collapse, Row, Typography } from "antd";
 import { SPORTS } from "../../lib/site-data";
@@ -196,7 +197,11 @@ export default function PricingPageContent({
   const showInlineContextAndFaq = Boolean(sport) && !deferContextAndFaq;
 
   return (
-    <div className={`section marketing-page${tightSectionBottom ? " section-pricing-tight-bottom" : ""}`}>
+    <div
+      className={`section marketing-page pricing-section-surface${
+        tightSectionBottom ? " section-pricing-tight-bottom" : ""
+      }`}
+    >
       <div className="container pricing-page">
         {!sport ? (
           <>
@@ -210,10 +215,21 @@ export default function PricingPageContent({
               <button type="button" className="btn red" data-open-sport-modal="true" onClick={openSportModal}>
                 Select Your Sport
               </button>
-              <button type="button" className="btn light" data-requires-sport="true">
+              <button
+                type="button"
+                className="btn light"
+                data-requires-sport="true"
+                title="Select your sport for a tailored demo experience."
+              >
                 Book a Demo
               </button>
             </div>
+            <Card className="pricing-note-card">
+              <strong>Free for Athletes and HS Coaches:</strong> If you are not a college program, use our free
+              tools and guides.
+              {" "}
+              <Link href="/resources">Go to Athlete/HS resources</Link>.
+            </Card>
 
             <div className="simplePanel pricing-context">
               <Title level={3}>One platform, sport-specific access</Title>
@@ -233,18 +249,40 @@ export default function PricingPageContent({
           </>
         ) : (
           <>
-            <Title>
+            <Title className="headline-match-pricing">
               {isFootball ? "Football recruiting intelligence packages" : `Pricing for college ${sport} programs`}
             </Title>
             <Paragraph className="lead">
               {isFootball
-                ? "Access high school athletes, transfer data, measurables, AI-suggested targets, alerts, and advanced recruiting tools built for college football programs."
-                : `Verified Athletics helps ${sport} programs track transfers, evaluate athletes, receive alerts, and make faster recruiting decisions.`}
+                ? "Sport-specific packages for football staffs that need transfer intelligence, measurables, AI-suggested targets, and recruiting workflow tools."
+                : (
+                  <>
+                    Sport-specific pricing for college programs using transfer intelligence and recruiting workflow
+                    tools. Department &amp; multi-team options are available for non-football programs.
+                    {" "}
+                    <button
+                      type="button"
+                      className="pricing-inline-cta-link"
+                      data-requires-sport="true"
+                      title="Select your sport for a tailored demo experience."
+                      onClick={openSportModal}
+                    >
+                      Book a demo for a custom quote.
+                    </button>
+                  </>
+                )}
             </Paragraph>
             <Paragraph className="pricing-note">
               {isFootball
                 ? "Football packages start at $2,025/year. Select a contract length to compare options."
-                : "Choose a contract length to compare available packages."}
+                : (
+                  <>
+                    <strong>Free for Athletes and HS Coaches:</strong> Athlete and high school coach access
+                    remains free.
+                    {" "}
+                    <Link href="/resources">Go to Athlete/HS resources</Link>.
+                  </>
+                )}
             </Paragraph>
             {isFootball && (
               <Paragraph className="pricing-note">
@@ -254,11 +292,21 @@ export default function PricingPageContent({
             )}
 
             <div className="pricing-cta-row">
-              <button type="button" className="btn red sport-selected" data-requires-sport="true">
+              <button
+                type="button"
+                className="btn red sport-selected"
+                data-requires-sport="true"
+                title="Select your sport for a tailored demo experience."
+              >
                 Book a Demo
               </button>
-              <button type="button" className="btn light" data-open-sport-modal="true" onClick={openSportModal}>
-                Select Sport
+              <button
+                type="button"
+                className="btn light sport-selected"
+                data-open-sport-modal="true"
+                onClick={openSportModal}
+              >
+                Sport: {sport}
               </button>
             </div>
 
@@ -285,8 +333,7 @@ export default function PricingPageContent({
                 Starter pricing.
               </Card>
             )}
-
-            <Row gutter={[16, 16]}>
+            <Row gutter={[16, 16]} className="pricing-options-grid">
               {tiers.map((tier) => (
                 <Col xs={24} md={12} lg={6} key={tier.name}>
                   <Card title={tier.name} extra={tier.badge ? <span className="tier-badge">{tier.badge}</span> : null}>

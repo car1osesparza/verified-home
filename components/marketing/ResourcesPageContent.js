@@ -14,7 +14,6 @@ const TOC = [
   { id: "hs-football-coaches", label: "High School Football Coaches" },
   { id: "recruiting-academy", label: "Recruiting Academy" },
   { id: "athletes-transfers", label: "Athletes & Transfers" },
-  { id: "juco-more", label: "JUCO & College Coach Context" },
 ];
 
 /** Clears sticky section nav so the section headline lands below it (HashScroll reads this). */
@@ -230,55 +229,6 @@ export default function ResourcesPageContent() {
               Get Started
             </a>
           </div>
-        </section>
-
-        <section
-          id="juco-more"
-          className="resources-section resources-anchor"
-          data-anchor-offset={ANCHOR_OFFSET_PX}
-        >
-          <h2 className="resources-h2">Full visibility across transfer and JUCO recruiting</h2>
-          <p className="lead">
-            Verified brings together transfer portal data and junior college athletes into one system, so
-            four-year programs can evaluate the full recruiting landscape.
-          </p>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} md={12}>
-              <Card title="Four-Year College Coaches">
-                <p className="resources-prose">
-                  Evaluate JUCO athletes alongside transfer portal movement using a unified dataset.
-                </p>
-                <p className="resources-prose resources-prose-strong">What you get</p>
-                <Checklist
-                  items={[
-                    "NJCAA, CCCAA, and NWAC athlete data",
-                    "Integrated evaluation alongside transfer activity",
-                    "Better visibility into emerging opportunities",
-                  ]}
-                />
-              </Card>
-            </Col>
-            <Col xs={24} md={12}>
-              <Card title="JUCO Coaches">
-                <p className="resources-prose">Promote your athletes to four-year programs at no cost.</p>
-                <p className="resources-prose resources-prose-strong">What you can do</p>
-                <Checklist
-                  items={[
-                    "Upload transcripts, GPAs, and evaluations",
-                    "Share contact and recruiting information",
-                    "Increase visibility for your roster",
-                  ]}
-                />
-                <a className="btn red resources-card-cta" href={LIVE.athletes} target="_blank" rel="noreferrer">
-                  Claim Your Team
-                </a>
-              </Card>
-            </Col>
-          </Row>
-          <p className="resources-support-cta-label">Looking for transfer-specific tools?</p>
-          <a className="btn light resources-ext-link" href={LIVE.allSportsCoaches} target="_blank" rel="noreferrer">
-            View Transfer Management Page
-          </a>
         </section>
 
         <section className="resources-funnel" aria-labelledby="resources-funnel-heading">

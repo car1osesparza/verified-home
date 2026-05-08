@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ProductPageContent from "../components/marketing/ProductPageContent";
 import PricingPageContent, { PricingDynamicsAndFaqs } from "../components/marketing/PricingPageContent";
-import { CoachesFooterSection } from "../components/marketing/ForCoachesPageContent";
 import { SPORTS } from "../lib/site-data";
 import { getSelectedSport, setSelectedSport } from "../lib/sport-preference";
 import { assetPath } from "../lib/asset-path";
@@ -67,14 +66,14 @@ export default function HomePage() {
         <div className="b-hero-grad" />
         <div className="b-hero-inner">
           <div className="eyebrow pale" style={{ marginBottom: 16 }}>
-            Colleges' #1 Choice
+            Recruiting Reimagined
           </div>
           <div className="hero-big-stat">1,701</div>
           <div className="hero-big-sub">College programs trust Verified Athletics</div>
           <h1 className="hero-h1">
             Your program's next starter
             <br />
-            is already in the portal.
+            is on Verified.
           </h1>
           <p className="hero-p">
             Real-time transfer portal intelligence, depth chart analysis, and AI-powered targets. Built
@@ -89,33 +88,26 @@ export default function HomePage() {
                 </option>
               ))}
             </select>
-            <button className={`btn red${hasSport ? " sport-selected" : ""}`} data-requires-sport="true">
+            <button
+              className={`btn red${hasSport ? " sport-selected" : ""}`}
+              data-requires-sport="true"
+              title="Select your sport for a tailored demo experience."
+            >
               Book a Demo
             </button>
           </div>
           <div className="hero-note">
             {hasSport
               ? `You'll be connected to a ${sport} specialist.`
-              : "Select your sport for a tailored demo experience."}
+              : <span className="hero-note-highlight">Select your sport for a tailored demo experience.</span>}
           </div>
         </div>
       </section>
 
-      <div className="ret-band">
-        <div className="ret-text">
-          92% customer retention - <span>464 Football - 689 NCAA DI - 1,012 D2 - D3 - NAIA - JUCO</span>
-        </div>
-      </div>
-
-      <div id="product" className="home-marketing-anchor">
-        <ProductPageContent />
-      </div>
-
       <section className="map-sec">
         <div className="map-inner">
           <div>
-            <div className="eyebrow pale">Colleges' #1 Choice</div>
-            <div className="map-head">1,701 programs trust Verified.</div>
+            <div className="map-kicker headline-match-pricing">League-wide dominance, coast to coast.</div>
             {[
               ["464", "Football programs"],
               ["689", "NCAA Division I"],
@@ -127,12 +119,60 @@ export default function HomePage() {
               </div>
             ))}
             <div className="map-note">
-              NCAA-approved recruiting/scouting service in accordance with NCAA bylaws.
+              This recruiting/scouting service has been approved in accordance with NCAA bylaws, policies,
+              and procedures. NCAA Division I football and/or basketball coaches are permitted to subscribe
+              to this recruiting/scouting service.
             </div>
           </div>
           <img src={MAP_URL} alt="Map of college programs" className="map-img" />
         </div>
       </section>
+
+      <div className="ret-band">
+        <div className="ret-text">
+          92% customer retention - <span>464 Football - 689 NCAA DI - 1,012 D2 - D3 - NAIA - JUCO</span>
+        </div>
+      </div>
+
+      <section className="sec home-role-path-sec">
+        <div className="sec-inner">
+          <div className="sec-head home-role-path-head headline-match-pricing">The right path for your role.</div>
+          <div className="res-grid">
+            <div className="res-card dark">
+              <div className="res-tag">For College Coaches</div>
+              <div className="res-head">
+                {hasSport ? `${sport} Recruiting Intelligence` : "Sport-Specific Recruiting Intelligence"}
+              </div>
+              <div className="res-body">
+                Real-time portal data, depth chart analysis, and AI-powered targeting built for the way
+                your sport's portal actually works.
+              </div>
+              <button
+                className={`res-btn${hasSport ? " sport-selected" : ""}`}
+                data-requires-sport="true"
+                title="Select your sport for a tailored demo experience."
+              >
+                Book a Demo
+              </button>
+            </div>
+            <div className="res-card light">
+              <div className="res-tag">Free - Athletes & HS Coaches</div>
+              <div className="res-head">Free Tools for the Portal Journey</div>
+              <div className="res-body">
+                Recruiting Academy guides, HS football coach resources, and transfer portal explainers
+                - no account required, always free.
+              </div>
+              <Link href="/resources" className="res-btn">
+                Explore Free Resources
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="product" className="home-marketing-anchor">
+        <ProductPageContent />
+      </div>
 
       <div id="pricing" className="home-marketing-anchor home-pricing-stack">
         <PricingPageContent deferContextAndFaq tightSectionBottom />
@@ -141,8 +181,8 @@ export default function HomePage() {
       <section className="sec sec-after-coaches-home" style={{ background: "#fff" }}>
         <div className="sec-inner">
           <div className="eyebrow">Trusted By Programs</div>
-          <div className="sec-head" style={{ marginBottom: 4 }}>
-            What coaches say.
+          <div className="sec-head headline-match-pricing" style={{ marginBottom: 4 }}>
+            Trusted by All. Used by Winners.
           </div>
           <div className="t-grid">
             {QUOTES.map((q) => (
@@ -163,48 +203,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="sec home-role-path-sec">
-        <div className="sec-inner">
-          <div className="sec-head home-role-path-head">The right path for your role.</div>
-          <div className="res-grid">
-            <div className="res-card dark">
-              <div className="res-tag">For College Coaches</div>
-              <div className="res-head">
-                {hasSport ? `${sport} Recruiting Intelligence` : "Sport-Specific Recruiting Intelligence"}
-              </div>
-              <div className="res-body">
-                Real-time portal data, depth chart analysis, and AI-powered targeting built for the way
-                your sport's portal actually works.
-              </div>
-              <button className={`res-btn${hasSport ? " sport-selected" : ""}`} data-requires-sport="true">
-                Book a Demo
-              </button>
-            </div>
-            <div className="res-card light">
-              <div className="res-tag">Free - Athletes & HS Coaches</div>
-              <div className="res-head">Free Tools for the Portal Journey</div>
-              <div className="res-body">
-                Recruiting Academy guides, HS football coach resources, and transfer portal explainers
-                - no account required, always free.
-              </div>
-              <Link href="/resources" className="res-btn">
-                Explore Free Resources
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section
         className="sec home-pricing-faq-tail pricing-page"
         style={{ background: hasSport ? "var(--off-white)" : "#f0f4fa" }}
       >
         <div className="sec-inner home-faq-prefooter">
-          <div className="coaches-page coaches-page-embedded marketing-page">
-            <div className="container">
-              <CoachesFooterSection />
-            </div>
-          </div>
           {hasSport ? <PricingDynamicsAndFaqs sport={sport} /> : null}
         </div>
       </section>

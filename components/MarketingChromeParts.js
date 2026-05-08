@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { SPORTS } from "../lib/site-data";
 import { assetPath } from "../lib/asset-path";
 
@@ -19,16 +20,36 @@ function NavLogo() {
 export function MarketingTopNav({ sport, hasSport, onSportChange }) {
   const pathname = usePathname();
   const onHome = pathname === "/" || pathname === "";
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   return (
-    <nav className="dark-nav">
-      <Link href="/" aria-label="Verified Athletics home" className="nav-logo-link">
-        <NavLogo />
-      </Link>
-      <div className="dark-nav-links">
+    <nav className={`dark-nav ${mobileMenuOpen ? "menu-open" : ""}`}>
+      <div className="dark-nav-top-row">
+        <Link href="/" aria-label="Verified Athletics home" className="nav-logo-link">
+          <NavLogo />
+        </Link>
+        <button
+          type="button"
+          className="nav-mobile-toggle"
+          aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen((open) => !open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      </div>
+      <div className={`dark-nav-links ${mobileMenuOpen ? "is-open" : ""}`}>
         <Link
           href={homeProductHref}
           onClick={(e) => {
+            closeMobileMenu();
             if (!onHome) {
               return;
             }
@@ -41,6 +62,7 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
         <Link
           href={homePricingHref}
           onClick={(e) => {
+            closeMobileMenu();
             if (!onHome) {
               return;
             }
@@ -50,10 +72,14 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
         >
           Pricing
         </Link>
-        <Link href="/resources">Resources</Link>
-        <Link href="/about">About Us</Link>
+        <Link href="/resources" onClick={closeMobileMenu}>
+          Athletes/HS coaches
+        </Link>
+        <Link href="/about" onClick={closeMobileMenu}>
+          About Us
+        </Link>
       </div>
-      <div className="dark-nav-cta">
+      <div className={`dark-nav-cta ${mobileMenuOpen ? "is-open" : ""}`}>
         <div className="dark-nav-sport">
           <select
             className={`nav-sel${hasSport ? " live" : ""}`}
@@ -68,10 +94,15 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
             ))}
           </select>
         </div>
-        <button className={`nav-btn-demo${hasSport ? " sport-selected" : ""}`} data-requires-sport="true">
+        <button
+          className={`nav-btn-demo${hasSport ? " sport-selected" : ""}`}
+          data-requires-sport="true"
+          title="Select your sport for a tailored demo experience."
+          onClick={closeMobileMenu}
+        >
           Book a Demo
         </button>
-        <Link href="/login" className="nav-login">
+        <Link href="/login" className="nav-login" onClick={closeMobileMenu}>
           Log In
         </Link>
       </div>
@@ -84,18 +115,14 @@ export function MarketingFooter() {
     <footer className="footer">
       <div className="footer-grid">
         <div>
-          <div className="footer-col-head">Resources</div>
-          <Link href="/resources">Overview</Link>
-          <Link href="/resources#hs-football-coaches">HS football coaches</Link>
+          <div className="footer-col-head">For You</div>
+          <Link href="/for-coaches">College Coaches</Link>
+          <Link href="/hs-coaches">HS Coaches</Link>
+          <Link href="/resources#athletes-transfers">Athletes &amp; Transfers</Link>
           <Link href="/resources#recruiting-academy">Recruiting Academy</Link>
-          <Link href="/resources#athletes-transfers">Athletes &amp; transfers</Link>
-          <Link href="/resources#juco-more">JUCO context</Link>
-          <Link href="/for-athletes">For Athletes</Link>
         </div>
         <div>
           <div className="footer-col-head">Company</div>
-          <Link href={{ pathname: "/", hash: "product" }}>Product</Link>
-          <Link href={{ pathname: "/", hash: "pricing" }}>Pricing</Link>
           <Link href="/about">About Us</Link>
           <Link href="/about#careers">Careers</Link>
           <Link href="/about#contact">Contact</Link>
@@ -108,9 +135,12 @@ export function MarketingFooter() {
       </div>
       <div className="footer-bottom">
         <NavLogo />
-        <div className="footer-legal">
-          © 2025 Verified Athletics. Approved recruiting/scouting service in accordance with NCAA bylaws.
-        </div>
+        <div className="footer-legal">© 2025 Verified Athletics.</div>
+      </div>
+      <div className="footer-compliance">
+        This recruiting/scouting service has been approved in accordance with NCAA bylaws, policies, and
+        procedures. NCAA Division I football and/or basketball coaches are permitted to subscribe to this
+        recruiting/scouting service.
       </div>
     </footer>
   );
