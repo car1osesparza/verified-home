@@ -170,7 +170,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div id="product" className="home-marketing-anchor">
+      <div>
         <ProductPageContent />
       </div>
 

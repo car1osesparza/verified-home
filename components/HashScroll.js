@@ -5,17 +5,30 @@ import { useEffect } from "react";
 
 const MAX_SCROLL_ATTEMPTS = 80;
 
+function getDefaultAnchorOffset() {
+  const nav = document.querySelector(".dark-nav");
+  if (!nav) {
+    return 0;
+  }
+  const navRect = nav.getBoundingClientRect();
+  const navHeight = Math.max(0, Math.round(navRect.height));
+  return navHeight;
+}
+
 function scrollElementIntoDocumentPosition(el) {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const base = el.getBoundingClientRect().top + window.scrollY;
   const raw = el.getAttribute("data-anchor-offset");
-  let top = Math.round(base);
+  let offset = 0;
   if (raw != null && raw !== "") {
     const n = parseFloat(raw);
     if (!Number.isNaN(n)) {
-      top = Math.round(base - n);
+      offset = n;
     }
+  } else {
+    offset = getDefaultAnchorOffset();
   }
+  let top = Math.round(base - offset);
   top = Math.max(0, top);
   window.scrollTo({ top, left: 0, behavior: reduce ? "auto" : "smooth" });
 }

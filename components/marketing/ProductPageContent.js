@@ -141,7 +141,7 @@ export default function ProductPageContent() {
           </div>
         </section>
 
-        <section className="product-block">
+        <section id="product" className="product-block home-marketing-anchor">
           <Title level={3} className="headline-match-pricing">
             Built for the full recruiting workflow
           </Title>
