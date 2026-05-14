@@ -4,13 +4,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConfigProvider, Modal, Select } from "antd";
 import { SPORTS } from "../lib/site-data";
-import { getSelectedSport, setSelectedSport } from "../lib/sport-preference";
+import { getSelectedSport } from "../lib/sport-preference";
 import HashScroll from "./HashScroll";
 import { MarketingFooter, MarketingTopNav } from "./MarketingChromeParts";
+import { useSportSelection } from "./SportSelectionProvider";
 
-export default function SiteChrome({ children }) {
+function SiteChromeInner({ children }) {
   const router = useRouter();
-  const [sport, setSport] = useState();
+  const { sport, hasSport, applySport } = useSportSelection();
   const [sportModalOpen, setSportModalOpen] = useState(false);
   const [modalSport, setModalSport] = useState();
   const [pendingRedirectUrl, setPendingRedirectUrl] = useState();
@@ -18,70 +19,14 @@ export default function SiteChrome({ children }) {
   useEffect(() => {
     const stored = getSelectedSport(SPORTS);
     if (stored) {
-      setSport(stored);
       setModalSport(stored);
     }
   }, []);
 
   useEffect(() => {
-    const onSportUpdated = (event) => {
-      const nextSport = event.detail?.sport;
-      if (nextSport && SPORTS.includes(nextSport)) {
-        setSport(nextSport);
-        setModalSport(nextSport);
-      }
-    };
-
-    window.addEventListener("va:selected-sport", onSportUpdated);
-    return () => window.removeEventListener("va:selected-sport", onSportUpdated);
-  }, []);
-
-  useEffect(() => {
-    const onDocumentClickCapture = (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) {
-        return;
-      }
-
-      const forcedSportModalElement = target.closest("[data-open-sport-modal='true']");
-      if (forcedSportModalElement) {
-        event.preventDefault();
-        event.stopPropagation();
-        const explicitRedirect = forcedSportModalElement.getAttribute("data-redirect-url");
-        const hrefRedirect = forcedSportModalElement.getAttribute("href");
-        setPendingRedirectUrl(explicitRedirect || hrefRedirect || "");
-        setModalSport(getSelectedSport(SPORTS));
-        setSportModalOpen(true);
-        return;
-      }
-
-      const gatedElement = target.closest("[data-requires-sport='true']");
-      if (!gatedElement) {
-        return;
-      }
-
-      const selectedSport = getSelectedSport(SPORTS);
-      if (selectedSport) {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-
-      const explicitRedirect = gatedElement.getAttribute("data-redirect-url");
-      const hrefRedirect = gatedElement.getAttribute("href");
-      setPendingRedirectUrl(explicitRedirect || hrefRedirect || "");
-      setModalSport(undefined);
-      setSportModalOpen(true);
-    };
-
-    document.addEventListener("click", onDocumentClickCapture, true);
-    return () => document.removeEventListener("click", onDocumentClickCapture, true);
-  }, []);
-
-  useEffect(() => {
-    const onOpenSportModal = () => {
-      setPendingRedirectUrl(undefined);
+    const onOpenSportModal = (event) => {
+      const redirect = event.detail?.redirectUrl;
+      setPendingRedirectUrl(typeof redirect === "string" && redirect.length > 0 ? redirect : undefined);
       setModalSport(getSelectedSport(SPORTS));
       setSportModalOpen(true);
     };
@@ -90,25 +35,23 @@ export default function SiteChrome({ children }) {
     return () => window.removeEventListener("va:open-sport-modal", onOpenSportModal);
   }, []);
 
-  const handleSportChange = (value) => {
-    setSport(value);
-    setModalSport(value);
-    setSelectedSport(value);
-  };
-
   const handleSportModalConfirm = () => {
     if (!modalSport) {
       return;
     }
 
-    setSelectedSport(modalSport);
-    setSport(modalSport);
+    applySport(modalSport);
     setSportModalOpen(false);
 
     if (pendingRedirectUrl) {
       router.push(pendingRedirectUrl);
       setPendingRedirectUrl(undefined);
     }
+  };
+
+  const closeSportModal = () => {
+    setSportModalOpen(false);
+    setPendingRedirectUrl(undefined);
   };
 
   return (
@@ -125,18 +68,18 @@ export default function SiteChrome({ children }) {
       }}
     >
       <div style={{ minHeight: "100vh" }}>
-        <MarketingTopNav sport={sport} hasSport={Boolean(sport)} onSportChange={handleSportChange} />
+        <MarketingTopNav sport={sport} hasSport={hasSport} onSportChange={applySport} />
         <HashScroll />
         <main>{children}</main>
 
         <Modal
           title="Select your sport"
           open={sportModalOpen}
-          closable={false}
-          mask={{ closable: false }}
-          keyboard={false}
+          closable
+          maskClosable
+          keyboard
+          onCancel={closeSportModal}
           cancelButtonProps={{ style: { display: "none" } }}
-          onCancel={() => {}}
           onOk={handleSportModalConfirm}
           okText="Continue"
           okButtonProps={{ disabled: !modalSport, className: modalSport ? "sport-selected-ant-btn" : undefined }}
@@ -145,16 +88,21 @@ export default function SiteChrome({ children }) {
             A sport selection is required before continuing to demo or pricing actions.
           </p>
           <Select
+            allowClear
             value={modalSport}
-            placeholder="My sport"
+            placeholder="Choose sport"
             className={modalSport ? "sport-select-highlight" : undefined}
             style={{ width: "100%" }}
             options={SPORTS.map((label) => ({ value: label, label }))}
-            onChange={setModalSport}
+            onChange={(value) => setModalSport(value)}
           />
         </Modal>
         <MarketingFooter />
       </div>
     </ConfigProvider>
   );
+}
+
+export default function SiteChrome({ children }) {
+  return <SiteChromeInner>{children}</SiteChromeInner>;
 }

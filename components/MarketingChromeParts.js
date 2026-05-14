@@ -4,7 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SPORTS } from "../lib/site-data";
+import { getSelectedSport, openSportRequiredModal } from "../lib/sport-preference";
 import { assetPath } from "../lib/asset-path";
+import SportSelectWithClear from "./SportSelectWithClear";
 
 const homeProductHref = { pathname: "/", hash: "product" };
 const homePricingHref = { pathname: "/", hash: "pricing" };
@@ -73,7 +75,7 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
           Pricing
         </Link>
         <Link href="/resources" onClick={closeMobileMenu}>
-          Athletes/HS coaches
+          Athletes/HS Coaches
         </Link>
         <Link href="/about" onClick={closeMobileMenu}>
           About Us
@@ -81,24 +83,30 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
       </div>
       <div className={`dark-nav-cta ${mobileMenuOpen ? "is-open" : ""}`}>
         <div className="dark-nav-sport">
-          <select
-            className={`nav-sel${hasSport ? " live" : ""}`}
+          <SportSelectWithClear
+            sports={SPORTS}
             value={sport || ""}
-            onChange={(event) => onSportChange(event.target.value)}
-          >
-            <option value="">My sport</option>
-            {SPORTS.map((label) => (
-              <option key={label} value={label}>
-                {label}
-              </option>
-            ))}
-          </select>
+            onValueChange={onSportChange}
+            selectClassName={`nav-sel${hasSport ? " live" : ""}`}
+            emptyLabel="Choose sport"
+            compact
+            variant="nav"
+          />
         </div>
         <button
+          type="button"
           className={`nav-btn-demo${hasSport ? " sport-selected" : ""}`}
           data-requires-sport="true"
           title="Select your sport for a tailored demo experience."
-          onClick={closeMobileMenu}
+          onClickCapture={(e) => {
+            closeMobileMenu();
+            if (getSelectedSport(SPORTS)) {
+              return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            openSportRequiredModal();
+          }}
         >
           Book a Demo
         </button>
@@ -111,14 +119,28 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
 }
 
 export function MarketingFooter() {
+  const pathname = usePathname();
+  const onHome = pathname === "/" || pathname === "";
+
   return (
     <footer className="footer">
       <div className="footer-grid">
         <div>
           <div className="footer-col-head">For You</div>
-          <Link href="/for-coaches">College Coaches</Link>
-          <Link href="/hs-coaches">HS Coaches</Link>
-          <Link href="/resources#athletes-transfers">Athletes &amp; Transfers</Link>
+          <Link
+            href={homeProductHref}
+            onClick={(e) => {
+              if (!onHome) {
+                return;
+              }
+              e.preventDefault();
+              window.location.hash = "product";
+            }}
+          >
+            College Coaches
+          </Link>
+          <Link href="/resources#hs-football-coaches">HS Coaches</Link>
+          <Link href="/resources#athletes-transfers">Athletes</Link>
           <Link href="/resources#recruiting-academy">Recruiting Academy</Link>
         </div>
         <div>
@@ -138,9 +160,16 @@ export function MarketingFooter() {
         <div className="footer-legal">© 2025 Verified Athletics.</div>
       </div>
       <div className="footer-compliance">
-        This recruiting/scouting service has been approved in accordance with NCAA bylaws, policies, and
-        procedures. NCAA Division I football and/or basketball coaches are permitted to subscribe to this
-        recruiting/scouting service.
+        This recruiting/scouting service has been approved in
+        <br />
+        accordance with NCAA bylaws, policies, and procedures. NCAA Division I football and/or
+        <br />
+        basketball coaches are permitted to subscribe to this recruiting/scouting service.
+      </div>
+      <div className="footer-ncaa-context">
+        (note: the NCAA only approves services for football and basketball but we have many
+        <br />
+        customers in nearly every NCAA sport)
       </div>
     </footer>
   );

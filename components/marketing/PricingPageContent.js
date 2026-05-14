@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { Card, Col, Collapse, Row, Typography } from "antd";
+import { useMemo, useState } from "react";
+import { Card, Col, Row, Typography } from "antd";
 import { SPORTS } from "../../lib/site-data";
-import { getSelectedSport } from "../../lib/sport-preference";
+import { getSelectedSport, openSportRequiredModal } from "../../lib/sport-preference";
+import { useSportSelection } from "../SportSelectionProvider";
+import SportDemoCtaBlock from "../SportDemoCtaBlock";
 
 const { Title, Paragraph } = Typography;
 
@@ -91,82 +93,24 @@ const ALL_SPORTS_TIERS = [
   },
 ];
 
-const FAQ_ITEMS = [
-  {
-    key: "sport",
-    label: "Why does pricing vary by sport?",
-    children: (
-      <p>
-        Recruiting workflows, transfer dynamics, available data, and package access vary by sport. Select your
-        sport to view the package structure that applies to your program.
-      </p>
-    ),
-  },
-  {
-    key: "package",
-    label: "Do I need to choose a package before booking a demo?",
-    children: (
-      <p>
-        No. Choose your sport first so we can route you to the right specialist. The demo will help determine
-        which package fits your program.
-      </p>
-    ),
-  },
-  {
-    key: "signup",
-    label: "Is there a self-serve signup?",
-    children: (
-      <p>
-        No. Verified Athletics uses a demo-based process so each program can be matched with the right access,
-        data, and package structure.
-      </p>
-    ),
-  },
-  {
-    key: "athletes",
-    label: "Are athletes charged to use Verified Athletics?",
-    children: (
-      <p>No. Athletes are not the paying customer. Athlete-facing resources are designed to support visibility and education.</p>
-    ),
-  },
-  {
-    key: "hs",
-    label: "Is high school coach access paid?",
-    children: (
-      <p>High school football coaches can access free tools to claim their team and support athlete visibility.</p>
-    ),
-  },
-];
-
-export function PricingDynamicsAndFaqs({ sport }) {
-  if (!sport) {
-    return null;
-  }
-
+function PricingTierSkeletonCard() {
   return (
-    <div className="pricing-page-tail marketing-page">
-      <div className="pricing-faq pricing-faq-collapse">
-        <Title level={3}>FAQs</Title>
-        <Collapse bordered={false} expandIconPosition="end" items={FAQ_ITEMS} className="pricing-faq-accordion" />
-      </div>
-    </div>
+    <Card className="pricing-tier-skeleton-card">
+      <div className="pricing-skeleton-bar pricing-skeleton-bar--title" />
+      <div className="pricing-skeleton-bar pricing-skeleton-bar--price" />
+      <div className="pricing-skeleton-bar" />
+      <div className="pricing-skeleton-bar" />
+      <div className="pricing-skeleton-bar pricing-skeleton-bar--short" />
+      <div className="pricing-skeleton-block pricing-skeleton-block--lg" />
+      <div className="pricing-skeleton-block" />
+      <div className="pricing-skeleton-block" />
+    </Card>
   );
 }
 
-export default function PricingPageContent({
-  afterTierGridSlot = null,
-  deferContextAndFaq = false,
-  tightSectionBottom = false,
-}) {
-  const [sport, setSport] = useState();
+export default function PricingPageContent({ afterTierGridSlot = null, tightSectionBottom = false }) {
+  const { sport, applySport } = useSportSelection();
   const [contractTerm, setContractTerm] = useState("3-year");
-
-  useEffect(() => {
-    const stored = getSelectedSport(SPORTS);
-    if (stored) {
-      setSport(stored);
-    }
-  }, []);
 
   const tiers = useMemo(() => {
     if (!sport) {
@@ -175,26 +119,8 @@ export default function PricingPageContent({
     return sport === "Football" ? FOOTBALL_TIERS : ALL_SPORTS_TIERS;
   }, [sport]);
 
-  useEffect(() => {
-    const onSportUpdated = (event) => {
-      const nextSport = event.detail?.sport;
-      if (nextSport && SPORTS.includes(nextSport)) {
-        setSport(nextSport);
-      }
-    };
-
-    window.addEventListener("va:selected-sport", onSportUpdated);
-    return () => window.removeEventListener("va:selected-sport", onSportUpdated);
-  }, []);
-
   const isFootball = sport === "Football";
-  const showSpecialNote = ["Golf", "Tennis", "Lacrosse"].includes(sport);
-  const openSportModal = (event) => {
-    event.preventDefault();
-    window.dispatchEvent(new CustomEvent("va:open-sport-modal"));
-  };
-
-  const showInlineContextAndFaq = Boolean(sport) && !deferContextAndFaq;
+  const showSpecialNote = sport && ["Golf", "Tennis", "Lacrosse"].includes(sport);
 
   return (
     <div
@@ -205,25 +131,15 @@ export default function PricingPageContent({
       <div className="container pricing-page">
         {!sport ? (
           <>
-            <Title>Packages by sport</Title>
+            <Title>Recruiting intelligence packages</Title>
             <Paragraph className="lead">
               Verified Athletics packages vary by sport because recruiting workflows, data needs, and transfer
               dynamics vary by sport.
             </Paragraph>
             <Paragraph className="pricing-prompt">Select your sport to see relevant packages and pricing.</Paragraph>
-            <div className="pricing-cta-row">
-              <button type="button" className="btn red" data-open-sport-modal="true" onClick={openSportModal}>
-                Select Your Sport
-              </button>
-              <button
-                type="button"
-                className="btn light"
-                data-requires-sport="true"
-                title="Select your sport for a tailored demo experience."
-              >
-                Book a Demo
-              </button>
-            </div>
+
+            <SportDemoCtaBlock sport="" onSportChange={applySport} surface="pricing" className="pricing-demo-cta-wrap" />
+
             <Card className="pricing-note-card">
               <strong>Free for Athletes and HS Coaches:</strong> If you are not a college program, use our free
               tools and guides.
@@ -240,49 +156,51 @@ export default function PricingPageContent({
               </Paragraph>
             </div>
 
-            <Card className="pricing-empty-card">
-              <Title level={4}>Choose a sport to view pricing.</Title>
-              <Paragraph>
-                We'll show the packages, contract options, and demo path that match your recruiting needs.
-              </Paragraph>
-            </Card>
+            <Row gutter={[16, 16]} className="pricing-options-grid pricing-options-grid--skeleton">
+              {[0, 1, 2, 3].map((i) => (
+                <Col xs={24} md={12} lg={6} key={i}>
+                  <PricingTierSkeletonCard />
+                </Col>
+              ))}
+            </Row>
           </>
         ) : (
           <>
             <Title className="headline-match-pricing">
               {isFootball ? "Football recruiting intelligence packages" : `Pricing for college ${sport} programs`}
             </Title>
-            <Paragraph className="lead">
+            <Paragraph className="lead pricing-intro-lead">
               {isFootball
-                ? "Sport-specific packages for football staffs that need transfer intelligence, measurables, AI-suggested targets, and recruiting workflow tools."
-                : (
-                  <>
-                    Sport-specific pricing for college programs using transfer intelligence and recruiting workflow
-                    tools. Department &amp; multi-team options are available for non-football programs.
-                    {" "}
-                    <button
-                      type="button"
-                      className="pricing-inline-cta-link"
-                      data-requires-sport="true"
-                      title="Select your sport for a tailored demo experience."
-                      onClick={openSportModal}
-                    >
-                      Book a demo for a custom quote.
-                    </button>
-                  </>
-                )}
+                ? "Sport-specific pricing for college football programs using transfer intelligence and recruiting workflow tools."
+                : "Sport-specific pricing for college programs using transfer intelligence and recruiting workflow tools."}
             </Paragraph>
+            {!isFootball && (
+              <Paragraph className="pricing-note pricing-intro-follow pricing-dept-cta">
+                Department &amp; multi-team options are available for non-football programs.{" "}
+                <button
+                  type="button"
+                  className="pricing-inline-cta-link"
+                  data-requires-sport="true"
+                  title="Select your sport for a tailored demo experience."
+                  onClickCapture={(e) => {
+                    if (getSelectedSport(SPORTS)) {
+                      return;
+                    }
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openSportRequiredModal();
+                  }}
+                >
+                  Book a demo for a custom quote.
+                </button>
+              </Paragraph>
+            )}
             <Paragraph className="pricing-note">
-              {isFootball
-                ? "Football packages start at $2,025/year. Select a contract length to compare options."
-                : (
-                  <>
-                    <strong>Free for Athletes and HS Coaches:</strong> Athlete and high school coach access
-                    remains free.
-                    {" "}
-                    <Link href="/resources">Go to Athlete/HS resources</Link>.
-                  </>
-                )}
+              <strong>Free for Athletes and HS Coaches:</strong> Athlete and high school coach access remains free.{" "}
+              <Link href="/resources" className="pricing-inline-cta-link">
+                Go to Athlete/HS resources
+              </Link>
+              .
             </Paragraph>
             {isFootball && (
               <Paragraph className="pricing-note">
@@ -291,24 +209,12 @@ export default function PricingPageContent({
               </Paragraph>
             )}
 
-            <div className="pricing-cta-row">
-              <button
-                type="button"
-                className="btn red sport-selected"
-                data-requires-sport="true"
-                title="Select your sport for a tailored demo experience."
-              >
-                Book a Demo
-              </button>
-              <button
-                type="button"
-                className="btn light sport-selected"
-                data-open-sport-modal="true"
-                onClick={openSportModal}
-              >
-                Sport: {sport}
-              </button>
-            </div>
+            <SportDemoCtaBlock
+              sport={sport}
+              onSportChange={applySport}
+              surface="pricing"
+              className="pricing-demo-cta-wrap"
+            />
 
             <div className="pricing-contract-toggle" role="group" aria-label="Contract term">
               <button
@@ -333,10 +239,14 @@ export default function PricingPageContent({
                 Starter pricing.
               </Card>
             )}
-            <Row gutter={[16, 16]} className="pricing-options-grid">
+            <Row gutter={[16, 16]} className="pricing-options-grid pricing-options-grid--live">
               {tiers.map((tier) => (
                 <Col xs={24} md={12} lg={6} key={tier.name}>
-                  <Card title={tier.name} extra={tier.badge ? <span className="tier-badge">{tier.badge}</span> : null}>
+                  <Card
+                    title={tier.name}
+                    extra={tier.badge ? <span className="tier-badge">{tier.badge}</span> : null}
+                    className="pricing-tier-card pricing-tier-card--revealed"
+                  >
                     {tier.prices && <div className="tier-price">{tier.prices[contractTerm]}</div>}
                     <p>{tier.description}</p>
                     <ul className="tier-list">
@@ -350,8 +260,6 @@ export default function PricingPageContent({
             </Row>
 
             {afterTierGridSlot}
-
-            {showInlineContextAndFaq && <PricingDynamicsAndFaqs sport={sport} />}
           </>
         )}
       </div>

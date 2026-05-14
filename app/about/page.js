@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Typography } from "antd";
 
 const { Title, Paragraph } = Typography;
@@ -143,22 +142,22 @@ export default function AboutPage() {
             <h3>Contact us.</h3>
             <p>support@verifiedathletics.com</p>
           </div>
-          <form className="about-contact-form">
+          <form className="about-contact-form" noValidate>
             <div className="about-form-row">
-              <input placeholder="First Name (required)" />
-              <input placeholder="Last Name (required)" />
+              <input type="text" name="firstName" autoComplete="given-name" placeholder="First Name (required)" />
+              <input type="text" name="lastName" autoComplete="family-name" placeholder="Last Name (required)" />
             </div>
-            <input placeholder="Email (required)" />
-            <input placeholder="Phone (required)" />
-            <textarea placeholder="Message (required)" rows={5} />
-            <select defaultValue="">
+            <input type="email" name="email" autoComplete="email" placeholder="Email (required)" />
+            <input type="tel" name="phone" autoComplete="tel" placeholder="Phone (required)" />
+            <textarea name="message" placeholder="Message (required)" rows={5} />
+            <select name="role" defaultValue="" aria-label="Tell us who you are">
               <option value="" disabled>
                 Tell Us Who You Are (required)
               </option>
-              <option>College Coach</option>
-              <option>High School Coach</option>
-              <option>Athlete / Parent</option>
-              <option>Other</option>
+              <option value="college-coach">College Coach</option>
+              <option value="hs-coach">High School Coach</option>
+              <option value="athlete-parent">Athlete / Parent</option>
+              <option value="other">Other</option>
             </select>
             <button type="button" className="btn light">
               Send
@@ -167,23 +166,24 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="about-subscribe-band">
+      <section id="subscribe" className="about-subscribe-band home-marketing-anchor about-anchor">
         <div className="container about-subscribe-inner">
           <h3>Subscribe</h3>
           <p>Sign up with your email address to receive news and updates.</p>
           <div className="about-subscribe-cta-row">
-            <input placeholder="Email Address" />
+            <input type="email" name="subscribe-email" autoComplete="email" placeholder="Email Address" />
             <button type="button" className="btn light">
               Sign Up
             </button>
           </div>
           <small>We respect your privacy.</small>
-          <div id="careers" className="about-jobs about-anchor">
-            <strong>Join the team</strong>{" "}
-            <span>
-              See available opportunities on our <Link href="/jobs">Jobs</Link> page.
-            </span>
-          </div>
+        </div>
+      </section>
+
+      <section id="careers" className="about-careers-band home-marketing-anchor about-anchor">
+        <div className="container about-careers-inner">
+          <Title>Careers</Title>
+          <Paragraph className="about-careers-copy">There are no open positions at this time.</Paragraph>
         </div>
       </section>
     </div>
