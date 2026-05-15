@@ -1,0 +1,29 @@
+{
+  "source": "fallback",
+  "items": [
+    {
+      "id": "fallback-1",
+      "q": "Verified has been a great asset to our recruiting efforts for several years. They have the most complete information in the industry and serve as the foundation for our prospect database.",
+      "name": "Andy Frank",
+      "role": "General Manager, Virginia Tech Football",
+      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
+      "sports": ["Football"]
+    },
+    {
+      "id": "fallback-2",
+      "q": "Verified helps us find players who fit our program with speed and efficiency. With help from Verified, we offered 5 transfers and signed all 5.",
+      "name": "John Lorenzo",
+      "role": "Associate Head Coach, Wright State Women's Basketball",
+      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "sports": ["Women's Basketball"]
+    },
+    {
+      "id": "fallback-3",
+      "q": "Amount and quality of contact information and data is everything. Verified has provided this more accurately than any other recruiting tool we have used.",
+      "name": "Brad Spencer",
+      "role": "Head Coach, North Central College Football (D3)",
+      "img": "/legacy/Verified homepage_files/rick_spencer.png",
+      "sports": ["Football"]
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { assetPath } from "../lib/asset-path";
+import { fetchTestimonialsForSport } from "../lib/testimonials-fetch";
 
 const AUTO_MS = 8000;
 const WIDE_BREAKPOINT_PX = 960;
@@ -69,27 +71,15 @@ export default function TestimonialsSection({ selectedSport }) {
 
   useEffect(() => {
     let cancelled = false;
-    const params = new URLSearchParams();
-    if (sportKey) {
-      params.set("sport", sportKey);
-    }
-    const url = `/api/testimonials?${params.toString()}`;
 
     setLoading(true);
     setFetchError(null);
 
-    fetch(url)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Request failed (${res.status})`);
-        }
-        return res.json();
-      })
-      .then((body) => {
+    fetchTestimonialsForSport(sportKey)
+      .then((next) => {
         if (cancelled) {
           return;
         }
-        const next = Array.isArray(body.items) ? body.items : [];
         setItems(next);
         setPageIndex(0);
       })
@@ -262,9 +252,9 @@ export default function TestimonialsSection({ selectedSport }) {
                 <blockquote className="t-quote">&quot;{item.q}&quot;</blockquote>
                 <div className="t-foot">
                   <div className="t-avatar">
-                    {item.img ? (
-                      <img src={item.img} alt="" />
-                    ) : (
+                  {item.img ? (
+                    <img src={assetPath(item.img)} alt="" />
+                  ) : (
                       <span className="t-carousel-avatar-fallback" aria-hidden="true">
                         {(item.name || "?").slice(0, 1)}
                       </span>
