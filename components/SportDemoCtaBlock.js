@@ -26,6 +26,7 @@ export default function SportDemoCtaBlock({
   const showDemo = showBookDemoButton !== false;
   const demoSpecialist = isPricing && showDemo ? getDemoSpecialistForSport(sport || "") : null;
   const demoSpecialistFirst = demoSpecialist ? demoSpecialist.name.split(" ")[0] : "";
+  const isOtherNotSure = sport === "Other / Not sure";
 
   const rowClass = [
     "sport-demo-cta-row",
@@ -55,7 +56,11 @@ export default function SportDemoCtaBlock({
         )
       ) : hasSport ? (
         isPricing ? (
-          `You'll connect with ${demoSpecialistFirst}—your ${sport} specialist.`
+          isOtherNotSure ? (
+            `You'll connect with ${demoSpecialist?.name ?? "our team"} to help you find the right solution`
+          ) : (
+            `You'll connect with ${demoSpecialistFirst}—your ${sport} specialist.`
+          )
         ) : (
           `You'll be connected to a ${sport} specialist.`
         )

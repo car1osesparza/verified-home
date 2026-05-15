@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import { Card, Col, Row } from "antd";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Card } from "antd";
 
 const LIVE = {
   recruitingAcademy: "https://verifiedathletics.com/recruiting-academy",
@@ -31,6 +31,8 @@ function Checklist({ items }) {
 
 export default function ResourcesPageContent() {
   const [activeSection, setActiveSection] = useState("");
+  const activeSectionRef = useRef("");
+  activeSectionRef.current = activeSection;
 
   const goToSection = useCallback((id) => {
     window.location.hash = id;
@@ -53,9 +55,14 @@ export default function ResourcesPageContent() {
         const visible = entries
           .filter((e) => e.isIntersecting && e.target.id)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]?.target?.id) {
-          setActiveSection(visible[0].target.id);
+        const nextId = visible[0]?.target?.id;
+        if (!nextId) {
+          return;
         }
+        if (activeSectionRef.current === nextId) {
+          return;
+        }
+        setActiveSection(nextId);
       },
       { root: null, rootMargin: "-48px 0px -55% 0px", threshold: [0, 0.1, 0.25] },
     );
@@ -101,9 +108,8 @@ export default function ResourcesPageContent() {
             Manage your roster, share structured athlete profiles with college staffs, and understand who
             is engaging with your program—all in one place.
           </p>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} md={12}>
-              <Card title="Claim Your Team">
+          <div className="resources-card-grid">
+            <Card title="Claim Your Team">
                 <p className="resources-prose">
                   Add your team and athlete information so college coaches can find, evaluate, and contact
                   your players.
@@ -121,9 +127,7 @@ export default function ResourcesPageContent() {
                   Claim Your Team
                 </a>
               </Card>
-            </Col>
-            <Col xs={24} md={12}>
-              <Card title="Why It Matters">
+            <Card title="Why It Matters">
                 <p className="resources-prose">
                   College programs use Verified to evaluate prospects at scale. When your athletes are in
                   the same system coaches already trust, they get seen faster—and stay visible as recruiting
@@ -133,8 +137,7 @@ export default function ResourcesPageContent() {
                   Learn More About Visibility
                 </a>
               </Card>
-            </Col>
-          </Row>
+          </div>
         </section>
 
         <section
@@ -182,9 +185,8 @@ export default function ResourcesPageContent() {
             Verified helps athletes increase exposure and simplify communication with college programs—
             without charging athlete fees.
           </p>
-          <Row gutter={[16, 16]}>
-            <Col xs={24} md={12}>
-              <Card title="NCAA Transfer Athletes">
+          <div className="resources-card-grid">
+            <Card title="NCAA Transfer Athletes">
                 <p className="resources-prose">
                   If you&apos;re in the transfer portal, Verified helps coaches find and evaluate you.
                 </p>
@@ -200,9 +202,7 @@ export default function ResourcesPageContent() {
                   Request Transfer Survey
                 </a>
               </Card>
-            </Col>
-            <Col xs={24} md={12}>
-              <Card title="High School & JUCO Football Athletes">
+            <Card title="High School & JUCO Football Athletes">
                 <p className="resources-prose">
                   Create a structured profile that can be shared across college programs nationwide.
                 </p>
@@ -219,8 +219,7 @@ export default function ResourcesPageContent() {
                   process.
                 </p>
               </Card>
-            </Col>
-          </Row>
+          </div>
           <div className="resources-cta-row">
             <a className="btn light resources-ext-link" href={LIVE.athletes} target="_blank" rel="noreferrer">
               Go to Athlete Hub
@@ -236,10 +235,10 @@ export default function ResourcesPageContent() {
             Are you a college coach?
           </h2>
           <div className="resources-funnel-actions">
-            <Link href={{ pathname: "/", hash: "product" }} className="btn light">
+            <Link href="/#product" className="btn light">
               View product
             </Link>
-            <Link href={{ pathname: "/", hash: "pricing" }} className="btn red">
+            <Link href="/#pricing" className="btn red">
               View pricing
             </Link>
           </div>

@@ -1258,6 +1258,19 @@ textarea,
   padding-bottom: 8px;
 }
 
+.resources-page .resources-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .resources-page .resources-card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .resources-page .resources-hero-sub {
   font-size: 17px;
   line-height: 1.6;

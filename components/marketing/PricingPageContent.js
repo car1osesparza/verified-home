@@ -120,6 +120,7 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
   }, [sport]);
 
   const isFootball = sport === "Football";
+  const isOtherNotSure = sport === "Other / Not sure";
   const showSpecialNote = sport && ["Golf", "Tennis", "Lacrosse"].includes(sport);
 
   return (
@@ -167,7 +168,11 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
         ) : (
           <>
             <Title className="headline-match-pricing">
-              {isFootball ? "Football recruiting intelligence packages" : `Pricing for college ${sport} programs`}
+              {isFootball
+                ? "Football recruiting intelligence packages"
+                : isOtherNotSure
+                  ? "Pricing for college programs"
+                  : `Pricing for college ${sport} programs`}
             </Title>
             <Paragraph className="lead pricing-intro-lead">
               {isFootball
