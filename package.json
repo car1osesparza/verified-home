@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/ensure-dev-next.js",
     "dev": "next dev",
     "dev:clean": "(chmod -R u+w .next 2>/dev/null || true) && rm -rf .next && next dev",
     "build": "next build",
     "build:static": "NEXT_STATIC_EXPORT=true next build",
-    "preview": "next start",
-    "preview:static": "npx --yes serve@14 out",
+    "build:static:local": "NEXT_PUBLIC_BASE_PATH=/verified-home NEXT_STATIC_EXPORT=true next build",
+    "preview": "node scripts/ensure-server-next.js && next start",
+    "preview:static": "npx --yes serve@14 out -l 3080",
+    "prestart": "node scripts/ensure-server-next.js",
     "start": "next start",
     "lint": "next lint"
   },

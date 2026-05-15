@@ -36,9 +36,17 @@ export function SportSelectionProvider({ children }) {
     return () => window.removeEventListener("va:selected-sport", onSportUpdated);
   }, []);
 
-  /** Pass `""` or `undefined` to clear. */
+  /** Pass `""` or `undefined` to clear. Updates React state and persisted preference together. */
   const applySport = useCallback((value) => {
-    setSelectedSport(value ?? "");
+    const next = value ?? "";
+    setSelectedSport(next);
+    if (!next) {
+      setSport(undefined);
+      return;
+    }
+    if (SPORTS.includes(next)) {
+      setSport(next);
+    }
   }, []);
 
   const value = useMemo(

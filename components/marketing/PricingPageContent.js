@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Card, Col, Row, Typography } from "antd";
-import { SPORTS } from "../../lib/site-data";
-import { getSelectedSport, openSportRequiredModal } from "../../lib/sport-preference";
+import { openSportRequiredModal } from "../../lib/sport-preference";
 import { useSportSelection } from "../SportSelectionProvider";
 import SportDemoCtaBlock from "../SportDemoCtaBlock";
 
@@ -73,11 +72,7 @@ const ALL_SPORTS_TIERS = [
     name: "Starter+",
     prices: { "3-year": "$1,425/year", "1-year": "$2,225/year" },
     description: "Expanded access with JUCO player data and team-level options.",
-    includes: [
-      "Everything in Starter",
-      "JUCO Player Database",
-      "Discounts available for 2-team and athletic department deals",
-    ],
+    includes: ["Everything in Starter", "JUCO Player Database"],
   },
   {
     name: "Elite",
@@ -92,6 +87,22 @@ const ALL_SPORTS_TIERS = [
     includes: ["Everything in Elite", "Pre-Portal Database", "JUCO Players", "Custom Player Modeling"],
   },
 ];
+
+const SPECIAL_ACCESS_SPORTS = ["Golf", "Tennis", "Lacrosse"];
+
+/** Elite-tier feature set at Starter pricing (Golf, Tennis, Lacrosse). */
+const SPECIAL_ELITE_BUNDLE = {
+  name: "Elite",
+  prices: ALL_SPORTS_TIERS.find((tier) => tier.name === "Starter").prices,
+  columns: [
+    {
+      items: ["Full transfer access", "Verified Ratings", "JUCO Player Database"],
+    },
+    {
+      items: ["All D1 Transfers", "All D2 Transfers", "All D3 Transfers"],
+    },
+  ],
+};
 
 function PricingTierSkeletonCard() {
   return (
@@ -109,7 +120,7 @@ function PricingTierSkeletonCard() {
 }
 
 export default function PricingPageContent({ afterTierGridSlot = null, tightSectionBottom = false }) {
-  const { sport, applySport } = useSportSelection();
+  const { sport, hasSport, applySport } = useSportSelection();
   const [contractTerm, setContractTerm] = useState("3-year");
 
   const tiers = useMemo(() => {
@@ -121,7 +132,7 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
 
   const isFootball = sport === "Football";
   const isOtherNotSure = sport === "Other / Not sure";
-  const showSpecialNote = sport && ["Golf", "Tennis", "Lacrosse"].includes(sport);
+  const showSpecialSportPricing = sport && SPECIAL_ACCESS_SPORTS.includes(sport);
 
   return (
     <div
@@ -188,7 +199,7 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
                   data-requires-sport="true"
                   title="Select your sport for a tailored demo experience."
                   onClickCapture={(e) => {
-                    if (getSelectedSport(SPORTS)) {
+                    if (hasSport) {
                       return;
                     }
                     e.preventDefault();
@@ -238,31 +249,50 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
               </button>
             </div>
 
-            {showSpecialNote && (
-              <Card className="pricing-note-card">
-                <strong>Special Access Note:</strong> Golf, Tennis, and Lacrosse programs receive Elite access at
-                Starter pricing.
-              </Card>
+            {showSpecialSportPricing ? (
+              <div className="pricing-options-grid pricing-options-grid--live pricing-options-grid--special-elite">
+                <Card
+                  title={SPECIAL_ELITE_BUNDLE.name}
+                  className="pricing-tier-card pricing-tier-card--revealed pricing-elite-bundle-card"
+                >
+                  <p className="pricing-elite-bundle-access-note">
+                    <strong>Special Access Note:</strong> {sport} programs receive Elite access at Starter pricing.
+                  </p>
+                  <div className="tier-price">{SPECIAL_ELITE_BUNDLE.prices[contractTerm]}</div>
+                  <div className="pricing-elite-bundle-cols">
+                    {SPECIAL_ELITE_BUNDLE.columns.map((column, colIndex) => (
+                      <div className="pricing-elite-bundle-col" key={colIndex}>
+                        <ul className="tier-list">
+                          {column.items.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              </div>
+            ) : (
+              <Row gutter={[16, 16]} className="pricing-options-grid pricing-options-grid--live">
+                {tiers.map((tier) => (
+                  <Col xs={24} md={12} lg={6} key={tier.name}>
+                    <Card
+                      title={tier.name}
+                      extra={tier.badge ? <span className="tier-badge">{tier.badge}</span> : null}
+                      className="pricing-tier-card pricing-tier-card--revealed"
+                    >
+                      {tier.prices && <div className="tier-price">{tier.prices[contractTerm]}</div>}
+                      <p>{tier.description}</p>
+                      <ul className="tier-list">
+                        {tier.includes.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
             )}
-            <Row gutter={[16, 16]} className="pricing-options-grid pricing-options-grid--live">
-              {tiers.map((tier) => (
-                <Col xs={24} md={12} lg={6} key={tier.name}>
-                  <Card
-                    title={tier.name}
-                    extra={tier.badge ? <span className="tier-badge">{tier.badge}</span> : null}
-                    className="pricing-tier-card pricing-tier-card--revealed"
-                  >
-                    {tier.prices && <div className="tier-price">{tier.prices[contractTerm]}</div>}
-                    <p>{tier.description}</p>
-                    <ul className="tier-list">
-                      {tier.includes.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
 
             {afterTierGridSlot}
           </>

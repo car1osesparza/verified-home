@@ -2,7 +2,7 @@
 
 import { getDemoSpecialistForSport } from "../lib/demo-specialist";
 import { SPORTS } from "../lib/site-data";
-import { getSelectedSport, openSportRequiredModal } from "../lib/sport-preference";
+import { openSportRequiredModal } from "../lib/sport-preference";
 import SportSelectWithClear from "./SportSelectWithClear";
 
 /**
@@ -102,7 +102,7 @@ export default function SportDemoCtaBlock({
                 data-requires-sport="true"
                 title="Select your sport for a tailored demo experience."
                 onClickCapture={(e) => {
-                  if (getSelectedSport(SPORTS)) {
+                  if (hasSport) {
                     return;
                   }
                   e.preventDefault();
@@ -120,7 +120,7 @@ export default function SportDemoCtaBlock({
               data-requires-sport="true"
               title="Select your sport for a tailored demo experience."
               onClickCapture={(e) => {
-                if (getSelectedSport(SPORTS)) {
+                if (hasSport) {
                   return;
                 }
                 e.preventDefault();

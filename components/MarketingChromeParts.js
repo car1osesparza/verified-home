@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SPORTS } from "../lib/site-data";
-import { getSelectedSport, openSportRequiredModal } from "../lib/sport-preference";
+import { openSportRequiredModal } from "../lib/sport-preference";
 import { assetPath } from "../lib/asset-path";
 import SportSelectWithClear from "./SportSelectWithClear";
 
@@ -100,7 +100,7 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
           title="Select your sport for a tailored demo experience."
           onClickCapture={(e) => {
             closeMobileMenu();
-            if (getSelectedSport(SPORTS)) {
+            if (hasSport) {
               return;
             }
             e.preventDefault();
