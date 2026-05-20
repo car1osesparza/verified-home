@@ -1,29 +1,265 @@
 {
-  "source": "fallback",
+  "source": "mock",
   "items": [
     {
-      "id": "fallback-1",
+      "id": "mock-1",
       "q": "Verified has been a great asset to our recruiting efforts for several years. They have the most complete information in the industry and serve as the foundation for our prospect database.",
       "name": "Andy Frank",
       "role": "General Manager, Virginia Tech Football",
       "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": ["Football"]
+      "sports": ["Football"],
+      "sort_order": 30
     },
     {
-      "id": "fallback-2",
+      "id": "mock-2",
       "q": "Verified helps us find players who fit our program with speed and efficiency. With help from Verified, we offered 5 transfers and signed all 5.",
       "name": "John Lorenzo",
       "role": "Associate Head Coach, Wright State Women's Basketball",
       "img": "/legacy/Verified homepage_files/john_l.jpg",
-      "sports": ["Women's Basketball"]
+      "sports": ["Women's Basketball"],
+      "sort_order": 29
     },
     {
-      "id": "fallback-3",
+      "id": "mock-3",
       "q": "Amount and quality of contact information and data is everything. Verified has provided this more accurately than any other recruiting tool we have used.",
       "name": "Brad Spencer",
       "role": "Head Coach, North Central College Football (D3)",
       "img": "/legacy/Verified homepage_files/rick_spencer.png",
-      "sports": ["Football"]
+      "sports": ["Football"],
+      "sort_order": 28
+    },
+    {
+      "id": "mock-4",
+      "q": "Our staff trusts Verified for day-one contact accuracy. It cut our prep time before every recruiting trip.",
+      "name": "Marcus Reid",
+      "role": "Director of Recruiting, Coastal Carolina Baseball",
+      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
+      "sports": ["Baseball"],
+      "sort_order": 27
+    },
+    {
+      "id": "mock-5",
+      "q": "The transfer portal moves fast. Verified keeps our board current so we are never reacting a week late.",
+      "name": "Elena Vasquez",
+      "role": "Head Coach, San Diego State Women's Soccer",
+      "sports": ["Women's Soccer"],
+      "sort_order": 26
+    },
+    {
+      "id": "mock-6",
+      "q": "We use Verified as the single source of truth for prospect contact data across the entire staff.",
+      "name": "Tom Hartley",
+      "role": "General Manager, James Madison Football",
+      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "sports": ["Football"],
+      "sort_order": 25
+    },
+    {
+      "id": "mock-7",
+      "q": "Film, academics, and fit matter—but you cannot evaluate a kid you cannot reach. Verified solves that first step.",
+      "name": "Priya Nair",
+      "role": "Associate Head Coach, Davidson Men's Basketball",
+      "img": "/legacy/Verified homepage_files/rick_spencer.png",
+      "sports": ["Men's Basketball"],
+      "sort_order": 24
+    },
+    {
+      "id": "mock-8",
+      "q": "Verified Athletics gave our coordinators a shared workflow. Less spreadsheet chaos, more actual recruiting.",
+      "name": "Chris O'Malley",
+      "role": "Head Coach, Holy Cross Football",
+      "sports": ["Football"],
+      "sort_order": 23
+    },
+    {
+      "id": "mock-9",
+      "q": "The depth of roster and coaching-staff data is unmatched for programs at our level.",
+      "name": "Jordan Ellis",
+      "role": "Recruiting Coordinator, UT Arlington Baseball",
+      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
+      "sports": ["Baseball"],
+      "sort_order": 22
+    },
+    {
+      "id": "mock-10",
+      "q": "We signed three portal players last cycle who surfaced first in Verified. That alone paid for the platform.",
+      "name": "Morgan Blake",
+      "role": "Head Coach, Fairfield Women's Lacrosse",
+      "sports": ["Women's Lacrosse"],
+      "sort_order": 21
+    },
+    {
+      "id": "mock-11",
+      "q": "My assistants spend less time verifying numbers and more time building relationships with prospects.",
+      "name": "David Cho",
+      "role": "Head Coach, UC Davis Football",
+      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "sports": ["Football"],
+      "sort_order": 20
+    },
+    {
+      "id": "mock-12",
+      "q": "Verified is the first place we look when we need a clean export for a staff meeting or compliance review.",
+      "name": "Rachel Kim",
+      "role": "Director of Operations, George Mason Women's Basketball",
+      "img": "/legacy/Verified homepage_files/rick_spencer.png",
+      "sports": ["Women's Basketball"],
+      "sort_order": 19
+    },
+    {
+      "id": "mock-13",
+      "q": "For a mid-major program, speed wins. Verified helps us identify fits before bigger schools crowd the prospect.",
+      "name": "Nate Sullivan",
+      "role": "Head Coach, Lafayette Football",
+      "sports": ["Football"],
+      "sort_order": 18
+    },
+    {
+      "id": "mock-14",
+      "q": "Our international recruiting improved because contact paths and staff routing are actually reliable.",
+      "name": "Amara Diallo",
+      "role": "Head Coach, Tulsa Men's Soccer",
+      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
+      "sports": ["Men's Soccer"],
+      "sort_order": 17
+    },
+    {
+      "id": "mock-15",
+      "q": "I recommend Verified to every coach who is still juggling three different data sources every Monday morning.",
+      "name": "Greg Finley",
+      "role": "Head Coach, Wofford Baseball",
+      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "sports": ["Baseball"],
+      "sort_order": 16
+    },
+    {
+      "id": "mock-16",
+      "q": "The platform scales from our GA level to my office—we all see the same board and the same numbers.",
+      "name": "Hannah Ortiz",
+      "role": "General Manager, Rice Women's Basketball",
+      "sports": ["Women's Basketball"],
+      "sort_order": 15
+    },
+    {
+      "id": "mock-17",
+      "q": "Verified helped us reorganize a chaotic transfer class into a clear priority list in one afternoon.",
+      "name": "Kevin Marsh",
+      "role": "Head Coach, South Alabama Football",
+      "img": "/legacy/Verified homepage_files/rick_spencer.png",
+      "sports": ["Football"],
+      "sort_order": 14
+    },
+    {
+      "id": "mock-18",
+      "q": "We have used other services. None of them kept our CRM and our on-field staff aligned the way Verified does.",
+      "name": "Lisa Tran",
+      "role": "Head Coach, Portland State Volleyball",
+      "sports": ["Women's Volleyball"],
+      "sort_order": 13
+    },
+    {
+      "id": "mock-19",
+      "q": "Prospect coverage is broad enough for our staff, but the filters keep us focused on athletes we can actually recruit.",
+      "name": "Mike Donovan",
+      "role": "Recruiting Coordinator, Fordham Football",
+      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
+      "sports": ["Football"],
+      "sort_order": 12
+    },
+    {
+      "id": "mock-20",
+      "q": "Every cycle we lean on Verified for the first wave of outreach. It is consistent and audit-friendly.",
+      "name": "Sara Whitcomb",
+      "role": "Head Coach, Belmont Women's Basketball",
+      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "sports": ["Women's Basketball"],
+      "sort_order": 11
+    },
+    {
+      "id": "mock-21",
+      "q": "Our hitting coaches use the academic and roster context alongside contact data—huge for junior college transfers.",
+      "name": "Tyler Boone",
+      "role": "Head Coach, Dallas Baptist Baseball",
+      "sports": ["Baseball"],
+      "sort_order": 10
+    },
+    {
+      "id": "mock-22",
+      "q": "Verified is not just a database. It is how we run weekly recruiting meetings with confidence.",
+      "name": "Angela Pierce",
+      "role": "Head Coach, Missouri State Softball",
+      "img": "/legacy/Verified homepage_files/rick_spencer.png",
+      "sports": ["Softball"],
+      "sort_order": 9
+    },
+    {
+      "id": "mock-23",
+      "q": "When the NCAA calendar tightens, we need tools that respect compliance boundaries. Verified does.",
+      "name": "James Corbin",
+      "role": "Head Coach, Elon Football",
+      "sports": ["Football"],
+      "sort_order": 8
+    },
+    {
+      "id": "mock-24",
+      "q": "We plugged Verified into our existing process without retraining the whole staff—it just worked.",
+      "name": "Nina Kowalski",
+      "role": "Director of Recruiting, Cleveland State Women's Basketball",
+      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
+      "sports": ["Women's Basketball"],
+      "sort_order": 7
+    },
+    {
+      "id": "mock-25",
+      "q": "The best compliment I can give: our boosters notice less chaos and more signed classes.",
+      "name": "Robert Gaines",
+      "role": "Head Coach, Chattanooga Football",
+      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "sports": ["Football"],
+      "sort_order": 6
+    },
+    {
+      "id": "mock-26",
+      "q": "Verified helps us balance high school, JUCO, and portal pipelines without losing track of anyone.",
+      "name": "Carla Mendes",
+      "role": "Head Coach, LMU Women's Soccer",
+      "sports": ["Women's Soccer"],
+      "sort_order": 5
+    },
+    {
+      "id": "mock-27",
+      "q": "I have coached for twenty years. Verified is the first platform I have seen the entire staff adopt willingly.",
+      "name": "Phil Andersen",
+      "role": "Head Coach, Northern Iowa Football",
+      "img": "/legacy/Verified homepage_files/rick_spencer.png",
+      "sports": ["Football"],
+      "sort_order": 4
+    },
+    {
+      "id": "mock-28",
+      "q": "We use sport-agnostic tags for staff-wide testimonials, but sport filters still surface the right quotes for visits.",
+      "name": "Verified Athletics Staff",
+      "role": "Customer Success",
+      "sports": [],
+      "sort_order": 3
+    },
+    {
+      "id": "mock-29",
+      "q": "From initial call to signed agreement, the Verified team understood how recruiting offices actually operate.",
+      "name": "Diane Harper",
+      "role": "Athletic Director, Stonehill College",
+      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
+      "sports": [],
+      "sort_order": 2
+    },
+    {
+      "id": "mock-30",
+      "q": "If you are building a modern recruiting operation, start with clean data. Verified is that foundation for us.",
+      "name": "Victor Lam",
+      "role": "Head Coach, Sacramento State Men's Basketball",
+      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "sports": ["Men's Basketball"],
+      "sort_order": 1
     }
   ]
 }

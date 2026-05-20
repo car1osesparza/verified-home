@@ -1,11 +1,12 @@
 "use client";
 
 import { Typography } from "antd";
-import { assetPath } from "../../lib/asset-path";
+import ProductWorkflowGif, {
+  WORKFLOW_DEMO_CROPS,
+  workflowDemoPhaseMs,
+} from "./ProductWorkflowGif";
 
 const { Title } = Typography;
-const WORKFLOW_SCREENSHOT_BOARD = assetPath("/workflow/workflow-board.png");
-const WORKFLOW_SCREENSHOT_PROFILE = assetPath("/workflow/workflow-profile.png");
 
 const PLATFORM_MODULES = [
   {
@@ -98,25 +99,18 @@ const WORKFLOW_SHOWCASES = [
     description:
       "Connect board priorities to real athlete targets so your staff can move from planning to execution without disconnected tools.",
     points: ["Prioritize by tier and position groups", "Track offers, movement, and assignment status in one view"],
-    image: WORKFLOW_SCREENSHOT_BOARD,
   },
   {
     title: "Goals to staff accountability",
     description:
       "Give coaches a shared view of updates, movement, and next actions so everyone is aligned on where to focus every week.",
     points: ["Keep contact and eligibility context visible", "Review profile-level details without leaving workflow"],
-    image: WORKFLOW_SCREENSHOT_PROFILE,
   },
 ];
 
 export default function ProductPageContent() {
-  const workflowCards = [
-    ...WORKFLOW_SHOWCASES,
-    ...PLATFORM_MODULES.map((module, index) => ({
-      ...module,
-      image: index % 2 === 0 ? WORKFLOW_SCREENSHOT_BOARD : WORKFLOW_SCREENSHOT_PROFILE,
-    })),
-  ];
+  const workflowCards = [...WORKFLOW_SHOWCASES, ...PLATFORM_MODULES];
+  const workflowCardCount = workflowCards.length;
 
   return (
     <div className="section marketing-page product-page">
@@ -146,7 +140,7 @@ export default function ProductPageContent() {
             Built for the full recruiting workflow
           </Title>
           <div className="product-workflow-showcases">
-            {workflowCards.map((item) => (
+            {workflowCards.map((item, index) => (
               <article className="product-workflow-card" key={item.title}>
                 <div className="product-workflow-copy">
                   <h4>{item.title}</h4>
@@ -158,7 +152,12 @@ export default function ProductPageContent() {
                   </ul>
                 </div>
                 <div className="product-workflow-media">
-                  <img src={item.image} alt={item.title} className="product-workflow-image" />
+                  <ProductWorkflowGif
+                    alt={`${item.title} — recruiting workflow`}
+                    playbackIndex={index}
+                    phaseMs={workflowDemoPhaseMs(index, workflowCardCount)}
+                    objectPosition={WORKFLOW_DEMO_CROPS[index % WORKFLOW_DEMO_CROPS.length]}
+                  />
                 </div>
               </article>
             ))}

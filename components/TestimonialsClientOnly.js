@@ -22,6 +22,6 @@ const TestimonialsSection = dynamic(() => import("./TestimonialsSection"), {
   ),
 });
 
-export default function TestimonialsClientOnly(props) {
-  return <TestimonialsSection {...props} />;
+export default function TestimonialsClientOnly({ layout = "carousel", ...props }) {
+  return <TestimonialsSection layout={layout} {...props} />;
 }

@@ -1,0 +1,410 @@
+.icm-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(202, 37, 43, 0.12), transparent 34%),
+    radial-gradient(circle at 88% 0%, rgba(26, 95, 190, 0.18), transparent 30%),
+    linear-gradient(180deg, #061d36 0%, #041224 48%, #020a14 100%);
+  color: #eef4fb;
+  padding: 32px 24px 64px;
+}
+
+.icm-loading,
+.icm-error {
+  max-width: 720px;
+  margin: 80px auto;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.icm-error {
+  color: #ffb4b4;
+}
+
+.icm-header {
+  max-width: 1280px;
+  margin: 0 auto 28px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: flex-end;
+}
+
+.icm-kicker {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 255, 36, 0.85);
+}
+
+.icm-title {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.05;
+}
+
+.icm-sub {
+  margin: 10px 0 0;
+  max-width: 62ch;
+  color: rgba(238, 244, 251, 0.72);
+  line-height: 1.5;
+}
+
+.icm-controls {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.icm-filter-label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(238, 244, 251, 0.65);
+}
+
+.icm-select,
+.icm-reset {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  padding: 10px 16px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.icm-reset:hover,
+.icm-select:hover {
+  border-color: rgba(106, 255, 171, 0.55);
+}
+
+.icm-visual-stack {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.icm-grid-section,
+.icm-map-section {
+  max-width: none;
+  margin: 0;
+}
+
+.icm-grid-section {
+  margin-bottom: 18px;
+}
+
+.icm-grid-head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.icm-grid-head p {
+  margin: 4px 0 14px;
+  color: rgba(238, 244, 251, 0.58);
+  font-size: 0.92rem;
+}
+
+.icm-region-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.icm-region-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+}
+
+.icm-region-label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: rgba(238, 244, 251, 0.72);
+}
+
+.icm-region-label strong {
+  font-size: 1.2rem;
+  color: #6affab;
+}
+
+.icm-logo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 112px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.icm-logo-tile {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 18, 32, 0.85);
+  display: grid;
+  place-items: center;
+  padding: 3px;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.icm-logo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.icm-logo-fallback {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(238, 244, 251, 0.75);
+}
+
+.icm-logo-tile--d1 {
+  opacity: 1;
+}
+
+.icm-logo-tile--d2 {
+  opacity: 0.82;
+}
+
+.icm-logo-tile--d3 {
+  opacity: 0.64;
+}
+
+.icm-logo-tile--other {
+  opacity: 0.42;
+}
+
+.icm-logo-tile.is-active,
+.icm-logo-tile:hover {
+  transform: translateY(-2px);
+  border-color: rgba(106, 255, 171, 0.75);
+}
+
+.icm-logo-tile.is-dimmed {
+  opacity: 0.18;
+}
+
+.icm-map-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 18px;
+  align-items: start;
+}
+
+.icm-map-stage-wrap {
+  position: relative;
+}
+
+.icm-connector-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+.icm-connector-line {
+  stroke: rgba(106, 255, 171, 0.28);
+  stroke-width: 1.2;
+  stroke-dasharray: 4 5;
+}
+
+.icm-map-stage {
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.icm-map-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  transform: rotateX(18deg);
+  transform-origin: 50% 80%;
+}
+
+.icm-map-shadow-silhouette path {
+  fill: rgba(0, 0, 0, 0.55);
+}
+
+.icm-state-extrude {
+  fill: #8b93a3;
+  stroke: #707784;
+  stroke-width: 0.4;
+}
+
+.icm-state {
+  fill: #d8dde5;
+  stroke: #5f6672;
+  stroke-width: 0.65;
+  cursor: pointer;
+  transition: fill 0.18s ease, stroke 0.18s ease;
+}
+
+.icm-state.has-teams {
+  stroke: rgba(106, 255, 171, 0.35);
+}
+
+.icm-state.is-hover,
+.icm-state.is-active {
+  stroke: #6affab;
+  stroke-width: 1.2;
+}
+
+.icm-pin {
+  fill: #c8ff24;
+  stroke: #0b2138;
+  stroke-width: 0.8;
+  cursor: pointer;
+}
+
+.icm-pin--d1 {
+  fill: #6affab;
+}
+
+.icm-pin--d2 {
+  fill: #8fd3ff;
+}
+
+.icm-pin--d3 {
+  fill: #d5dbe6;
+}
+
+.icm-pin--other {
+  fill: #7d8798;
+}
+
+.icm-pin.is-active {
+  stroke: #fff;
+  stroke-width: 1.4;
+}
+
+.icm-side-panel {
+  position: sticky;
+  top: 24px;
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(4, 18, 36, 0.82);
+  backdrop-filter: blur(8px);
+}
+
+.icm-panel-kicker {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(200, 255, 36, 0.8);
+}
+
+.icm-side-panel h3,
+.icm-school-card h4 {
+  margin: 0;
+}
+
+.icm-panel-meta,
+.icm-panel-copy,
+.icm-school-sports {
+  color: rgba(238, 244, 251, 0.68);
+  line-height: 1.45;
+}
+
+.icm-panel-list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  max-height: 320px;
+  overflow: auto;
+  display: grid;
+  gap: 6px;
+}
+
+.icm-panel-item {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: inherit;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.icm-panel-item.is-active,
+.icm-panel-item:hover {
+  border-color: rgba(106, 255, 171, 0.55);
+}
+
+.icm-panel-item-name {
+  font-size: 0.88rem;
+}
+
+.icm-panel-item-div {
+  font-size: 0.75rem;
+  color: rgba(238, 244, 251, 0.55);
+}
+
+.icm-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 18px 0 0;
+}
+
+.icm-stats dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(238, 244, 251, 0.55);
+}
+
+.icm-stats dd {
+  margin: 4px 0 0;
+  font-size: 1.4rem;
+  color: #6affab;
+}
+
+.icm-school-card {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.icm-school-card-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 980px) {
+  .icm-header,
+  .icm-map-layout,
+  .icm-region-row {
+    grid-template-columns: 1fr;
+  }
+
+  .icm-controls {
+    justify-content: flex-start;
+  }
+
+  .icm-map-svg {
+    transform: none;
+  }
+}

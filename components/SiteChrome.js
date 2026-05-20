@@ -76,7 +76,7 @@ function SiteChromeInner({ children }) {
           title="Select your sport"
           open={sportModalOpen}
           closable
-          maskClosable
+          mask={{ closable: true }}
           keyboard
           onCancel={closeSportModal}
           cancelButtonProps={{ style: { display: "none" } }}

@@ -1,0 +1,540 @@
+.icmb-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(40, 48, 58, 0.35), transparent 55%),
+    linear-gradient(180deg, #0c1219 0%, #060a0f 100%);
+  color: #eef4fb;
+  padding: 16px 20px 32px;
+}
+
+.icmb-shell--embed {
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.icmb-loading,
+.icmb-error {
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.icmb-error {
+  color: #ffb4b4;
+}
+
+.icmb-stage {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.icmb-logo-band {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.icmb-shell--homepage {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 100%;
+}
+
+.icmb-shell--homepage.icmb-shell--embed {
+  min-height: 0;
+}
+
+.icmb-home-logos-full {
+  width: 100%;
+}
+
+.icmb-home-split {
+  width: 100%;
+}
+
+.icmb-home-map-col {
+  min-width: 0;
+}
+
+.icmb-home-map-col .icmb-map-frame {
+  margin: 0;
+}
+
+.icmb-logo-nav.ant-btn {
+  flex: 0 0 30px;
+  align-self: center;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: #c8ff24;
+}
+
+.icmb-logo-nav.ant-btn:not(:disabled):hover {
+  border-color: rgba(106, 255, 171, 0.55) !important;
+  background: rgba(106, 255, 171, 0.1) !important;
+  color: #6affab !important;
+}
+
+.icmb-logo-nav.ant-btn:disabled {
+  opacity: 0.38;
+  color: rgba(238, 244, 251, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  cursor: default !important;
+}
+
+.icmb-logo-nav.ant-btn:disabled:hover {
+  opacity: 0.38;
+  color: rgba(238, 244, 251, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  cursor: default !important;
+}
+
+.icmb-logo-nav.ant-btn[disabled],
+.icmb-logo-nav.ant-btn[disabled] * {
+  cursor: default !important;
+}
+
+.icmb-logo-scroll {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 6px 16px;
+  background: transparent;
+  border: none;
+}
+
+.icmb-logo-wall {
+  display: grid;
+  grid-template-columns: repeat(var(--icmb-logo-cols, 1), var(--icmb-logo-size, 32px));
+  grid-template-rows: repeat(var(--icmb-logo-rows, 3), var(--icmb-logo-size, 32px));
+  grid-auto-flow: row;
+  gap: var(--icmb-logo-gap, 4px);
+  width: max-content;
+  min-height: calc(
+    var(--icmb-logo-rows, 3) * var(--icmb-logo-size, 32px) + (var(--icmb-logo-rows, 3) - 1) * var(--icmb-logo-gap, 4px)
+  );
+}
+
+@keyframes icmb-logo-slide-next {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes icmb-logo-slide-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.icmb-logo-wall--slide-next {
+  animation: icmb-logo-slide-next 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.icmb-logo-wall--slide-prev {
+  animation: icmb-logo-slide-prev 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icmb-logo-wall--slide-next,
+  .icmb-logo-wall--slide-prev {
+    animation: none;
+  }
+}
+
+.icmb-logo-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.icmb-logo-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 0;
+}
+
+.icmb-logo-page-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(238, 244, 251, 0.28);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.icmb-logo-page-dot.is-active {
+  background: #6affab;
+  transform: scale(1.15);
+}
+
+.icmb-logo-page-dot:hover:not(.is-active) {
+  background: rgba(238, 244, 251, 0.5);
+}
+
+.icmb-logo-tile {
+  width: var(--icmb-logo-size, 32px);
+  height: var(--icmb-logo-size, 32px);
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  overflow: visible;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.icmb-logo-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.icmb-logo-tile .icm-logo-fallback {
+  font-size: 0.48rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.icmb-logo-tile--d1 {
+  opacity: 1;
+}
+
+.icmb-logo-tile--d2 {
+  opacity: 0.85;
+}
+
+.icmb-logo-tile--d3 {
+  opacity: 0.7;
+}
+
+.icmb-logo-tile--other {
+  opacity: 0.5;
+}
+
+.icmb-logo-tile.is-active,
+.icmb-logo-tile:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+.icmb-map-wrap {
+  width: 100%;
+  position: relative;
+}
+
+.icmb-map-frame {
+  position: relative;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(106, 255, 171, 0.45);
+  background: transparent;
+}
+
+.icmb-state-close.ant-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(106, 255, 171, 0.35) !important;
+  background: rgba(4, 14, 28, 0.88) !important;
+  color: rgba(238, 244, 251, 0.9) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.icmb-state-close.ant-btn:hover {
+  color: #fff !important;
+  border-color: rgba(106, 255, 171, 0.55) !important;
+  background: rgba(4, 14, 28, 0.95) !important;
+}
+
+.icmb-map-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 960 / 520;
+  overflow: hidden;
+  border-radius: 8px;
+  background: transparent;
+  touch-action: none;
+  overscroll-behavior: contain;
+  cursor: default;
+}
+
+.icmb-map-viewport.is-zoomed-in {
+  cursor: grab;
+}
+
+.icmb-map-viewport.is-panning {
+  cursor: grabbing;
+}
+
+.icmb-map-viewport--state .icmb-pin-dot--interactive {
+  cursor: pointer;
+  pointer-events: painted;
+}
+
+.icmb-map-viewport--state .icmb-pin-dot--interactive .icmb-pin--green {
+  pointer-events: painted;
+}
+
+.icmb-map-zoom-stack {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.icmb-map-zoom-btn.ant-btn {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: #fff !important;
+  color: #1a2332 !important;
+}
+
+.icmb-map-zoom-btn.ant-btn:last-child {
+  border-bottom: none !important;
+}
+
+.icmb-map-zoom-btn.ant-btn:not(:disabled):hover {
+  background: #f0f4f8 !important;
+  color: #0b2138 !important;
+}
+
+.icmb-map-zoom-btn.ant-btn:disabled {
+  opacity: 0.45;
+  background: #e8edf2 !important;
+  cursor: default !important;
+}
+
+
+.icmb-map-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  shape-rendering: geometricPrecision;
+}
+
+.icmb-state {
+  fill: #5e6d7e;
+  stroke: #3d4a59;
+  stroke-width: 0.9;
+  cursor: pointer;
+  transition: fill 0.15s ease, stroke 0.15s ease;
+}
+
+.icmb-state.has-teams {
+  fill: #6a7a8c;
+}
+
+.icmb-state.is-hover,
+.icmb-state.is-active {
+  fill: #7d8fa3;
+  stroke: #2a3340;
+  stroke-width: 1.15;
+}
+
+.icmb-state.is-dimmed {
+  fill: #b8c0cc;
+  opacity: 0.28;
+  stroke: #8d97a6;
+}
+
+.icmb-map-viewport--state .icmb-state.is-dimmed,
+.icmb-map-viewport--state .icmb-state.icmb-state--locked {
+  pointer-events: none;
+  cursor: default;
+}
+
+.icmb-map-viewport--state .icmb-state.is-dimmed.is-hover {
+  fill: #b8c0cc;
+  stroke: #8d97a6;
+}
+
+.icmb-pin {
+  stroke: #0b2138;
+  stroke-width: 1.1;
+  pointer-events: painted;
+}
+
+.icmb-pin--green {
+  fill: #6affab;
+  stroke: #0b2138;
+  stroke-width: 1.1;
+  pointer-events: none;
+}
+
+.icmb-pin-marker {
+  cursor: pointer;
+  pointer-events: painted;
+}
+
+.icmb-pin-logo-fo {
+  overflow: visible;
+  pointer-events: none;
+}
+
+.icmb-pin-logo-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  pointer-events: none;
+}
+
+.icmb-pin-marker.is-active .icmb-pin-logo-disc {
+  box-shadow: 0 0 0 2px rgba(106, 255, 171, 0.55);
+}
+
+.icmb-pin-logo-disc img {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  border-radius: 50%;
+  display: block;
+}
+
+.icmb-pin-hover-label {
+  pointer-events: none;
+}
+
+.icmb-pin-hover-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  display: grid;
+  place-items: center;
+}
+
+.icmb-pin-hover-logo img {
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+}
+
+.icmb-pin-hover-name {
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(8, 18, 32, 0.92);
+  border: 1px solid rgba(106, 255, 171, 0.45);
+  color: #eef4fb;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.icmb-pin-logo-float {
+  overflow: visible;
+  pointer-events: none;
+}
+
+.icmb-pin-logo-card {
+  width: 64px;
+  height: 64px;
+  padding: 5px;
+  border-radius: 50%;
+  border: 2px solid rgba(106, 255, 171, 0.75);
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.icmb-pin-logo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.icmb-pin-logo-card--fallback {
+  width: 64px;
+  height: 64px;
+  min-width: 0;
+  padding: 8px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #0b2138;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.icmb-pin-logo-card--fallback span {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .icmb-stage {
+    gap: 32px;
+  }
+
+  .icmb-logo-section {
+    --icmb-logo-size: 48px;
+  }
+
+  .icmb-map-zoom-btn.ant-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+  }
+}

@@ -12,8 +12,8 @@ const LIVE = {
 
 const TOC = [
   { id: "hs-football-coaches", label: "High School Football Coaches" },
-  { id: "recruiting-academy", label: "Recruiting Academy" },
   { id: "athletes-transfers", label: "Athletes & Transfers" },
+  { id: "recruiting-academy", label: "Recruiting Academy" },
 ];
 
 /** Clears sticky section nav so the section headline lands below it (HashScroll reads this). */
@@ -141,41 +141,6 @@ export default function ResourcesPageContent() {
         </section>
 
         <section
-          id="recruiting-academy"
-          className="resources-section resources-anchor"
-          data-anchor-offset={ANCHOR_OFFSET_PX}
-        >
-          <h2 className="resources-h2">Learn how college recruiting actually works</h2>
-          <p className="lead">
-            A complete guide to the recruiting process—from discovery through commitment.
-          </p>
-          <Card>
-            <p className="resources-prose resources-prose-strong">Topics include</p>
-            <Checklist
-              items={[
-                "What college coaches evaluate on and off the field",
-                "Division options and pathways",
-                "Recruiting timelines by level",
-                "How coaches build and manage recruiting boards",
-                "How contacts, offers, and commitments happen",
-              ]}
-            />
-            <p className="resources-prose">
-              Use the Academy to understand the process, avoid common mistakes, and prepare for what coaches
-              are actually looking for.
-            </p>
-            <a
-              className="btn red resources-card-cta"
-              href={LIVE.recruitingAcademy}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open Recruiting Academy
-            </a>
-          </Card>
-        </section>
-
-        <section
           id="athletes-transfers"
           className="resources-section resources-anchor"
           data-anchor-offset={ANCHOR_OFFSET_PX}
@@ -228,6 +193,41 @@ export default function ResourcesPageContent() {
               Get Started
             </a>
           </div>
+        </section>
+
+        <section
+          id="recruiting-academy"
+          className="resources-section resources-anchor"
+          data-anchor-offset={ANCHOR_OFFSET_PX}
+        >
+          <h2 className="resources-h2">Learn how college recruiting actually works</h2>
+          <p className="lead">
+            A complete guide to the recruiting process—from discovery through commitment.
+          </p>
+          <Card>
+            <p className="resources-prose resources-prose-strong">Topics include</p>
+            <Checklist
+              items={[
+                "What college coaches evaluate on and off the field",
+                "Division options and pathways",
+                "Recruiting timelines by level",
+                "How coaches build and manage recruiting boards",
+                "How contacts, offers, and commitments happen",
+              ]}
+            />
+            <p className="resources-prose">
+              Use the Academy to understand the process, avoid common mistakes, and prepare for what coaches
+              are actually looking for.
+            </p>
+            <a
+              className="btn red resources-card-cta"
+              href={LIVE.recruitingAcademy}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Recruiting Academy
+            </a>
+          </Card>
         </section>
 
         <section className="resources-funnel" aria-labelledby="resources-funnel-heading">

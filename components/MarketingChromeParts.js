@@ -159,17 +159,16 @@ export function MarketingFooter() {
         <NavLogo />
         <div className="footer-legal">© 2025 Verified Athletics.</div>
       </div>
-      <div className="footer-compliance">
-        This recruiting/scouting service has been approved in
-        <br />
-        accordance with NCAA bylaws, policies, and procedures. NCAA Division I football and/or
-        <br />
-        basketball coaches are permitted to subscribe to this recruiting/scouting service.
-      </div>
-      <div className="footer-ncaa-context">
-        (note: the NCAA only approves services for football and basketball but we have many
-        <br />
-        customers in nearly every NCAA sport)
+      <div className="footer-ncaa">
+        <p className="footer-ncaa-primary">
+          This recruiting/scouting service has been approved in accordance with NCAA bylaws,
+          policies, and procedures. NCAA Division I football and/or basketball coaches are permitted
+          to subscribe to this recruiting/scouting service.
+        </p>
+        <p className="footer-ncaa-note">
+          (note: the NCAA only approves services for football and basketball but we have many
+          customers in nearly every NCAA sport)
+        </p>
       </div>
     </footer>
   );
