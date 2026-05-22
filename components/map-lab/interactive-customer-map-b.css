@@ -442,42 +442,34 @@
   display: block;
 }
 
-.icmb-pin-hover-label {
+.icmb-pin-hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+  cursor: pointer;
+}
+
+.icmb-pin-tooltip {
+  position: absolute;
+  z-index: 12;
+  transform: translate(-50%, calc(-100% - 12px));
   pointer-events: none;
-}
-
-.icmb-pin-hover-logo {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #fff;
-  border: 1px solid #fff;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-  display: grid;
-  place-items: center;
-}
-
-.icmb-pin-hover-logo img {
-  width: 88%;
-  height: 88%;
-  object-fit: contain;
-}
-
-.icmb-pin-hover-name {
-  padding: 6px 10px;
-  border-radius: 6px;
-  background: rgba(8, 18, 32, 0.92);
-  border: 1px solid rgba(106, 255, 171, 0.45);
-  color: #eef4fb;
-  font-size: 11px;
+  max-width: min(320px, calc(100% - 16px));
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(8, 18, 32, 0.96);
+  border: 1px solid rgba(106, 255, 171, 0.5);
+  color: #fff;
+  font-family: var(--font-body, Inter, sans-serif);
+  font-size: 14px;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
 .icmb-pin-logo-float {

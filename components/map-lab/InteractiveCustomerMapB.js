@@ -26,7 +26,10 @@ const MOBILE_HOME_MEDIA = "(max-width: 640px)";
 const MAP_VIEW_MIN_SCALE = 1;
 const MAP_VIEW_MAX_SCALE = 8;
 const MAP_VIEW_CENTER = { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 };
-const PIN_HOVER_LABEL_OFFSET_Y = -36;
+/** Extra radius (pin-local units) for easier hover on dense maps. */
+const PIN_HIT_PAD = 14;
+const PIN_HIT_MIN_R = 22;
+const HOVER_CLEAR_MS = 60;
 
 const DEFAULT_VIEW = { k: 1, x: 0, y: 0 };
 
@@ -125,6 +128,32 @@ function getPinRadius(school, inStateView, emphasize) {
   return emphasize ? r + 2 : r;
 }
 
+function getPinHitRadius(visualR) {
+  return Math.max(visualR + PIN_HIT_PAD, PIN_HIT_MIN_R);
+}
+
+/** Pin anchor in viewport pixel coordinates (for HTML tooltip). */
+function getPinTooltipPosition(school, projection, viewTransform, svgEl, viewportEl) {
+  if (!svgEl || !viewportEl || !Number.isFinite(school.lat) || !Number.isFinite(school.lng)) {
+    return null;
+  }
+  const xy = projection([school.lng, school.lat]);
+  if (!xy) return null;
+
+  const pt = svgEl.createSVGPoint();
+  pt.x = xy[0] * viewTransform.k + viewTransform.x;
+  pt.y = xy[1] * viewTransform.k + viewTransform.y;
+  const ctm = svgEl.getScreenCTM();
+  if (!ctm) return null;
+
+  const screen = pt.matrixTransform(ctm);
+  const vpRect = viewportEl.getBoundingClientRect();
+  return {
+    x: screen.x - vpRect.left,
+    y: screen.y - vpRect.top,
+  };
+}
+
 export default function InteractiveCustomerMapB({
   embed = false,
   homepageLayout = false,
@@ -136,6 +165,7 @@ export default function InteractiveCustomerMapB({
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [hoverState, setHoverState] = useState(null);
   const [hoveredSchool, setHoveredSchool] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState(null);
   const [logoPage, setLogoPage] = useState(0);
   const [logoSlideDir, setLogoSlideDir] = useState(1);
   const [viewTransform, setViewTransform] = useState(DEFAULT_VIEW);
@@ -148,6 +178,7 @@ export default function InteractiveCustomerMapB({
   const wheelAccumRef = useRef({ factor: 1, x: MAP_VIEW_CENTER.x, y: MAP_VIEW_CENTER.y });
   const savedViewRef = useRef(null);
   const viewTransformRef = useRef(DEFAULT_VIEW);
+  const hoverClearTimerRef = useRef(null);
 
   const { stateBySchoolId, stateLookup, visibleSchools } = useCustomerMapDerived(
     schools,
@@ -252,18 +283,63 @@ export default function InteractiveCustomerMapB({
 
   const pinCounterScale = 1 / viewTransform.k;
 
-  const hoverPinLabel = useMemo(() => {
-    if (!hoveredSchool) return null;
-    if (!Number.isFinite(hoveredSchool.lat) || !Number.isFinite(hoveredSchool.lng)) return null;
-    const xy = projection([hoveredSchool.lng, hoveredSchool.lat]);
-    if (!xy) return null;
-    const k = viewTransform.k;
-    return {
-      school: hoveredSchool,
-      x: xy[0] * k + viewTransform.x,
-      y: xy[1] * k + viewTransform.y,
-    };
+  const syncTooltipPosition = useCallback(() => {
+    if (!hoveredSchool) {
+      setTooltipPos(null);
+      return;
+    }
+    const pos = getPinTooltipPosition(
+      hoveredSchool,
+      projection,
+      viewTransform,
+      svgRef.current,
+      viewportRef.current
+    );
+    setTooltipPos(pos);
   }, [hoveredSchool, projection, viewTransform]);
+
+  useEffect(() => {
+    syncTooltipPosition();
+  }, [syncTooltipPosition]);
+
+  useEffect(() => {
+    if (!hoveredSchool) return undefined;
+    const onLayout = () => syncTooltipPosition();
+    window.addEventListener("resize", onLayout);
+    window.addEventListener("scroll", onLayout, true);
+    return () => {
+      window.removeEventListener("resize", onLayout);
+      window.removeEventListener("scroll", onLayout, true);
+    };
+  }, [hoveredSchool, syncTooltipPosition]);
+
+  useEffect(
+    () => () => {
+      if (hoverClearTimerRef.current) {
+        window.clearTimeout(hoverClearTimerRef.current);
+      }
+    },
+    []
+  );
+
+  const showPinTooltip = useCallback((school) => {
+    if (hoverClearTimerRef.current) {
+      window.clearTimeout(hoverClearTimerRef.current);
+      hoverClearTimerRef.current = null;
+    }
+    setHoveredSchool(school);
+  }, []);
+
+  const hidePinTooltip = useCallback(() => {
+    if (hoverClearTimerRef.current) {
+      window.clearTimeout(hoverClearTimerRef.current);
+    }
+    hoverClearTimerRef.current = window.setTimeout(() => {
+      setHoveredSchool(null);
+      setTooltipPos(null);
+      hoverClearTimerRef.current = null;
+    }, HOVER_CLEAR_MS);
+  }, []);
 
   const { dotPins, logoPins } = useMemo(() => {
     const dots = [];
@@ -399,6 +475,7 @@ export default function InteractiveCustomerMapB({
 
   function handleViewportPointerDown(e) {
     if (e.button !== 0 || viewTransform.k <= 1) return;
+    hidePinTooltip();
     panSessionRef.current = {
       startX: e.clientX,
       startY: e.clientY,
@@ -595,15 +672,17 @@ export default function InteractiveCustomerMapB({
             <g className="icmb-map-pins">
               {dotPins.map(({ school, x, y }) => {
                 const r = getPinRadius(school, inStateView, false);
+                const hitR = getPinHitRadius(r);
                 return (
                   <g
                     key={`pin-${school.id}`}
                     className="icmb-pin-dot icmb-pin-dot--interactive"
                     transform={`translate(${x}, ${y}) scale(${pinCounterScale})`}
                     aria-label={school.schoolName}
-                    onMouseEnter={() => setHoveredSchool(school)}
-                    onMouseLeave={() => setHoveredSchool(null)}
+                    onPointerEnter={() => showPinTooltip(school)}
+                    onPointerLeave={hidePinTooltip}
                   >
+                    <circle cx={0} cy={0} r={hitR} className="icmb-pin-hit" />
                     <circle cx={0} cy={0} r={r} className="icmb-pin icmb-pin--green" />
                   </g>
                 );
@@ -613,6 +692,7 @@ export default function InteractiveCustomerMapB({
                 const isHovered = hoveredSchool?.id === school.id;
                 const emphasize = active || isHovered;
                 const r = getPinRadius(school, inStateView, emphasize);
+                const hitR = getPinHitRadius(r);
                 const size = r * 2;
 
                 return (
@@ -621,8 +701,8 @@ export default function InteractiveCustomerMapB({
                     className={`icmb-pin-marker icmb-pin-marker--d1${emphasize ? " is-active" : ""}`}
                     transform={`translate(${x}, ${y}) scale(${pinCounterScale})`}
                     aria-label={school.schoolName}
-                    onMouseEnter={() => setHoveredSchool(school)}
-                    onMouseLeave={() => setHoveredSchool(null)}
+                    onPointerEnter={() => showPinTooltip(school)}
+                    onPointerLeave={hidePinTooltip}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSchoolSelect(school);
@@ -645,20 +725,16 @@ export default function InteractiveCustomerMapB({
               })}
             </g>
               </g>
-              {hoverPinLabel ? (
-                <g
-                  className="icmb-pin-hover-label"
-                  transform={`translate(${hoverPinLabel.x}, ${hoverPinLabel.y + PIN_HOVER_LABEL_OFFSET_Y}) scale(${pinCounterScale})`}
-                  pointerEvents="none"
-                >
-                  <foreignObject x={-90} y={-16} width={180} height={32}>
-                    <div xmlns="http://www.w3.org/1999/xhtml" className="icmb-pin-hover-name">
-                      {hoverPinLabel.school.schoolName}
-                    </div>
-                  </foreignObject>
-                </g>
-              ) : null}
             </svg>
+            {hoveredSchool && tooltipPos ? (
+              <div
+                className="icmb-pin-tooltip"
+                style={{ left: tooltipPos.x, top: tooltipPos.y }}
+                role="tooltip"
+              >
+                {hoveredSchool.schoolName}
+              </div>
+            ) : null}
           </div>
         </div>
   );
