@@ -3,7 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-import { MOCK_CHAMPIONSHIP_BANNERS } from "../lib/championship-banners";
+import {
+  formatChampionshipQualifier,
+  formatChampionshipSport,
+  MOCK_CHAMPIONSHIP_BANNERS,
+} from "../lib/championship-banners";
 import { extractLogoAccent, mixAccentIntoBackground } from "../lib/logo-accent";
 import "./championship-banners.css";
 
@@ -47,6 +51,17 @@ function ChampionshipBannerCard({ banner }) {
   const isNotreDame = banner.id === NOTRE_DAME_BANNER_ID;
   const frameAccent = isNotreDame ? NOTRE_DAME_GOLD : brandAccent;
   const cardBg = mixAccentIntoBackground(brandAccent, 0.16);
+  const sportLabel = formatChampionshipSport(banner.sport);
+  const qualifierLabel = formatChampionshipQualifier(banner.qualifier);
+
+  const ariaLabel = [
+    banner.schoolName,
+    sportLabel,
+    qualifierLabel ? `${qualifierLabel} champion` : "champion",
+    banner.year,
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   return (
     <article
@@ -55,7 +70,7 @@ function ChampionshipBannerCard({ banner }) {
         "--champ-accent": frameAccent,
         "--champ-card-bg": cardBg,
       }}
-      aria-label={`${banner.schoolName} ${banner.qualifier} champion ${banner.year}`}
+      aria-label={ariaLabel}
     >
       <header className="champ-banner-logo-hero">
         {banner.logoUrl ? (
@@ -69,7 +84,8 @@ function ChampionshipBannerCard({ banner }) {
       </header>
 
       <div className="champ-banner-mid">
-        <p className="champ-banner-qualifier">{banner.qualifier}</p>
+        {sportLabel ? <p className="champ-banner-sport">{sportLabel}</p> : null}
+        {qualifierLabel ? <p className="champ-banner-qualifier">{qualifierLabel}</p> : null}
         <h3 className="champ-banner-title">Champion</h3>
       </div>
 

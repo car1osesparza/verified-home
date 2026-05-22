@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Card } from "antd";
+import AthletesHeroVideo from "./AthletesHeroVideo";
 
 const LIVE = {
   recruitingAcademy: "https://verifiedathletics.com/recruiting-academy",
@@ -12,12 +13,9 @@ const LIVE = {
 
 const TOC = [
   { id: "hs-football-coaches", label: "High School Football Coaches" },
-  { id: "athletes-transfers", label: "Athletes & Transfers" },
+  { id: "athletes-transfers", label: "Athletes" },
   { id: "recruiting-academy", label: "Recruiting Academy" },
 ];
-
-/** Clears sticky section nav so the section headline lands below it (HashScroll reads this). */
-const ANCHOR_OFFSET_PX = 72;
 
 function Checklist({ items }) {
   return (
@@ -31,12 +29,47 @@ function Checklist({ items }) {
 
 export default function ResourcesPageContent() {
   const [activeSection, setActiveSection] = useState("");
+  const [navOffsetPx, setNavOffsetPx] = useState(68);
+  const [scrollSpyTopPx, setScrollSpyTopPx] = useState(120);
   const activeSectionRef = useRef("");
+  const tocRef = useRef(null);
   activeSectionRef.current = activeSection;
 
   const goToSection = useCallback((id) => {
     window.location.hash = id;
   }, []);
+
+  useEffect(() => {
+    const measureChrome = () => {
+      const nav = document.querySelector(".dark-nav");
+      const navH = nav ? Math.ceil(nav.getBoundingClientRect().height) : 68;
+      const tocH = tocRef.current ? Math.ceil(tocRef.current.getBoundingClientRect().height) : 0;
+      setNavOffsetPx(navH);
+      setScrollSpyTopPx(navH + tocH + 16);
+    };
+
+    const rafId = requestAnimationFrame(measureChrome);
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measureChrome) : null;
+    const nav = document.querySelector(".dark-nav");
+    if (ro && nav) ro.observe(nav);
+    if (ro && tocRef.current) ro.observe(tocRef.current);
+    window.addEventListener("resize", measureChrome);
+    return () => {
+      cancelAnimationFrame(rafId);
+      ro?.disconnect();
+      window.removeEventListener("resize", measureChrome);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || window.location.hash.length < 2) {
+      return undefined;
+    }
+    const id = requestAnimationFrame(() => {
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    });
+    return () => cancelAnimationFrame(id);
+  }, [scrollSpyTopPx]);
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hash.length > 1) {
@@ -64,15 +97,22 @@ export default function ResourcesPageContent() {
         }
         setActiveSection(nextId);
       },
-      { root: null, rootMargin: "-48px 0px -55% 0px", threshold: [0, 0.1, 0.25] },
+      {
+        root: null,
+        rootMargin: `-${scrollSpyTopPx}px 0px -55% 0px`,
+        threshold: [0, 0.1, 0.25],
+      },
     );
 
     nodes.forEach((n) => observer.observe(n));
     return () => observer.disconnect();
-  }, []);
+  }, [scrollSpyTopPx]);
 
   return (
-    <div className="section marketing-page resources-page">
+    <div
+      className="section marketing-page resources-page"
+      style={{ "--resources-nav-offset": `${navOffsetPx}px` }}
+    >
       <div className="container">
         <header className="resources-hero">
           <h1 className="resources-h1">Free resources for coaches, athletes, and families</h1>
@@ -82,7 +122,7 @@ export default function ResourcesPageContent() {
           </p>
         </header>
 
-        <nav className="resources-toc resources-toc--tabs" aria-label="On this page">
+        <nav ref={tocRef} className="resources-toc resources-toc--tabs" aria-label="On this page">
           {TOC.map(({ id, label }) => (
             <a
               key={id}
@@ -101,7 +141,7 @@ export default function ResourcesPageContent() {
         <section
           id="hs-football-coaches"
           className="resources-section resources-anchor"
-          data-anchor-offset={ANCHOR_OFFSET_PX}
+          data-anchor-offset="resources"
         >
           <h2 className="resources-h2">Free tools for high school football programs</h2>
           <p className="lead">
@@ -139,17 +179,26 @@ export default function ResourcesPageContent() {
               </Card>
           </div>
         </section>
+      </div>
 
-        <section
-          id="athletes-transfers"
-          className="resources-section resources-anchor"
-          data-anchor-offset={ANCHOR_OFFSET_PX}
-        >
-          <h2 className="resources-h2">Get seen. Stay organized. Move faster.</h2>
-          <p className="lead">
-            Verified helps athletes increase exposure and simplify communication with college programs—
-            without charging athlete fees.
-          </p>
+      <section
+        id="athletes-transfers"
+        className="resources-section resources-section--athletes resources-anchor"
+        data-anchor-offset="resources"
+      >
+        <div className="resources-athletes-hero">
+          <AthletesHeroVideo variant="background" />
+          <div className="resources-athletes-hero-grad" aria-hidden="true" />
+          <div className="resources-athletes-hero-inner">
+            <h2 className="resources-athletes-hero-title">Get seen. Stay organized. Move faster.</h2>
+            <p className="resources-athletes-hero-lead">
+              Verified helps athletes increase exposure and simplify communication with college programs—
+              without charging athlete fees.
+            </p>
+          </div>
+        </div>
+
+        <div className="container resources-section-body">
           <div className="resources-card-grid">
             <Card title="NCAA Transfer Athletes">
                 <p className="resources-prose">
@@ -193,12 +242,14 @@ export default function ResourcesPageContent() {
               Get Started
             </a>
           </div>
-        </section>
+        </div>
+      </section>
 
+      <div className="container">
         <section
           id="recruiting-academy"
           className="resources-section resources-anchor"
-          data-anchor-offset={ANCHOR_OFFSET_PX}
+          data-anchor-offset="resources"
         >
           <h2 className="resources-h2">Learn how college recruiting actually works</h2>
           <p className="lead">

@@ -669,6 +669,66 @@ textarea,
   }
 }
 
+/* Testimonials — full catalog modal (layout B) */
+.t-all-modal.ant-modal {
+  max-width: calc(100vw - 32px) !important;
+}
+
+.t-all-modal .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: min(88vh, 920px);
+}
+
+.t-all-modal .ant-modal-header {
+  flex-shrink: 0;
+  margin-bottom: 0;
+  padding-bottom: 8px;
+}
+
+.t-all-modal .ant-modal-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px 20px;
+  overflow: hidden;
+}
+
+.t-all-modal-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 6px 4px;
+  margin: 0 -6px;
+}
+
+.t-all-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+  .t-all-modal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .t-all-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .t-all-modal .ant-modal-body {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
 .t-carousel-avatar-fallback {
   display: flex;
   align-items: center;
@@ -1348,7 +1408,7 @@ textarea,
   margin: 0 0 12px;
   border-bottom: 1px solid var(--gray-200);
   position: sticky;
-  top: 0;
+  top: var(--resources-nav-offset, 68px);
   z-index: 8;
   background: linear-gradient(to bottom, #f6f8fb 88%, rgba(246, 248, 251, 0.96) 100%);
 }
@@ -1437,7 +1497,76 @@ textarea,
 }
 
 .resources-page .resources-anchor {
-  scroll-margin-top: 0;
+  scroll-margin-top: calc(var(--resources-nav-offset, 68px) + 72px);
+}
+
+.resources-section--athletes {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.resources-athletes-hero {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  min-height: clamp(300px, 42vw, 520px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(56px, 10vw, 96px) clamp(24px, 5vw, 40px);
+  background: var(--blue-dark, #061d36);
+}
+
+.resources-athletes-hero-video {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.resources-athletes-hero-grad {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(1, 29, 58, 0.28) 0%,
+    rgba(1, 29, 58, 0.78) 100%
+  );
+  pointer-events: none;
+}
+
+.resources-athletes-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.resources-athletes-hero-title {
+  margin: 0 0 14px;
+  font-family: var(--font-head, "Montserrat", sans-serif);
+  font-size: clamp(28px, 4.2vw, 42px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.resources-athletes-hero-lead {
+  margin: 0 auto;
+  max-width: 560px;
+  font-size: clamp(16px, 2.2vw, 18px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.resources-section--athletes .resources-section-body {
+  padding-top: 40px;
+  padding-bottom: 8px;
 }
 
 .resources-page .resources-ext-link {
@@ -2375,21 +2504,158 @@ textarea,
   padding-bottom: 64px;
 }
 
-.map-sec--interactive-b .icmb-home-logos-full {
-  margin-bottom: 8px;
-}
-
 .map-sec--interactive-b .home-map-compact-b {
   width: 100%;
 }
 
 .map-sec--interactive-b .icmb-shell--homepage {
-  gap: 40px;
+  gap: 0;
 }
 
 .map-sec--interactive-b .map-inner.icmb-home-split {
   max-width: var(--max);
   margin: 0 auto;
+}
+
+.map-sec--interactive-b .icmb-home-map-unit {
+  gap: 10px;
+}
+
+/* Desktop: logo band spans full width above stats + map. */
+@media (min-width: 641px) {
+  .map-sec--interactive-b .icmb-shell--homepage-grid .icmb-home-split {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    grid-template-areas:
+      "logos logos"
+      "stats map";
+    column-gap: 48px;
+    row-gap: 14px;
+    align-items: start;
+  }
+
+  .map-sec--interactive-b .icmb-shell--homepage-grid .icmb-home-map-col,
+  .map-sec--interactive-b .icmb-shell--homepage-grid .icmb-home-map-unit {
+    display: contents;
+  }
+
+  .map-sec--interactive-b .icmb-shell--homepage-grid .icmb-logo-section--home {
+    grid-area: logos;
+    width: 100%;
+  }
+
+  .map-sec--interactive-b .icmb-shell--homepage-grid .map-dominance-col {
+    grid-area: stats;
+  }
+
+  .map-sec--interactive-b .icmb-shell--homepage-grid .icmb-map-wrap {
+    grid-area: map;
+  }
+}
+
+@media (max-width: 640px) {
+  .map-sec--interactive-b {
+    padding-top: 40px;
+    padding-bottom: 48px;
+  }
+
+  .map-sec--interactive-b .map-inner.icmb-home-split {
+    gap: 28px;
+  }
+
+  .map-sec--interactive-b .icmb-home-map-unit {
+    gap: 8px;
+  }
+
+  .map-sec--interactive-b .map-dominance-head {
+    font-size: clamp(22px, 6.5vw, 28px) !important;
+    margin-bottom: 12px;
+  }
+
+  .map-sec--interactive-b .map-dominance-list-item {
+    padding: 9px 0;
+  }
+}
+
+/* —— For Athletes —— */
+.athletes-page {
+  padding: 0;
+}
+
+.athletes-hero {
+  background: linear-gradient(180deg, #f4f7fb 0%, #fff 72%);
+  padding: clamp(40px, 8vw, 72px) clamp(20px, 5vw, 40px) clamp(48px, 9vw, 80px);
+}
+
+.athletes-hero-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(28px, 5vw, 56px);
+  align-items: center;
+}
+
+.athletes-hero-copy {
+  min-width: 0;
+}
+
+.athletes-hero-title.ant-typography {
+  margin: 0 0 16px !important;
+  font-size: clamp(28px, 4.2vw, 42px) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--blue, #023e72) !important;
+}
+
+.athletes-hero-lead.ant-typography {
+  margin-bottom: 14px !important;
+  font-size: clamp(16px, 2.2vw, 18px);
+  line-height: 1.55;
+  color: rgba(11, 33, 56, 0.82);
+  max-width: 36rem;
+}
+
+.athletes-hero-note.ant-typography {
+  margin-bottom: 0 !important;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgba(11, 33, 56, 0.65);
+}
+
+.athletes-hero-media {
+  min-width: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b2138;
+  box-shadow:
+    0 18px 48px rgba(2, 62, 114, 0.18),
+    0 0 0 1px rgba(2, 62, 114, 0.08);
+}
+
+.athletes-hero-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  vertical-align: middle;
+  background: #060a0f;
+}
+
+@media (max-width: 900px) {
+  .athletes-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .athletes-hero-copy {
+    order: 1;
+  }
+
+  .athletes-hero-media {
+    order: 2;
+  }
 }
 
 .cap-icon {

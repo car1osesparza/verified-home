@@ -1,13 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  CloseOutlined,
-  LeftOutlined,
-  MinusOutlined,
-  PlusOutlined,
-  RightOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { geoAlbersUsa, geoPath } from "d3-geo";
 import { FIPS_TO_STATE } from "../../lib/map-lab/constants";
@@ -25,11 +19,14 @@ const PIN_R_BASE = 4.5;
 const PIN_R_BASE_ZOOMED = 5.5;
 const PIN_LOGO_SIZE_MULT = 4;
 const LOGO_SIZE = 64;
+const LOGO_SIZE_MOBILE_HOME = 48;
 const LOGO_GAP = 6;
+const LOGOS_PER_PAGE_MOBILE_HOME = 28;
+const MOBILE_HOME_MEDIA = "(max-width: 640px)";
 const MAP_VIEW_MIN_SCALE = 1;
 const MAP_VIEW_MAX_SCALE = 8;
-const MAP_ZOOM_STEP = 1.2;
 const MAP_VIEW_CENTER = { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 };
+const PIN_HOVER_LABEL_OFFSET_Y = -36;
 
 const DEFAULT_VIEW = { k: 1, x: 0, y: 0 };
 
@@ -107,6 +104,20 @@ function pinLayerOrder(school) {
   return isD1LogoPin(school) ? 1 : 0;
 }
 
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const update = () => setMatches(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [query]);
+
+  return matches;
+}
+
 function getPinRadius(school, inStateView, emphasize) {
   const base = inStateView ? PIN_R_BASE_ZOOMED : PIN_R_BASE;
   const logoMult = inStateView ? PIN_LOGO_SIZE_MULT * 2 : PIN_LOGO_SIZE_MULT;
@@ -160,14 +171,24 @@ export default function InteractiveCustomerMapB({
   const allLogos = useMemo(() => sortByDivision(schoolsWithLogos), [schoolsWithLogos]);
 
   const inStateView = Boolean(selectedState);
+  const isMobileHome = useMediaQuery(MOBILE_HOME_MEDIA);
+  const mobileHomeLogoStrip = homepageLayout && isMobileHome && !inStateView;
 
   const logosForBand = useMemo(() => {
     if (!selectedState) return allLogos;
     return allLogos.filter((s) => stateBySchoolId.get(s.id) === selectedState);
   }, [allLogos, selectedState, stateBySchoolId]);
 
-  const logoDisplaySize = inStateView ? LOGO_SIZE * 2 : LOGO_SIZE;
-  const logosPerPage = inStateView ? Math.max(16, Math.floor(LOGOS_PER_PAGE / 2)) : LOGOS_PER_PAGE;
+  const logoDisplaySize = inStateView
+    ? LOGO_SIZE * 2
+    : mobileHomeLogoStrip
+      ? LOGO_SIZE_MOBILE_HOME
+      : LOGO_SIZE;
+  const logosPerPage = inStateView
+    ? Math.max(16, Math.floor(LOGOS_PER_PAGE / 2))
+    : mobileHomeLogoStrip
+      ? LOGOS_PER_PAGE_MOBILE_HOME
+      : LOGOS_PER_PAGE;
 
   const logoPageCount = Math.max(1, Math.ceil(logosForBand.length / logosPerPage));
   const pageLogos = logosForBand.slice(
@@ -232,7 +253,7 @@ export default function InteractiveCustomerMapB({
   const pinCounterScale = 1 / viewTransform.k;
 
   const hoverPinLabel = useMemo(() => {
-    if (!inStateView || !hoveredSchool) return null;
+    if (!hoveredSchool) return null;
     if (!Number.isFinite(hoveredSchool.lat) || !Number.isFinite(hoveredSchool.lng)) return null;
     const xy = projection([hoveredSchool.lng, hoveredSchool.lat]);
     if (!xy) return null;
@@ -241,9 +262,8 @@ export default function InteractiveCustomerMapB({
       school: hoveredSchool,
       x: xy[0] * k + viewTransform.x,
       y: xy[1] * k + viewTransform.y,
-      hasLogo: hasLogo(hoveredSchool),
     };
-  }, [inStateView, hoveredSchool, projection, viewTransform]);
+  }, [hoveredSchool, projection, viewTransform]);
 
   const { dotPins, logoPins } = useMemo(() => {
     const dots = [];
@@ -274,14 +294,6 @@ export default function InteractiveCustomerMapB({
     return { x: mapped.x, y: mapped.y };
   }, []);
 
-  /** ViewBox point under the center of the visible map viewport (accounts for letterboxing). */
-  const getViewportCenterInViewBox = useCallback(() => {
-    const viewport = viewportRef.current;
-    if (!viewport) return MAP_VIEW_CENTER;
-    const rect = viewport.getBoundingClientRect();
-    return clientToSvg(rect.left + rect.width / 2, rect.top + rect.height / 2);
-  }, [clientToSvg]);
-
   const screenDeltaToSvg = useCallback((dx, dy) => {
     const svg = svgRef.current;
     if (!svg) return { dx, dy };
@@ -309,15 +321,6 @@ export default function InteractiveCustomerMapB({
   const resetMapView = useCallback(() => {
     setViewTransform(DEFAULT_VIEW);
   }, []);
-
-  const zoomStep = useCallback(
-    (direction) => {
-      const factor = direction > 0 ? MAP_ZOOM_STEP : 1 / MAP_ZOOM_STEP;
-      const focal = getViewportCenterInViewBox();
-      zoomAtViewBoxPoint(factor, focal.x, focal.y);
-    },
-    [getViewportCenterInViewBox, zoomAtViewBoxPoint]
-  );
 
   useEffect(() => {
     if (loading || error) return undefined;
@@ -387,19 +390,15 @@ export default function InteractiveCustomerMapB({
 
   function handleStateClick(abbr) {
     if (suppressMapClickRef.current) return;
-    if (selectedState && selectedState !== abbr) return;
     if (selectedState === abbr) {
       clearStateZoom();
       return;
     }
-    focusState(abbr, { saveReturnView: true });
+    focusState(abbr, { saveReturnView: savedViewRef.current == null });
   }
 
   function handleViewportPointerDown(e) {
     if (e.button !== 0 || viewTransform.k <= 1) return;
-    if (inStateView && e.target.closest?.(".icmb-state") && !e.target.closest?.(".icmb-state.is-active")) {
-      return;
-    }
     panSessionRef.current = {
       startX: e.clientX,
       startY: e.clientY,
@@ -473,7 +472,9 @@ export default function InteractiveCustomerMapB({
 
   const logoSection = (
     <div
-      className={`icmb-logo-section${inStateView ? " icmb-logo-section--state" : ""}`}
+      className={`icmb-logo-section${inStateView ? " icmb-logo-section--state" : ""}${
+        homepageLayout ? " icmb-logo-section--home" : ""
+      }${mobileHomeLogoStrip ? " icmb-logo-section--mobile-strip" : ""}`}
       style={{
         "--icmb-logo-rows": LOGO_ROWS,
         "--icmb-logo-cols": logoCols,
@@ -577,17 +578,16 @@ export default function InteractiveCustomerMapB({
                 const hovered = hoverState === abbr;
                 const dimmed = selectedState && !active;
                 const count = (schoolsByStateAll[abbr] || []).length;
-                const stateInteractive = !inStateView || active;
                 return (
                   <path
                     key={id}
                     d={d}
                     className={`icmb-state${active ? " is-active" : ""}${hovered ? " is-hover" : ""}${
                       dimmed ? " is-dimmed" : ""
-                    }${count ? " has-teams" : ""}${!stateInteractive ? " icmb-state--locked" : ""}`}
-                    onMouseEnter={stateInteractive ? () => setHoverState(abbr) : undefined}
-                    onMouseLeave={stateInteractive ? () => setHoverState(null) : undefined}
-                    onClick={stateInteractive ? () => handleStateClick(abbr) : undefined}
+                    }${count ? " has-teams" : ""}`}
+                    onMouseEnter={() => setHoverState(abbr)}
+                    onMouseLeave={() => setHoverState(null)}
+                    onClick={() => handleStateClick(abbr)}
                   />
                 );
               })}
@@ -598,11 +598,11 @@ export default function InteractiveCustomerMapB({
                 return (
                   <g
                     key={`pin-${school.id}`}
-                    className={`icmb-pin-dot${inStateView ? " icmb-pin-dot--interactive" : ""}`}
+                    className="icmb-pin-dot icmb-pin-dot--interactive"
                     transform={`translate(${x}, ${y}) scale(${pinCounterScale})`}
                     aria-label={school.schoolName}
-                    onMouseEnter={inStateView ? () => setHoveredSchool(school) : undefined}
-                    onMouseLeave={inStateView ? () => setHoveredSchool(null) : undefined}
+                    onMouseEnter={() => setHoveredSchool(school)}
+                    onMouseLeave={() => setHoveredSchool(null)}
                   >
                     <circle cx={0} cy={0} r={r} className="icmb-pin icmb-pin--green" />
                   </g>
@@ -621,8 +621,8 @@ export default function InteractiveCustomerMapB({
                     className={`icmb-pin-marker icmb-pin-marker--d1${emphasize ? " is-active" : ""}`}
                     transform={`translate(${x}, ${y}) scale(${pinCounterScale})`}
                     aria-label={school.schoolName}
-                    onMouseEnter={inStateView ? () => setHoveredSchool(school) : undefined}
-                    onMouseLeave={inStateView ? () => setHoveredSchool(null) : undefined}
+                    onMouseEnter={() => setHoveredSchool(school)}
+                    onMouseLeave={() => setHoveredSchool(null)}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleSchoolSelect(school);
@@ -648,55 +648,32 @@ export default function InteractiveCustomerMapB({
               {hoverPinLabel ? (
                 <g
                   className="icmb-pin-hover-label"
-                  transform={`translate(${hoverPinLabel.x}, ${hoverPinLabel.y}) scale(${pinCounterScale})`}
+                  transform={`translate(${hoverPinLabel.x}, ${hoverPinLabel.y + PIN_HOVER_LABEL_OFFSET_Y}) scale(${pinCounterScale})`}
                   pointerEvents="none"
                 >
-                  {hoverPinLabel.hasLogo ? (
-                    <foreignObject x={-28} y={-56} width={56} height={56}>
-                      <div xmlns="http://www.w3.org/1999/xhtml" className="icmb-pin-hover-logo">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={hoverPinLabel.school.logo} alt="" />
-                      </div>
-                    </foreignObject>
-                  ) : (
-                    <foreignObject x={-80} y={-36} width={160} height={32}>
-                      <div xmlns="http://www.w3.org/1999/xhtml" className="icmb-pin-hover-name">
-                        {hoverPinLabel.school.schoolName}
-                      </div>
-                    </foreignObject>
-                  )}
+                  <foreignObject x={-90} y={-16} width={180} height={32}>
+                    <div xmlns="http://www.w3.org/1999/xhtml" className="icmb-pin-hover-name">
+                      {hoverPinLabel.school.schoolName}
+                    </div>
+                  </foreignObject>
                 </g>
               ) : null}
             </svg>
-            <div className="icmb-map-zoom-stack" role="group" aria-label="Map zoom">
-              <Button
-                type="default"
-                className="icmb-map-zoom-btn"
-                icon={<PlusOutlined />}
-                aria-label="Zoom in"
-                disabled={viewTransform.k >= MAP_VIEW_MAX_SCALE}
-                onClick={() => zoomStep(1)}
-              />
-              <Button
-                type="default"
-                className="icmb-map-zoom-btn"
-                icon={<MinusOutlined />}
-                aria-label="Zoom out"
-                disabled={viewTransform.k <= MAP_VIEW_MIN_SCALE}
-                onClick={() => zoomStep(-1)}
-              />
-            </div>
           </div>
         </div>
   );
 
   if (homepageLayout) {
     return (
-      <div className={shellClass}>
-        <div className="icmb-home-logos-full">{logoSection}</div>
+      <div className={`${shellClass} icmb-shell--homepage-grid`}>
         <div className="map-inner icmb-home-split">
           <div className="map-dominance-col">{statsSlot}</div>
-          <div className="icmb-home-map-col">{mapSection}</div>
+          <div className="icmb-home-map-col">
+            <div className="icmb-home-map-unit">
+              {logoSection}
+              {mapSection}
+            </div>
+          </div>
         </div>
       </div>
     );

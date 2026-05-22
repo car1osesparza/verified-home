@@ -16,7 +16,8 @@ export default function HsCoachesPage() {
           communication, and transfer-readiness.
         </Paragraph>
         <Paragraph className="lead">
-          Looking for athlete-specific resources? <Link href="/for-athletes">Go to For Athletes</Link>.
+          Looking for athlete-specific resources?{" "}
+          <Link href="/resources#athletes-transfers">Go to Athletes</Link>.
         </Paragraph>
       </div>
     </div>

@@ -1,22 +1,15 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
 import ProductPageContent from "../components/marketing/ProductPageContent";
 import PricingPageContent from "../components/marketing/PricingPageContent";
 import HeroSportPicker from "../components/HeroSportPicker";
 import HomeMapDominanceBlock from "../components/HomeMapDominanceBlock";
-import PmTestimonialsDock, { readStoredTestimonialsLayout } from "../components/PmTestimonialsDock";
 import { useSportSelection } from "../components/SportSelectionProvider";
 import ChampionshipBannersSection from "../components/ChampionshipBannersSection";
 import TestimonialsClientOnly from "../components/TestimonialsClientOnly";
 
 export default function HomePage() {
   const { sport, applySport } = useSportSelection();
-  const [testimonialsLayout, setTestimonialsLayout] = useState("carousel");
-
-  useLayoutEffect(() => {
-    setTestimonialsLayout(readStoredTestimonialsLayout());
-  }, []);
 
   return (
     <div className="artboard">
@@ -59,11 +52,9 @@ export default function HomePage() {
           <div className="sec-head headline-match-pricing" style={{ marginBottom: 4 }}>
             Trusted by All. Used by Winners.
           </div>
-          <TestimonialsClientOnly selectedSport={sport || ""} layout={testimonialsLayout} />
+          <TestimonialsClientOnly selectedSport={sport || ""} />
         </div>
       </section>
-
-      <PmTestimonialsDock layout={testimonialsLayout} onLayoutChange={setTestimonialsLayout} />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import TestimonialCard from "./TestimonialCard";
+import TestimonialsAllModal from "./TestimonialsAllModal";
 
 const DESKTOP_BATCH = 6;
 const MOBILE_BATCH = 4;
@@ -35,18 +36,10 @@ function useExpandBatchSize() {
 
 export default function TestimonialsExpandLayout({ items, loading, fetchError, sportKey }) {
   const batchSize = useExpandBatchSize();
-  const [visibleCount, setVisibleCount] = useState(batchSize);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  useEffect(() => {
-    setVisibleCount(batchSize);
-  }, [sportKey, batchSize]);
-
-  const visibleItems = useMemo(() => items.slice(0, visibleCount), [items, visibleCount]);
-  const hasMore = !loading && !fetchError && visibleCount < items.length;
-
-  const showMore = () => {
-    setVisibleCount((n) => Math.min(n + batchSize, items.length));
-  };
+  const previewItems = useMemo(() => items.slice(0, batchSize), [items, batchSize]);
+  const showMoreButton = !loading && !fetchError && items.length > previewItems.length;
 
   const skeletonSlots = batchSize;
 
@@ -86,22 +79,34 @@ export default function TestimonialsExpandLayout({ items, loading, fetchError, s
           <div
             className={`t-expand-grid${batchSize >= DESKTOP_BATCH ? " t-expand-grid--wide" : ""}`}
             role="list"
-            aria-label="Customer testimonials"
+            aria-label="Customer testimonials preview"
           >
-            {visibleItems.map((item) => (
+            {previewItems.map((item) => (
               <TestimonialCard key={item.id ?? item.name} item={item} />
             ))}
           </div>
 
-          {hasMore ? (
+          {showMoreButton ? (
             <div className="t-expand-actions">
-              <button type="button" className="btn light t-expand-more-btn" onClick={showMore}>
+              <button
+                type="button"
+                className="btn light t-expand-more-btn"
+                onClick={() => setModalOpen(true)}
+              >
                 Show more testimonials
               </button>
             </div>
           ) : null}
         </>
       )}
+
+      <TestimonialsAllModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        items={items}
+        loading={loading}
+        fetchError={fetchError}
+      />
     </div>
   );
 }

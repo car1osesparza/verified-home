@@ -15,12 +15,23 @@ function getDefaultAnchorOffset() {
   return navHeight;
 }
 
+/** Resources page: clear sticky site nav + in-page section tabs. */
+function getResourcesAnchorOffset() {
+  const nav = document.querySelector(".dark-nav");
+  const toc = document.querySelector(".resources-page .resources-toc");
+  const navH = nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+  const tocH = toc ? Math.ceil(toc.getBoundingClientRect().height) : 0;
+  return navH + tocH + 12;
+}
+
 function scrollElementIntoDocumentPosition(el) {
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const base = el.getBoundingClientRect().top + window.scrollY;
   const raw = el.getAttribute("data-anchor-offset");
   let offset = 0;
-  if (raw != null && raw !== "") {
+  if (raw === "resources") {
+    offset = getResourcesAnchorOffset();
+  } else if (raw != null && raw !== "") {
     const n = parseFloat(raw);
     if (!Number.isNaN(n)) {
       offset = n;
