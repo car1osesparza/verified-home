@@ -4,16 +4,19 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import {
+  CHAMPIONSHIP_BANNERS_HEADLINE,
+  CHAMPIONSHIP_BANNERS_LEAD,
   formatChampionshipQualifier,
   formatChampionshipSport,
   MOCK_CHAMPIONSHIP_BANNERS,
 } from "../lib/championship-banners";
-import { extractLogoAccent, mixAccentIntoBackground } from "../lib/logo-accent";
+import {
+  buildChampionshipBannerTheme,
+  championshipBannerThemeKey,
+  DEFAULT_CHAMPIONSHIP_BANNER_THEME,
+  resolveChampionshipBannerThemes,
+} from "../lib/championship-banner-theme";
 import "./championship-banners.css";
-
-const NOTRE_DAME_BANNER_ID = "notre-dame-fb-1988";
-/** Notre Dame gold — border + year only */
-const NOTRE_DAME_GOLD = "#e8c547";
 
 const BANNER_WIDTH = 240;
 const BANNER_GAP = 16;
@@ -30,27 +33,7 @@ function schoolInitials(name) {
     .toUpperCase();
 }
 
-function ChampionshipBannerCard({ banner }) {
-  const fallback = banner.accentColor || "#e8c547";
-  const [brandAccent, setBrandAccent] = useState(fallback);
-
-  useEffect(() => {
-    setBrandAccent(fallback);
-    if (!banner.logoUrl) return undefined;
-
-    let cancelled = false;
-    extractLogoAccent(banner.logoUrl, fallback).then((color) => {
-      if (!cancelled) setBrandAccent(color);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [banner.logoUrl, fallback]);
-
-  const isNotreDame = banner.id === NOTRE_DAME_BANNER_ID;
-  const frameAccent = isNotreDame ? NOTRE_DAME_GOLD : brandAccent;
-  const cardBg = mixAccentIntoBackground(brandAccent, 0.16);
+function ChampionshipBannerCard({ banner, theme = DEFAULT_CHAMPIONSHIP_BANNER_THEME }) {
   const sportLabel = formatChampionshipSport(banner.sport);
   const qualifierLabel = formatChampionshipQualifier(banner.qualifier);
 
@@ -67,8 +50,10 @@ function ChampionshipBannerCard({ banner }) {
     <article
       className="champ-banner-card"
       style={{
-        "--champ-accent": frameAccent,
-        "--champ-card-bg": cardBg,
+        "--champ-card-bg": theme.background,
+        "--champ-border": theme.border,
+        "--champ-primary-text": theme.primaryText,
+        "--champ-accent-text": theme.accentText,
       }}
       aria-label={ariaLabel}
     >
@@ -92,6 +77,54 @@ function ChampionshipBannerCard({ banner }) {
       <p className="champ-banner-year">{banner.year}</p>
     </article>
   );
+}
+
+function useChampionshipBannerThemes(banners) {
+  const [themes, setThemes] = useState(() => {
+    const initial = {};
+    const themeByProgram = new Map();
+
+    banners.forEach((banner, index) => {
+      const programKey = championshipBannerThemeKey(banner);
+      if (programKey && themeByProgram.has(programKey)) {
+        initial[banner.id] = themeByProgram.get(programKey);
+        return;
+      }
+
+      let previousBackgrounds = [];
+      for (let j = index - 1; j >= 0; j -= 1) {
+        if (championshipBannerThemeKey(banners[j]) !== programKey) {
+          previousBackgrounds = [initial[banners[j].id]?.background].filter(Boolean);
+          break;
+        }
+      }
+
+      const theme = buildChampionshipBannerTheme([], {
+        fallback: banner.accentColor,
+        previousBackgrounds,
+      });
+      initial[banner.id] = theme;
+      if (programKey) {
+        themeByProgram.set(programKey, theme);
+      }
+    });
+
+    return initial;
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    resolveChampionshipBannerThemes(banners).then((next) => {
+      if (!cancelled) setThemes(next);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [banners]);
+
+  return themes;
 }
 
 function useBannersPerPage(viewportRef) {
@@ -121,6 +154,7 @@ export default function ChampionshipBannersSection({ banners = MOCK_CHAMPIONSHIP
   const [slideDir, setSlideDir] = useState(1);
   const viewportRef = useRef(null);
   const perPage = useBannersPerPage(viewportRef);
+  const themes = useChampionshipBannerThemes(banners);
 
   const pageCount = Math.max(1, Math.ceil(banners.length / perPage));
 
@@ -149,12 +183,9 @@ export default function ChampionshipBannersSection({ banners = MOCK_CHAMPIONSHIP
       <div className="champ-banners-inner">
         <div className="champ-banners-intro">
           <h2 id="champ-banners-heading" className="champ-banners-head">
-            Verified recruiting assistance for championship teams
+            {CHAMPIONSHIP_BANNERS_HEADLINE}
           </h2>
-          <p className="champ-banners-lead">
-            Programs that won it all with support from Verified Athletics—transfer intelligence, roster
-            visibility, and recruiting workflow tools behind their run.
-          </p>
+          <p className="champ-banners-lead">{CHAMPIONSHIP_BANNERS_LEAD}</p>
         </div>
 
         <div
@@ -185,7 +216,11 @@ export default function ChampionshipBannersSection({ banners = MOCK_CHAMPIONSHIP
                 aria-live="polite"
               >
                 {pageBanners.map((banner) => (
-                  <ChampionshipBannerCard key={banner.id} banner={banner} />
+                  <ChampionshipBannerCard
+                    key={banner.id}
+                    banner={banner}
+                    theme={themes[banner.id]}
+                  />
                 ))}
               </div>
             </div>

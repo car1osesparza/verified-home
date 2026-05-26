@@ -203,7 +203,7 @@ export default function InteractiveCustomerMapB({
 
   const inStateView = Boolean(selectedState);
   const isMobileHome = useMediaQuery(MOBILE_HOME_MEDIA);
-  const mobileHomeLogoStrip = homepageLayout && isMobileHome && !inStateView;
+  const logoScrollStrip = homepageLayout;
 
   const logosForBand = useMemo(() => {
     if (!selectedState) return allLogos;
@@ -212,12 +212,12 @@ export default function InteractiveCustomerMapB({
 
   const logoDisplaySize = inStateView
     ? LOGO_SIZE * 2
-    : mobileHomeLogoStrip
+    : homepageLayout && isMobileHome
       ? LOGO_SIZE_MOBILE_HOME
       : LOGO_SIZE;
   const logosPerPage = inStateView
     ? Math.max(16, Math.floor(LOGOS_PER_PAGE / 2))
-    : mobileHomeLogoStrip
+    : homepageLayout && isMobileHome
       ? LOGOS_PER_PAGE_MOBILE_HOME
       : LOGOS_PER_PAGE;
 
@@ -551,7 +551,7 @@ export default function InteractiveCustomerMapB({
     <div
       className={`icmb-logo-section${inStateView ? " icmb-logo-section--state" : ""}${
         homepageLayout ? " icmb-logo-section--home" : ""
-      }${mobileHomeLogoStrip ? " icmb-logo-section--mobile-strip" : ""}`}
+      }${logoScrollStrip ? " icmb-logo-section--scroll-strip" : ""}`}
       style={{
         "--icmb-logo-rows": LOGO_ROWS,
         "--icmb-logo-cols": logoCols,
@@ -559,62 +559,84 @@ export default function InteractiveCustomerMapB({
         "--icmb-logo-gap": `${LOGO_GAP}px`,
       }}
     >
-      <div className="icmb-logo-band">
-        <Button
-          type="default"
-          shape="circle"
-          className="icmb-logo-nav"
-          icon={<LeftOutlined />}
-          aria-label="Previous programs"
-          disabled={logoPage === 0}
-          onClick={() => goLogoPage(-1)}
-        />
-        <div className="icmb-logo-scroll">
-          <div
-            key={logoPage}
-            className={`icmb-logo-wall icmb-logo-wall--slide-${logoSlideDir > 0 ? "next" : "prev"}`}
-          >
-            {pageLogos.map((school) => (
-              <LogoTile
-                key={school.id}
-                school={school}
-                className="icmb-logo-tile"
-                active={selectedSchool?.id === school.id}
-                dimmed={false}
-                hideTitle
-                onSelect={handleSchoolSelect}
-              />
-            ))}
+      {logoScrollStrip ? (
+        <div className="icmb-logo-band icmb-logo-band--scroll">
+          <div className="icmb-logo-scroll" aria-label="College programs using Verified">
+            <div className="icmb-logo-wall">
+              {logosForBand.map((school) => (
+                <LogoTile
+                  key={school.id}
+                  school={school}
+                  className="icmb-logo-tile"
+                  active={selectedSchool?.id === school.id}
+                  dimmed={false}
+                  hideTitle
+                  onSelect={handleSchoolSelect}
+                />
+              ))}
+            </div>
           </div>
         </div>
-        <Button
-          type="default"
-          shape="circle"
-          className="icmb-logo-nav"
-          icon={<RightOutlined />}
-          aria-label="Next programs"
-          disabled={logoPage >= logoPageCount - 1}
-          onClick={() => goLogoPage(1)}
-        />
-      </div>
-      {logoPageCount > 1 ? (
-        <div className="icmb-logo-pagination" role="tablist" aria-label="Logo pages">
-          {Array.from({ length: logoPageCount }, (_, i) => (
-            <button
-              key={i}
-              type="button"
-              role="tab"
-              aria-selected={logoPage === i}
-              aria-label={`Page ${i + 1} of ${logoPageCount}`}
-              className={`icmb-logo-page-dot${logoPage === i ? " is-active" : ""}`}
-              onClick={() => {
-                setLogoSlideDir(i > logoPage ? 1 : -1);
-                setLogoPage(i);
-              }}
+      ) : (
+        <>
+          <div className="icmb-logo-band">
+            <Button
+              type="default"
+              shape="circle"
+              className="icmb-logo-nav"
+              icon={<LeftOutlined />}
+              aria-label="Previous programs"
+              disabled={logoPage === 0}
+              onClick={() => goLogoPage(-1)}
             />
-          ))}
-        </div>
-      ) : null}
+            <div className="icmb-logo-scroll">
+              <div
+                key={logoPage}
+                className={`icmb-logo-wall icmb-logo-wall--slide-${logoSlideDir > 0 ? "next" : "prev"}`}
+              >
+                {pageLogos.map((school) => (
+                  <LogoTile
+                    key={school.id}
+                    school={school}
+                    className="icmb-logo-tile"
+                    active={selectedSchool?.id === school.id}
+                    dimmed={false}
+                    hideTitle
+                    onSelect={handleSchoolSelect}
+                  />
+                ))}
+              </div>
+            </div>
+            <Button
+              type="default"
+              shape="circle"
+              className="icmb-logo-nav"
+              icon={<RightOutlined />}
+              aria-label="Next programs"
+              disabled={logoPage >= logoPageCount - 1}
+              onClick={() => goLogoPage(1)}
+            />
+          </div>
+          {logoPageCount > 1 ? (
+            <div className="icmb-logo-pagination" role="tablist" aria-label="Logo pages">
+              {Array.from({ length: logoPageCount }, (_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  role="tab"
+                  aria-selected={logoPage === i}
+                  aria-label={`Page ${i + 1} of ${logoPageCount}`}
+                  className={`icmb-logo-page-dot${logoPage === i ? " is-active" : ""}`}
+                  onClick={() => {
+                    setLogoSlideDir(i > logoPage ? 1 : -1);
+                    setLogoPage(i);
+                  }}
+                />
+              ))}
+            </div>
+          ) : null}
+        </>
+      )}
     </div>
   );
 

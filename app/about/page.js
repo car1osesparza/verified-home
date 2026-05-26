@@ -1,6 +1,8 @@
 "use client";
 
 import { Typography } from "antd";
+import { useSportSelection } from "../../components/SportSelectionProvider";
+import { getDemoSpecialistForSport } from "../../lib/demo-specialist";
 
 const { Title, Paragraph } = Typography;
 
@@ -73,6 +75,9 @@ const TEAM = [
 ];
 
 export default function AboutPage() {
+  const { sport } = useSportSelection();
+  const salesSpecialist = sport ? getDemoSpecialistForSport(sport) : null;
+
   return (
     <div className="section marketing-page about-page">
       <div className="container about-main">
@@ -80,34 +85,37 @@ export default function AboutPage() {
         <Title>Our Mission</Title>
         <div className="about-mission-grid">
           <div className="simplePanel">
-            <Title level={4}>VISIBILITY</Title>
-            <Paragraph>
-              A free service for athletes that makes the recruiting process more transparent, accessible,
-              informative, and affordable.
-            </Paragraph>
-          </div>
-          <div className="simplePanel">
             <Title level={4}>ACCURATE DATA</Title>
             <Paragraph>
               A valuable recruiting tool for college coaches to efficiently identify quality student
               athletes with less cost and more accuracy.
             </Paragraph>
           </div>
+          <div className="simplePanel">
+            <Title level={4}>VISIBILITY</Title>
+            <Paragraph>
+              A free service for athletes that makes the recruiting process more transparent, accessible,
+              informative, and affordable.
+            </Paragraph>
+          </div>
         </div>
 
         <Title level={3}>Our Story</Title>
         <Paragraph className="lead">
-          Many services charge student athletes and their parents large fees for exposure to college
-          programs, but these often do not deliver because the data can be unreliable. At Verified
-          Athletics, we are changing that model by keeping athlete visibility free while building a
-          trusted data platform used by college teams.
-        </Paragraph>
-        <Paragraph className="lead">
-          This approach creates maximum exposure for athletes and gives coaches reliable recruiting
-          intelligence so they can focus on finding the right fit for their class needs.
+          Verified Athletics is changing the recruiting model by keeping athlete visibility free while
+          giving college programs the trusted data they need to recruit more effectively. Instead of
+          charging families for exposure, we focus on building a reliable recruiting platform that
+          coaches actually use. The result is better visibility for athletes and better recruiting
+          intelligence for college teams looking to find the right fit.
         </Paragraph>
 
         <Title level={3}>Meet the Team</Title>
+        {salesSpecialist ? (
+          <p className="about-sales-specialist-note" role="status">
+            For <strong>{sport}</strong>, your Verified contact is{" "}
+            <strong>{salesSpecialist.name}</strong> — {salesSpecialist.role}.
+          </p>
+        ) : null}
         <div className="about-founders-grid">
           {FOUNDERS.map((founder) => (
             <article key={founder.name} className="about-founder-card">
@@ -126,13 +134,20 @@ export default function AboutPage() {
         </div>
 
         <div className="about-team-grid">
-          {TEAM.map((member) => (
-            <article key={member.name} className="about-team-card">
-              <img src={member.image} alt={member.name} className="about-team-image" />
-              <h4>{member.name}</h4>
-              <p>{member.role}</p>
-            </article>
-          ))}
+          {TEAM.map((member) => {
+            const isSpecialist = salesSpecialist?.name === member.name;
+            return (
+              <article
+                key={member.name}
+                className={`about-team-card${isSpecialist ? " about-team-card--specialist" : ""}`}
+              >
+                {isSpecialist ? <span className="about-team-specialist-badge">Your sport specialist</span> : null}
+                <img src={member.image} alt={member.name} className="about-team-image" />
+                <h4>{member.name}</h4>
+                <p>{member.role}</p>
+              </article>
+            );
+          })}
         </div>
       </div>
 

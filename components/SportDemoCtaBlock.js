@@ -20,6 +20,8 @@ export default function SportDemoCtaBlock({
   showBookDemoButton = true,
   /** When true with select-only dark surface: root uses `display: contents` so the parent can flex-align “I coach:” with the select and drop help text on the next full-width row. */
   coachFlexLayout = false,
+  /** Hide the default below-select note (homepage renders its own prompt above the picker). */
+  suppressCoachNote = false,
 }) {
   const hasSport = Boolean(sport);
   const isPricing = surface === "pricing";
@@ -43,7 +45,9 @@ export default function SportDemoCtaBlock({
   const useCoachFlex =
     coachFlexLayout && !isPricing && !showDemo && surface === "dark";
 
-  const noteEl = (
+  const showNote = !suppressCoachNote;
+
+  const noteEl = showNote ? (
     <div className={`${noteClass}${useCoachFlex ? " b-hero-sport-help-below" : ""}`}>
       {!showDemo && !isPricing ? (
         hasSport ? (
@@ -70,7 +74,7 @@ export default function SportDemoCtaBlock({
         <span className="hero-note-highlight">Select your sport for a tailored demo experience.</span>
       )}
     </div>
-  );
+  ) : null;
 
   return (
     <div className={className} style={useCoachFlex ? { display: "contents" } : undefined}>
@@ -132,7 +136,7 @@ export default function SportDemoCtaBlock({
             </button>
           ))}
       </div>
-      {noteEl}
+      {showNote ? noteEl : null}
     </div>
   );
 }

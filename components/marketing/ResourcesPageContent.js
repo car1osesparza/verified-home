@@ -117,8 +117,8 @@ export default function ResourcesPageContent() {
         <header className="resources-hero">
           <h1 className="resources-h1">Free resources for coaches, athletes, and families</h1>
           <p className="resources-hero-sub">
-            Get your information in front of college programs, understand how recruiting works, and take
-            the right next step—without paying athlete fees.
+            Get your information in front of college programs, understand how recruiting works, and take the
+            right next step—<strong>FOR FREE.</strong>
           </p>
         </header>
 

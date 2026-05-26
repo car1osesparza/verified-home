@@ -1950,6 +1950,11 @@ textarea,
   width: 100%;
 }
 
+.b-hero-sport-prompt {
+  margin: 0 auto 18px;
+  max-width: 540px;
+}
+
 .b-hero-sport-panel {
   max-width: min(720px, 100%);
   margin: 0 auto;
@@ -1970,9 +1975,13 @@ textarea,
   row-gap: 14px;
 }
 
-/* “I coach:” bottom-aligned with sport select; help text full-width row below */
+/* “I coach:” vertically centered with sport select */
 .b-hero-sport-row--coach-select {
-  align-items: flex-end;
+  align-items: center;
+}
+
+.b-hero-sport-row--coach-select .sport-demo-cta-row--dark {
+  margin-top: 0;
 }
 
 .b-hero-sport-row--coach-select .sport-demo-cta-row--selectOnly {
@@ -2044,7 +2053,7 @@ textarea,
   margin-right: 0;
 }
 
-/* Homepage hero: resources link styled like pricing “term” pill (see .pricing-contract-toggle) */
+/* Homepage hero: athlete / HS coach resources pill button */
 .b-hero-resources-pill {
   display: flex;
   justify-content: center;
@@ -2088,11 +2097,22 @@ textarea,
   }
 
   .b-hero-sport-row--coach-select {
-    align-items: center;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 8px;
+    row-gap: 8px;
+  }
+
+  /* flex-basis 220px is width on desktop; on a column stack it becomes min-height and blows out the layout */
+  .b-hero-sport-row--coach-select .sport-demo-cta-row--selectOnly {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: none;
   }
 
   .b-hero-sport-callout {
     text-align: center;
+    margin-bottom: 0;
   }
 
   .b-hero-sport-cta-col {
@@ -2102,6 +2122,7 @@ textarea,
 
   .b-hero-sport-cta .sport-demo-cta-row--dark {
     justify-content: center;
+    margin-top: 0;
   }
 
   .b-hero-sport-cta .hero-note.res-demo-hero-note:not(.b-hero-sport-help-below) {
@@ -2111,6 +2132,10 @@ textarea,
   .b-hero-sport-cta .hero-note.b-hero-sport-help-below {
     text-align: center;
     max-width: 100%;
+  }
+
+  .b-hero-resources-pill {
+    margin-top: 12px;
   }
 }
 
@@ -3045,6 +3070,36 @@ textarea,
   line-height: 1.5;
 }
 
+.about-sales-specialist-note {
+  margin: 0 0 20px;
+  max-width: 52rem;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--gray-600);
+}
+
+.about-team-card--specialist {
+  position: relative;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid rgba(2, 62, 114, 0.35);
+  background: rgba(2, 62, 114, 0.04);
+  box-shadow: 0 8px 24px rgba(2, 62, 114, 0.08);
+}
+
+.about-team-specialist-badge {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: rgba(2, 62, 114, 0.1);
+}
+
 .about-contact-band {
   background: var(--blue);
   padding: 52px 0;
@@ -3423,6 +3478,48 @@ textarea,
   animation: product-workflow-shimmer 1.2s ease-in-out infinite;
 }
 
+.product-page .product-workflow-media-frame--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #e2eaf4 0%, #f4f8fc 48%, #dce6f2 100%);
+  border-style: dashed;
+}
+
+.product-page .product-workflow-media-placeholder {
+  max-width: 88%;
+  padding: 16px 18px;
+  text-align: center;
+}
+
+.product-page .product-workflow-media-placeholder-kind {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(2, 62, 114, 0.12);
+  color: var(--navy, #023e72);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.product-page .product-workflow-media-placeholder-status {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.product-page .product-workflow-media-placeholder-note {
+  margin: 10px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--gray-600);
+}
+
 @keyframes product-workflow-shimmer {
   0% {
     background-position: 100% 0;
@@ -3629,7 +3726,7 @@ textarea,
 
 .product-page .product-benefits-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   text-align: left;
 }
@@ -3927,6 +4024,44 @@ textarea,
 
   .hero-h1 {
     font-size: 29px;
+  }
+
+  .b-hero {
+    padding: 56px 20px 48px;
+  }
+
+  .hero-big-stat {
+    margin-bottom: 2px;
+  }
+
+  .hero-big-sub {
+    margin-bottom: 18px;
+  }
+
+  .hero-h1 {
+    margin-bottom: 10px;
+  }
+
+  .hero-p {
+    margin-bottom: 18px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .b-hero-sport-tail {
+    margin-top: 4px;
+    padding-top: 18px;
+  }
+
+  .b-hero-sport-prompt {
+    margin-bottom: 14px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .b-hero-resources-pill {
+    margin-top: 14px;
+    font-size: 15px;
   }
 
   .t-carousel {

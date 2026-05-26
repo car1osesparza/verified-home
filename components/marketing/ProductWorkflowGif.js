@@ -37,12 +37,13 @@ function workflowSrc(playbackIndex) {
 
 export default function ProductWorkflowGif({
   alt,
+  src: srcProp,
   phaseMs = 0,
   playbackIndex = 0,
   objectPosition = "50% 50%",
 }) {
   const [active, setActive] = useState(phaseMs === 0);
-  const src = workflowSrc(playbackIndex);
+  const src = srcProp ?? workflowSrc(playbackIndex);
 
   useEffect(() => {
     if (phaseMs === 0) {

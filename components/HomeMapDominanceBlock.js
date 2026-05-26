@@ -1,10 +1,12 @@
 "use client";
 
 import { getMapDominanceListItems, MAP_DOMINANCE_HEADLINE } from "../lib/home-map-dominance-copy";
+import { useSportSelection } from "./SportSelectionProvider";
 import HomeMapCoverageCompactB from "./HomeMapCoverageCompactB";
 
 function MapDominanceCopySplit() {
-  const items = getMapDominanceListItems();
+  const { sport } = useSportSelection();
+  const items = getMapDominanceListItems(undefined, sport);
   return (
     <div className="map-dominance-block map-dominance-block--split">
       <h2 className="map-dominance-head headline-match-pricing">{MAP_DOMINANCE_HEADLINE}</h2>

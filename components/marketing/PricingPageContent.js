@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Card, Col, Row, Typography } from "antd";
+import { COLLEGE_FOOTBALL } from "../../lib/site-data";
 import { openSportRequiredModal } from "../../lib/sport-preference";
 import { useSportSelection } from "../SportSelectionProvider";
 import SportDemoCtaBlock from "../SportDemoCtaBlock";
@@ -127,10 +128,10 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
     if (!sport) {
       return [];
     }
-    return sport === "Football" ? FOOTBALL_TIERS : ALL_SPORTS_TIERS;
+    return sport === COLLEGE_FOOTBALL ? FOOTBALL_TIERS : ALL_SPORTS_TIERS;
   }, [sport]);
 
-  const isFootball = sport === "Football";
+  const isFootball = sport === COLLEGE_FOOTBALL;
   const isOtherNotSure = sport === "Other / Not sure";
   const showSpecialSportPricing = sport && SPECIAL_ACCESS_SPORTS.includes(sport);
 

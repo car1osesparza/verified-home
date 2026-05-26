@@ -3,29 +3,26 @@
   "items": [
     {
       "id": "mock-1",
-      "q": "Verified has been a great asset to our recruiting efforts for several years. They have the most complete information in the industry and serve as the foundation for our prospect database.",
-      "name": "Andy Frank",
-      "role": "General Manager, Virginia Tech Football",
-      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": ["Football"],
+      "q": "Verified Athletics helped tremendously in organizing our portal efforts. The ability to filter to your specific needs and get instant updates puts Verified in a class of their own.",
+      "name": "Yolisha Jackson",
+      "role": "Head Coach, South Alabama WBB",
+      "sports": ["Women's Basketball"],
       "sort_order": 30
     },
     {
       "id": "mock-2",
-      "q": "Verified helps us find players who fit our program with speed and efficiency. With help from Verified, we offered 5 transfers and signed all 5.",
-      "name": "John Lorenzo",
-      "role": "Associate Head Coach, Wright State Women's Basketball",
-      "img": "/legacy/Verified homepage_files/john_l.jpg",
+      "q": "Verified athletics is involved in our every day operations and recruiting efforts at the University of Maryland. Their forward-thinking and solution based actions, coupled with their easy-to-use platform have been a huge asset to our program.",
+      "name": "Jess Imhof",
+      "role": "Director of Scouting, Maryland WBB",
       "sports": ["Women's Basketball"],
       "sort_order": 29
     },
     {
       "id": "mock-3",
-      "q": "Amount and quality of contact information and data is everything. Verified has provided this more accurately than any other recruiting tool we have used.",
-      "name": "Brad Spencer",
-      "role": "Head Coach, North Central College Football (D3)",
-      "img": "/legacy/Verified homepage_files/rick_spencer.png",
-      "sports": ["Football"],
+      "q": "Verified Athletics has been an amazing addition to our recruiting. Having the real time updates, player stats, and being able to sort by position has allowed us to organize our recruiting in ways we couldn't have done with just the portal itself. We are very thankful for Verified Athletics.",
+      "name": "Sarah Noble",
+      "role": "Head Coach, South Carolina WVOL",
+      "sports": ["Volleyball"],
       "sort_order": 28
     },
     {

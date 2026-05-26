@@ -199,7 +199,52 @@
   background: rgba(238, 244, 251, 0.5);
 }
 
-/* Homepage: logos sit directly above the map (see icmb-home-map-unit). */
+/* Homepage: one continuous logo row — scroll / swipe, no paging. */
+.icmb-logo-section--home.icmb-logo-section--scroll-strip {
+  width: 100%;
+}
+
+.icmb-logo-section--scroll-strip .icmb-logo-band--scroll {
+  gap: 0;
+}
+
+.icmb-logo-section--scroll-strip .icmb-logo-scroll {
+  padding: 2px 0 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(106, 255, 171, 0.45) transparent;
+}
+
+.icmb-logo-section--scroll-strip .icmb-logo-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.icmb-logo-section--scroll-strip .icmb-logo-scroll::-webkit-scrollbar-thumb {
+  background: rgba(106, 255, 171, 0.45);
+  border-radius: 999px;
+}
+
+.icmb-logo-section--scroll-strip .icmb-logo-wall {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--icmb-logo-gap, 6px);
+  width: max-content;
+  min-height: var(--icmb-logo-size, 64px);
+  grid-template-columns: unset;
+  grid-template-rows: unset;
+}
+
+.icmb-logo-section--scroll-strip .icmb-logo-tile {
+  flex: 0 0 var(--icmb-logo-size, 64px);
+  scroll-snap-align: start;
+}
+
+/* Legacy mobile strip alias (map-lab). */
 .icmb-logo-section--home.icmb-logo-section--mobile-strip .icmb-logo-band {
   gap: 0;
 }

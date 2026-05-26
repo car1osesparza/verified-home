@@ -16,9 +16,6 @@ export default function HomePage() {
       <section className="b-hero">
         <div className="b-hero-grad" />
         <div className="b-hero-inner">
-          <div className="eyebrow pale" style={{ marginBottom: 16 }}>
-            Recruiting Reimagined
-          </div>
           <div className="hero-big-stat">1,701</div>
           <div className="hero-big-sub">College programs trust Verified Athletics</div>
           <h1 className="hero-h1">
@@ -27,8 +24,7 @@ export default function HomePage() {
             is on Verified.
           </h1>
           <p className="hero-p">
-            Real-time transfer portal intelligence, depth chart analysis, and AI-powered targets. Built for college
-            coaches and calibrated by sport.
+            Built for coaches who need better players, faster answers, and less recruiting chaos.
           </p>
           <HeroSportPicker sport={sport ?? ""} onSportChange={applySport} />
         </div>
