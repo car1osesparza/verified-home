@@ -5,7 +5,16 @@ function divisionClass(division) {
   return "other";
 }
 
-export default function LogoTile({ school, active, dimmed, onSelect, className = "icm-logo-tile", hideTitle = false }) {
+export default function LogoTile({
+  school,
+  active,
+  dimmed,
+  onSelect,
+  onHover,
+  onHoverEnd,
+  className = "icm-logo-tile",
+  hideTitle = false,
+}) {
   const initials = school.schoolName
     .split(/\s+/)
     .slice(0, 2)
@@ -13,13 +22,17 @@ export default function LogoTile({ school, active, dimmed, onSelect, className =
     .join("")
     .toUpperCase();
 
+  const titleText = `${school.schoolName} · ${school.topDivision || "Unclassified"}`;
+
   return (
     <button
       type="button"
       className={`${className} ${className}--${divisionClass(school.topDivision)}${active ? " is-active" : ""}${
         dimmed ? " is-dimmed" : ""
       }`}
-      title={hideTitle ? undefined : `${school.schoolName} · ${school.topDivision || "Unclassified"}`}
+      title={hideTitle && !onHover ? undefined : titleText}
+      onPointerEnter={(e) => onHover?.(school, e)}
+      onPointerLeave={() => onHoverEnd?.()}
       onClick={() => onSelect(school)}
     >
       {school.logo ? (

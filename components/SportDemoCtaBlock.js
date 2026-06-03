@@ -1,6 +1,7 @@
 "use client";
 
 import { getDemoSpecialistForSport } from "../lib/demo-specialist";
+import { openCalendlyForSport } from "../lib/sport-calendly";
 import { SPORTS } from "../lib/site-data";
 import { openSportRequiredModal } from "../lib/sport-preference";
 import SportSelectWithClear from "./SportSelectWithClear";
@@ -28,7 +29,6 @@ export default function SportDemoCtaBlock({
   const showDemo = showBookDemoButton !== false;
   const demoSpecialist = isPricing && showDemo ? getDemoSpecialistForSport(sport || "") : null;
   const demoSpecialistFirst = demoSpecialist ? demoSpecialist.name.split(" ")[0] : "";
-  const isOtherNotSure = sport === "Other / Not sure";
 
   const rowClass = [
     "sport-demo-cta-row",
@@ -47,6 +47,14 @@ export default function SportDemoCtaBlock({
 
   const showNote = !suppressCoachNote;
 
+  const handleBookDemoClick = () => {
+    if (!hasSport) {
+      openSportRequiredModal();
+      return;
+    }
+    openCalendlyForSport(sport);
+  };
+
   const noteEl = showNote ? (
     <div className={`${noteClass}${useCoachFlex ? " b-hero-sport-help-below" : ""}`}>
       {!showDemo && !isPricing ? (
@@ -60,11 +68,7 @@ export default function SportDemoCtaBlock({
         )
       ) : hasSport ? (
         isPricing ? (
-          isOtherNotSure ? (
-            `You'll connect with ${demoSpecialist?.name ?? "our team"} to help you find the right solution`
-          ) : (
-            `You'll connect with ${demoSpecialistFirst}—your ${sport} specialist.`
-          )
+          `You'll connect with ${demoSpecialistFirst}—your ${sport} specialist.`
         ) : (
           `You'll be connected to a ${sport} specialist.`
         )
@@ -105,14 +109,7 @@ export default function SportDemoCtaBlock({
                 className={`btn red${hasSport ? " sport-selected" : ""}`}
                 data-requires-sport="true"
                 title="Select your sport for a tailored demo experience."
-                onClickCapture={(e) => {
-                  if (hasSport) {
-                    return;
-                  }
-                  e.preventDefault();
-                  e.stopPropagation();
-                  openSportRequiredModal();
-                }}
+                onClick={handleBookDemoClick}
               >
                 Book a Demo
               </button>
@@ -123,14 +120,7 @@ export default function SportDemoCtaBlock({
               className={`btn red${hasSport ? " sport-selected" : ""}`}
               data-requires-sport="true"
               title="Select your sport for a tailored demo experience."
-              onClickCapture={(e) => {
-                if (hasSport) {
-                  return;
-                }
-                e.preventDefault();
-                e.stopPropagation();
-                openSportRequiredModal();
-              }}
+              onClick={handleBookDemoClick}
             >
               Book a Demo
             </button>

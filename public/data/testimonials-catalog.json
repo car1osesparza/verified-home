@@ -1,261 +1,384 @@
 {
-  "source": "mock",
+  "source": "local-catalog",
   "items": [
     {
-      "id": "mock-1",
+      "id": "andy-frank-virginia-tech-fb",
+      "q": "Verified has been a great asset to our recruiting efforts for several years. They have the most complete information in the industry and serve as the foundation for our prospect database.",
+      "name": "Andy Frank",
+      "role": "General Manager, Virginia Tech Football",
+      "sports": [
+        "Football"
+      ],
+      "sort_order": 38
+    },
+    {
+      "id": "sarah-noble-south-carolina-wvol",
+      "q": "Verified Athletics has been an amazing addition to our recruiting. Having the real time updates, player stats, and being able to sort by position has allowed us to organize our recruiting in ways we couldn't have done with just the portal itself. We are very thankful for Verified Athletics.",
+      "name": "Sarah Noble",
+      "role": "Head Coach, South Carolina Women's Volleyball",
+      "sports": [
+        "Women's Volleyball"
+      ],
+      "sort_order": 37
+    },
+    {
+      "id": "yolisha-jackson-south-alabama-wbb",
       "q": "Verified Athletics helped tremendously in organizing our portal efforts. The ability to filter to your specific needs and get instant updates puts Verified in a class of their own.",
       "name": "Yolisha Jackson",
-      "role": "Head Coach, South Alabama WBB",
-      "sports": ["Women's Basketball"],
+      "role": "Head Coach, South Alabama Women's Basketball",
+      "sports": [
+        "Women's Basketball"
+      ],
+      "sort_order": 36
+    },
+    {
+      "id": "tyler-olker-tcu-fb",
+      "q": "Verified Athletics is an integral part of our daily operation. Their platform gives our staff trusted information, saves valuable time, and helps us stay proactive throughout every phase of the scouting process. It has become a key resource for TCU.",
+      "name": "Tyler Olker",
+      "role": "Assistant General Manager, TCU Football",
+      "sports": [
+        "Football"
+      ],
+      "sort_order": 35
+    },
+    {
+      "id": "mike-jasper-stetson-fb",
+      "q": "Being at a smaller FCS program, our staff may not be as large as other programs but Verified allows us to operate with the efficiency and resources of a larger recruiting department. Being that recruiting is the lifeline of any program, Verified proves its worth throughout the entire year and the customer service is top tier.",
+      "name": "Mike Jasper",
+      "role": "Head Football Coach, Stetson University",
+      "sports": [
+        "Football"
+      ],
+      "sort_order": 34
+    },
+    {
+      "id": "christian-lomeli-indiana-msoc",
+      "q": "Verified Athletics has been a valuable tool in enhancing Indiana University's recruiting process by providing access to one of the most accurate databases of transfer prospects nationwide. The platform has allowed our staff to quickly identify, evaluate, and track prospects with verified data, saving significant time in the early stages of recruiting. The real-time insights, in-depth scoring metrics, and measurable data have improved the efficiency and precision of our evaluations. Ultimately, Verified Athletics has helped us make more informed decisions and connect with the right players who fit our program.",
+      "name": "Christian Lomeli",
+      "role": "Indiana University Men's Soccer",
+      "sports": [
+        "Men's Soccer"
+      ],
+      "sort_order": 33
+    },
+    {
+      "id": "john-lorenzo-wright-state-wbb",
+      "q": "Verified helps us find players who fit our program with speed and efficiency. With help from Verified, we offered 5 transfers, and signed all 5!",
+      "name": "John Lorenzo",
+      "role": "Associate Head Coach, Wright State Women's Basketball",
+      "sports": [
+        "Women's Basketball"
+      ],
+      "sort_order": 32
+    },
+    {
+      "id": "hunter-simms-old-dominion-fb",
+      "q": "Using Verified has made every aspect of our recruiting department more efficient — from organizing road plans to identifying and evaluating high school, JUCO, and transfer portal prospects. It has streamlined our entire recruiting process and continues to be an invaluable resource for our staff. Without question, it is the best recruiting tool we have used.",
+      "name": "Hunter Simms",
+      "role": "General Manager, Old Dominion Football",
+      "sports": [
+        "Football"
+      ],
+      "sort_order": 31
+    },
+    {
+      "id": "jess-imhof-maryland-wbb",
+      "q": "Verified athletics is involved in our every day operations and recruiting efforts at the University of Maryland. Their forward-thinking and solution based actions, coupled with their easy-to-use platform have been a huge asset to our program.",
+      "name": "Jess Imhof",
+      "role": "Director of Scouting, Maryland Women's Basketball",
+      "sports": [
+        "Women's Basketball"
+      ],
       "sort_order": 30
     },
     {
-      "id": "mock-2",
-      "q": "Verified athletics is involved in our every day operations and recruiting efforts at the University of Maryland. Their forward-thinking and solution based actions, coupled with their easy-to-use platform have been a huge asset to our program.",
-      "name": "Jess Imhof",
-      "role": "Director of Scouting, Maryland WBB",
-      "sports": ["Women's Basketball"],
+      "id": "christopher-rich-uncg-msoc",
+      "q": "Verified Athletics is now an integral part of our transfer portal recruiting process here at UNCG. In this new landscape in college athletics with a high volume of transfers in each window, it's extremely important that we keep up and execute our recruiting process with high impact transfers each year. Verified Athletics helps us do that by giving us key information real time and organizes things in an efficient way, which significantly improves our workflow.",
+      "name": "Christopher Rich",
+      "role": "UNC Greensboro Men's Soccer",
+      "sports": [
+        "Men's Soccer"
+      ],
       "sort_order": 29
     },
     {
-      "id": "mock-3",
-      "q": "Verified Athletics has been an amazing addition to our recruiting. Having the real time updates, player stats, and being able to sort by position has allowed us to organize our recruiting in ways we couldn't have done with just the portal itself. We are very thankful for Verified Athletics.",
-      "name": "Sarah Noble",
-      "role": "Head Coach, South Carolina WVOL",
-      "sports": ["Volleyball"],
+      "id": "brian-pensky-florida-state-wsoc",
+      "q": "Verified is a terrific tool that we have utilized going on two years now. Andrew and his staff continue to evolve as well, making their software as functional and useful as possible.",
+      "name": "Brian Pensky",
+      "role": "Florida State Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 28
     },
     {
-      "id": "mock-4",
-      "q": "Our staff trusts Verified for day-one contact accuracy. It cut our prep time before every recruiting trip.",
-      "name": "Marcus Reid",
-      "role": "Director of Recruiting, Coastal Carolina Baseball",
-      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": ["Baseball"],
+      "id": "kaitlyn-judge-west-ga-wbb",
+      "q": "Verified has been an integral partner in portaling. The software itself has been a great tool in evaluating players, and the team's service has been top notch in advising and customizing based on our needs.",
+      "name": "Kaitlyn Judge",
+      "role": "General Manager, West Georgia Women's Basketball",
+      "sports": [
+        "Women's Basketball"
+      ],
       "sort_order": 27
     },
     {
-      "id": "mock-5",
-      "q": "The transfer portal moves fast. Verified keeps our board current so we are never reacting a week late.",
-      "name": "Elena Vasquez",
-      "role": "Head Coach, San Diego State Women's Soccer",
-      "sports": ["Women's Soccer"],
+      "id": "andrea-morrow-boston-college-wsoc",
+      "q": "Verified Athletics has streamlined our transfer portal process. Using this platform, we are able to be efficient which is a major asset to a college program especially when trying to improve a roster. We appreciate the work Verified does on the front end to save us time and allow us to focus our efforts on evaluation.",
+      "name": "Andrea Morrow",
+      "role": "Boston College Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 26
     },
     {
-      "id": "mock-6",
-      "q": "We use Verified as the single source of truth for prospect contact data across the entire staff.",
-      "name": "Tom Hartley",
-      "role": "General Manager, James Madison Football",
-      "img": "/legacy/Verified homepage_files/john_l.jpg",
-      "sports": ["Football"],
+      "id": "danny-odea-dartmouth-fb",
+      "q": "Verified Athletics has created so many opportunities to refine and make our process more efficient. The site has allowed our program to minor in the transfer portal as well as major in the recruitment of the best players at the right time! Their customer service is second to none as well when needed!",
+      "name": "Danny O'Dea",
+      "role": "Director of Recruiting, Dartmouth Football",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 25
     },
     {
-      "id": "mock-7",
-      "q": "Film, academics, and fit matter—but you cannot evaluate a kid you cannot reach. Verified solves that first step.",
-      "name": "Priya Nair",
-      "role": "Associate Head Coach, Davidson Men's Basketball",
-      "img": "/legacy/Verified homepage_files/rick_spencer.png",
-      "sports": ["Men's Basketball"],
+      "id": "dane-brenner-wake-forest-msoc",
+      "q": "We've relied on Verified Athletics as a vital tool when navigating the transfer portal over the last several years. In today's environment with the massive numbers of players entering the portal, a system like Verified Athletics that allows us to quickly search, filter, and compare players across all levels of NCAA Collegiate soccer is invaluable.",
+      "name": "Dane Brenner",
+      "role": "Wake Forest Men's Soccer",
+      "sports": [
+        "Men's Soccer"
+      ],
       "sort_order": 24
     },
     {
-      "id": "mock-8",
-      "q": "Verified Athletics gave our coordinators a shared workflow. Less spreadsheet chaos, more actual recruiting.",
-      "name": "Chris O'Malley",
-      "role": "Head Coach, Holy Cross Football",
-      "sports": ["Football"],
+      "id": "cole-schmitt-ucla-wsoc",
+      "q": "The transfer portal era has become increasingly chaotic. Verified Athletics has helped bring much-needed structure and transparency to the process. It's been a valuable resource in navigating the portal and managing our process in a more organized way.",
+      "name": "Cole Schmitt",
+      "role": "UCLA Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 23
     },
     {
-      "id": "mock-9",
-      "q": "The depth of roster and coaching-staff data is unmatched for programs at our level.",
-      "name": "Jordan Ellis",
-      "role": "Recruiting Coordinator, UT Arlington Baseball",
-      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": ["Baseball"],
+      "id": "braden-layer-allegheny-fb",
+      "q": "Verified has changed the way we recruit nationally—the ease in which we can access data and contact information for recruits from coast-to-coast has reshaped our out-of-region recruiting and directly led to a more geographically diverse, and talented, football roster. It has been worth every penny!",
+      "name": "Braden Layer",
+      "role": "Head Football Coach, Allegheny College",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 22
     },
     {
-      "id": "mock-10",
-      "q": "We signed three portal players last cycle who surfaced first in Verified. That alone paid for the platform.",
-      "name": "Morgan Blake",
-      "role": "Head Coach, Fairfield Women's Lacrosse",
-      "sports": ["Women's Lacrosse"],
+      "id": "tobias-bischof-stony-brook-wsoc",
+      "q": "Verified Athletics has been a valuable tool for us. It simplifies the transfer portal and helps us quickly find players who fit our program.",
+      "name": "Tobias Bischof",
+      "role": "Stony Brook Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 21
     },
     {
-      "id": "mock-11",
-      "q": "My assistants spend less time verifying numbers and more time building relationships with prospects.",
-      "name": "David Cho",
-      "role": "Head Coach, UC Davis Football",
-      "img": "/legacy/Verified homepage_files/john_l.jpg",
-      "sports": ["Football"],
+      "id": "tony-kunczewski-berry-fb",
+      "q": "We switched over to Verified last year. The information we receive is thorough and reliable. The staff is easy to deal with. We love the offer tracker feature and the transfer portal information. Glad we made the change.",
+      "name": "Tony Kunczewski",
+      "role": "Head Football Coach, Berry College",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 20
     },
     {
-      "id": "mock-12",
-      "q": "Verified is the first place we look when we need a clean export for a staff meeting or compliance review.",
-      "name": "Rachel Kim",
-      "role": "Director of Operations, George Mason Women's Basketball",
-      "img": "/legacy/Verified homepage_files/rick_spencer.png",
-      "sports": ["Women's Basketball"],
+      "id": "chris-gnehm-indiana-state-wsoc",
+      "q": "Verified has completely streamlined how we approach the transfer portal. It allows us to quickly build and compare player lists while staying ahead of the curve when athletes enter the portal. It's been a real game changer for our process.",
+      "name": "Chris Gnehm",
+      "role": "Indiana State Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 19
     },
     {
-      "id": "mock-13",
-      "q": "For a mid-major program, speed wins. Verified helps us identify fits before bigger schools crowd the prospect.",
-      "name": "Nate Sullivan",
-      "role": "Head Coach, Lafayette Football",
-      "sports": ["Football"],
+      "id": "graham-winkworth-arizona-state-wsoc",
+      "q": "Verified is an excellent tool for our program. Sometimes you feel as a coach there are not enough hours in a day to complete all your work. Verified helps us to stay organized in an area of college sport that has exploded over the last few years.",
+      "name": "Graham Winkworth",
+      "role": "Arizona State Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 18
     },
     {
-      "id": "mock-14",
-      "q": "Our international recruiting improved because contact paths and staff routing are actually reliable.",
-      "name": "Amara Diallo",
-      "role": "Head Coach, Tulsa Men's Soccer",
-      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": ["Men's Soccer"],
+      "id": "michelle-lenard-baylor-wsoc",
+      "q": "Verified Athletics has been a game-changer for how we navigate the transfer portal. Having all of a player's information centralized, combined with the ability to quickly filter and immediately make contact, gives us a real advantage in identifying and connecting with the right players early in the process.",
+      "name": "Michelle Lenard",
+      "role": "Baylor Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 17
     },
     {
-      "id": "mock-15",
-      "q": "I recommend Verified to every coach who is still juggling three different data sources every Monday morning.",
-      "name": "Greg Finley",
-      "role": "Head Coach, Wofford Baseball",
-      "img": "/legacy/Verified homepage_files/john_l.jpg",
-      "sports": ["Baseball"],
+      "id": "christopher-fox-bowling-green-wsoc",
+      "q": "We've had a really positive experience working with Andrew and Verified Athletics. The platform makes it easy to evaluate transfers efficiently by keeping all the information we need in one centralized location. The variety of tools available helps our staff stay organized and collaborate effectively, which has streamlined our overall process. Just as importantly, the product continues to evolve, and the customer service has been outstanding. Verified Athletics has become an integral part of how we manage our recruiting workflow.",
+      "name": "Christopher Fox",
+      "role": "Bowling Green Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 16
     },
     {
-      "id": "mock-16",
-      "q": "The platform scales from our GA level to my office—we all see the same board and the same numbers.",
-      "name": "Hannah Ortiz",
-      "role": "General Manager, Rice Women's Basketball",
-      "sports": ["Women's Basketball"],
+      "id": "seb-furness-lsu-wsoc",
+      "q": "In the dynamic world of the transfer portal, Verified has been instrumental streamlining our process to organize and evaluate talent effectively and efficiently. In simple terms, we spend more time looking at the right players for our program.",
+      "name": "Seb Furness",
+      "role": "LSU Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 15
     },
     {
-      "id": "mock-17",
-      "q": "Verified helped us reorganize a chaotic transfer class into a clear priority list in one afternoon.",
-      "name": "Kevin Marsh",
-      "role": "Head Coach, South Alabama Football",
-      "img": "/legacy/Verified homepage_files/rick_spencer.png",
-      "sports": ["Football"],
+      "id": "brad-spencer-north-central-fb",
+      "q": "Amount and quality of contact information and data is everything. Verified has provided this more accurately than any other recruiting tool we've used.",
+      "name": "Brad Spencer",
+      "role": "Head Coach, North Central College Football",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 14
     },
     {
-      "id": "mock-18",
-      "q": "We have used other services. None of them kept our CRM and our on-field staff aligned the way Verified does.",
-      "name": "Lisa Tran",
-      "role": "Head Coach, Portland State Volleyball",
-      "sports": ["Women's Volleyball"],
+      "id": "carson-dambrosio-uconn-wsoc",
+      "q": "Verified Athletics has streamlined our process in the transfer portal. It has helped us really organize our workflow and be more efficient when scouting players.",
+      "name": "Carson Dambrosio",
+      "role": "University of Connecticut Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 13
     },
     {
-      "id": "mock-19",
-      "q": "Prospect coverage is broad enough for our staff, but the filters keep us focused on athletes we can actually recruit.",
-      "name": "Mike Donovan",
-      "role": "Recruiting Coordinator, Fordham Football",
-      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": ["Football"],
+      "id": "kyle-fletcher-thomas-msoc",
+      "q": "Verified has changed the way we are able to recruit. With their program we are able to identify transfers that fit what we are looking for and in turn focus on transfers who are realistically interested, saving us valuable time.",
+      "name": "Kyle Fletcher",
+      "role": "Thomas College Men's Soccer",
+      "sports": [
+        "Men's Soccer"
+      ],
       "sort_order": 12
     },
     {
-      "id": "mock-20",
-      "q": "Every cycle we lean on Verified for the first wave of outreach. It is consistent and audit-friendly.",
-      "name": "Sara Whitcomb",
-      "role": "Head Coach, Belmont Women's Basketball",
-      "img": "/legacy/Verified homepage_files/john_l.jpg",
-      "sports": ["Women's Basketball"],
+      "id": "paul-crowley-christopher-newport-fb",
+      "q": "Verified has been a great tool for our football program. Both the high school and transfer portal information has been extremely valuable to our recruiting efforts.",
+      "name": "Paul Crowley",
+      "role": "Head Football Coach, Christopher Newport University",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 11
     },
     {
-      "id": "mock-21",
-      "q": "Our hitting coaches use the academic and roster context alongside contact data—huge for junior college transfers.",
-      "name": "Tyler Boone",
-      "role": "Head Coach, Dallas Baptist Baseball",
-      "sports": ["Baseball"],
+      "id": "bobby-shuttlesworth-texas-am-wsoc",
+      "q": "Verified Athletics has been a tremendous asset to our program, helping us stay organized and fully informed across every aspect of the portal. The platform is incredibly easy to use, which has allowed our staff to navigate it efficiently without a steep learning curve. What really sets the experience apart, though, is the level of communication and support—Andrew has been outstanding. He's been consistently responsive, proactive, and committed to making sure we're getting the most out of the platform, which has made adoption seamless for our entire program.",
+      "name": "Bobby Shuttlesworth",
+      "role": "Texas A&M Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 10
     },
     {
-      "id": "mock-22",
-      "q": "Verified is not just a database. It is how we run weekly recruiting meetings with confidence.",
-      "name": "Angela Pierce",
-      "role": "Head Coach, Missouri State Softball",
-      "img": "/legacy/Verified homepage_files/rick_spencer.png",
-      "sports": ["Softball"],
+      "id": "miles-vaughn-smu-wsoc",
+      "q": "Verified has been a great tool for us as we evaluate potential transfers. Being able to sort for specific statistics or positions streamlines our work and saves valuable time for our staff.",
+      "name": "Miles Vaughn",
+      "role": "SMU Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 9
     },
     {
-      "id": "mock-23",
-      "q": "When the NCAA calendar tightens, we need tools that respect compliance boundaries. Verified does.",
-      "name": "James Corbin",
-      "role": "Head Coach, Elon Football",
-      "sports": ["Football"],
+      "id": "patrick-daberkow-concordia-ne-fb",
+      "q": "Shane, and the crew at Verified have been great for CUNE football and the impact that the portal notifications have had for our program have been huge. They are service-minded and have been absolutely great to work with and get to know!",
+      "name": "Patrick Daberkow",
+      "role": "Concordia University Nebraska Football",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 8
     },
     {
-      "id": "mock-24",
-      "q": "We plugged Verified into our existing process without retraining the whole staff—it just worked.",
-      "name": "Nina Kowalski",
-      "role": "Director of Recruiting, Cleveland State Women's Basketball",
-      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": ["Women's Basketball"],
+      "id": "south-florida-msoc",
+      "q": "Verified is a great way to sort through and identify the recruiting needs of a program. The customer service is first class and I have been very excited to use the program to identify the right prospects in a timely manner.",
+      "name": "University of South Florida",
+      "role": "Men's Soccer",
+      "sports": [
+        "Men's Soccer"
+      ],
       "sort_order": 7
     },
     {
-      "id": "mock-25",
-      "q": "The best compliment I can give: our boosters notice less chaos and more signed classes.",
-      "name": "Robert Gaines",
-      "role": "Head Coach, Chattanooga Football",
-      "img": "/legacy/Verified homepage_files/john_l.jpg",
-      "sports": ["Football"],
+      "id": "rachael-doyle-guetlein-wyoming-wsoc",
+      "q": "Verified Athletics is an easy-to-use platform for tracking and initiating contact with players in the transfer portal. At the University of Wyoming, it has helped us immensely by providing real-time updates on athletes who meet our specific recruiting parameters as soon as they hit the portal.",
+      "name": "Rachael Doyle-Guetlein",
+      "role": "University of Wyoming Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 6
     },
     {
-      "id": "mock-26",
-      "q": "Verified helps us balance high school, JUCO, and portal pipelines without losing track of anyone.",
-      "name": "Carla Mendes",
-      "role": "Head Coach, LMU Women's Soccer",
-      "sports": ["Women's Soccer"],
+      "id": "james-armstrong-auburn-wsoc",
+      "q": "Verified Athlete allows us to navigate efficiently through the portal process by providing all of the necessary info at the click of a button.",
+      "name": "James Armstrong",
+      "role": "Auburn University Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 5
     },
     {
-      "id": "mock-27",
-      "q": "I have coached for twenty years. Verified is the first platform I have seen the entire staff adopt willingly.",
-      "name": "Phil Andersen",
-      "role": "Head Coach, Northern Iowa Football",
-      "img": "/legacy/Verified homepage_files/rick_spencer.png",
-      "sports": ["Football"],
+      "id": "mark-raymond-williams-fb",
+      "q": "Verified has greatly improved our entire recruiting process. It has been a great tool for us to identify and evaluate student athletes. Most importantly has allowed staff to work much more efficiently.",
+      "name": "Mark Raymond",
+      "role": "Head Coach, Williams College Football",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 4
     },
     {
-      "id": "mock-28",
-      "q": "We use sport-agnostic tags for staff-wide testimonials, but sport filters still surface the right quotes for visits.",
-      "name": "Verified Athletics Staff",
-      "role": "Customer Success",
-      "sports": [],
+      "id": "rob-montanaro-uconn-msoc",
+      "q": "Verified has been great at helping us be efficient with our effort in navigating the portal and the company itself has been brilliant to work with.",
+      "name": "Rob Montanaro",
+      "role": "UConn Men's Soccer",
+      "sports": [
+        "Men's Soccer"
+      ],
       "sort_order": 3
     },
     {
-      "id": "mock-29",
-      "q": "From initial call to signed agreement, the Verified team understood how recruiting offices actually operate.",
-      "name": "Diane Harper",
-      "role": "Athletic Director, Stonehill College",
-      "img": "/legacy/Verified homepage_files/andy_vt.jpg",
-      "sports": [],
+      "id": "shannon-grogan-drexel-wsoc",
+      "q": "My programs have been utilizing Verified Athletics for over three years now. The service that Andrew and his team provide is second to none in helping us as a program navigate the transfer portal. The platform is user friendly and a must-have tool for anyone incorporating transfers into their recruiting scheme.",
+      "name": "Shannon Grogan",
+      "role": "Drexel Women's Soccer",
+      "sports": [
+        "Women's Soccer"
+      ],
       "sort_order": 2
     },
     {
-      "id": "mock-30",
-      "q": "If you are building a modern recruiting operation, start with clean data. Verified is that foundation for us.",
-      "name": "Victor Lam",
-      "role": "Head Coach, Sacramento State Men's Basketball",
-      "img": "/legacy/Verified homepage_files/john_l.jpg",
-      "sports": ["Men's Basketball"],
+      "id": "drew-martin-miami-oh-fb",
+      "q": "We love the totality of names, updated offers, offer emails, track times, and overall ease of use.",
+      "name": "Drew Martin",
+      "role": "Miami University Football",
+      "sports": [
+        "Football"
+      ],
       "sort_order": 1
     }
   ]

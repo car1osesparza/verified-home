@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { isRecruitsOrLegacyResourcesPath } from "../lib/recruits-path";
 
 const MAX_SCROLL_ATTEMPTS = 80;
 
@@ -50,6 +51,9 @@ function scrollElementIntoDocumentPosition(el) {
  */
 function scrollToHashFromLocation() {
   if (typeof window === "undefined") {
+    return;
+  }
+  if (isRecruitsOrLegacyResourcesPath(window.location.pathname)) {
     return;
   }
   const { hash } = window.location;

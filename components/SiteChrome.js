@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConfigProvider, Modal, Select } from "antd";
 import { SPORTS } from "../lib/site-data";
+import { openCalendlyForSport } from "../lib/sport-calendly";
 import { getSelectedSport } from "../lib/sport-preference";
 import HashScroll from "./HashScroll";
 import { MarketingFooter, MarketingTopNav } from "./MarketingChromeParts";
@@ -40,13 +41,17 @@ function SiteChromeInner({ children }) {
       return;
     }
 
-    applySport(modalSport);
+    const sportToBook = modalSport;
+    applySport(sportToBook);
     setSportModalOpen(false);
 
     if (pendingRedirectUrl) {
       router.push(pendingRedirectUrl);
       setPendingRedirectUrl(undefined);
+      return;
     }
+
+    openCalendlyForSport(sportToBook);
   };
 
   const closeSportModal = () => {
@@ -79,10 +84,18 @@ function SiteChromeInner({ children }) {
           mask={{ closable: true }}
           keyboard
           onCancel={closeSportModal}
-          cancelButtonProps={{ style: { display: "none" } }}
-          onOk={handleSportModalConfirm}
-          okText="Continue"
-          okButtonProps={{ disabled: !modalSport, className: modalSport ? "sport-selected-ant-btn" : undefined }}
+          footer={
+            <div className="sport-modal-footer">
+              <button
+                type="button"
+                className={`btn red sport-modal-demo-btn${modalSport ? " sport-selected" : ""}`}
+                disabled={!modalSport}
+                onClick={handleSportModalConfirm}
+              >
+                Book a Demo
+              </button>
+            </div>
+          }
         >
           <p className="sport-modal-copy">
             A sport selection is required before continuing to demo or pricing actions.

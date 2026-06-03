@@ -8,7 +8,9 @@ export default function HeroSportPicker({ sport, onSportChange }) {
   return (
     <div className="b-hero-sport-tail">
       <div className="b-hero-sport-panel">
-        <p className="hero-p b-hero-sport-prompt">Pick a sport to tailor what you see on this page</p>
+        {!sport ? (
+          <p className="hero-p b-hero-sport-prompt">Pick a sport to tailor what you see on this page</p>
+        ) : null}
         <div className="b-hero-sport-row b-hero-sport-row--coach-select">
           <p className="b-hero-sport-callout">I coach:</p>
           <SportDemoCtaBlock
@@ -22,7 +24,7 @@ export default function HeroSportPicker({ sport, onSportChange }) {
           />
         </div>
         <div className="b-hero-resources-pill">
-          <Link href="/resources#athletes-transfers" className="b-hero-resources-pill-link">
+          <Link href="/recruits#hs-athletes" className="b-hero-resources-pill-link">
             Are you an athlete or HS coach? Click here
           </Link>
         </div>

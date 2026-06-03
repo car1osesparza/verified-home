@@ -6,10 +6,13 @@ import { Button } from "antd";
 import {
   CHAMPIONSHIP_BANNERS_HEADLINE,
   CHAMPIONSHIP_BANNERS_LEAD,
-  formatChampionshipQualifier,
+  formatChampionshipDivision,
+  formatChampionshipScope,
   formatChampionshipSport,
   MOCK_CHAMPIONSHIP_BANNERS,
+  sortChampionshipBannersForSport,
 } from "../lib/championship-banners";
+import { useSportSelection } from "./SportSelectionProvider";
 import {
   buildChampionshipBannerTheme,
   championshipBannerThemeKey,
@@ -18,10 +21,16 @@ import {
 } from "../lib/championship-banner-theme";
 import "./championship-banners.css";
 
-const BANNER_WIDTH = 240;
 const BANNER_GAP = 16;
 /** 80% of original 440px banner height */
 const BANNER_HEIGHT = 352;
+
+/** Keep in sync with `.champ-banner-card` breakpoints in championship-banners.css */
+function bannerWidthForViewport(viewportWidth) {
+  if (viewportWidth <= 640) return 200;
+  if (viewportWidth <= 900) return 220;
+  return 240;
+}
 
 function schoolInitials(name) {
   return name
@@ -35,12 +44,15 @@ function schoolInitials(name) {
 
 function ChampionshipBannerCard({ banner, theme = DEFAULT_CHAMPIONSHIP_BANNER_THEME }) {
   const sportLabel = formatChampionshipSport(banner.sport);
-  const qualifierLabel = formatChampionshipQualifier(banner.qualifier);
+  const divisionLabel = formatChampionshipDivision(banner.division ?? banner.qualifier);
+  const scopeLabel = formatChampionshipScope(banner.championshipScope ?? "National");
 
   const ariaLabel = [
     banner.schoolName,
     sportLabel,
-    qualifierLabel ? `${qualifierLabel} champion` : "champion",
+    divisionLabel,
+    scopeLabel,
+    "champion",
     banner.year,
   ]
     .filter(Boolean)
@@ -70,7 +82,8 @@ function ChampionshipBannerCard({ banner, theme = DEFAULT_CHAMPIONSHIP_BANNER_TH
 
       <div className="champ-banner-mid">
         {sportLabel ? <p className="champ-banner-sport">{sportLabel}</p> : null}
-        {qualifierLabel ? <p className="champ-banner-qualifier">{qualifierLabel}</p> : null}
+        {divisionLabel ? <p className="champ-banner-division">{divisionLabel}</p> : null}
+        {scopeLabel ? <p className="champ-banner-scope">{scopeLabel}</p> : null}
         <h3 className="champ-banner-title">Champion</h3>
       </div>
 
@@ -127,8 +140,9 @@ function useChampionshipBannerThemes(banners) {
   return themes;
 }
 
-function useBannersPerPage(viewportRef) {
+function useBannerCarouselLayout(viewportRef) {
   const [perPage, setPerPage] = useState(4);
+  const [cardWidth, setCardWidth] = useState(240);
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -136,7 +150,9 @@ function useBannersPerPage(viewportRef) {
 
     const update = () => {
       const w = el.clientWidth;
-      const next = Math.max(1, Math.floor((w + BANNER_GAP) / (BANNER_WIDTH + BANNER_GAP)));
+      const cardW = bannerWidthForViewport(w);
+      const next = Math.max(1, Math.floor((w + BANNER_GAP) / (cardW + BANNER_GAP)));
+      setCardWidth(cardW);
       setPerPage(next);
     };
 
@@ -146,17 +162,28 @@ function useBannersPerPage(viewportRef) {
     return () => ro.disconnect();
   }, [viewportRef]);
 
-  return perPage;
+  return { perPage, cardWidth };
 }
 
 export default function ChampionshipBannersSection({ banners = MOCK_CHAMPIONSHIP_BANNERS }) {
+  const { sport } = useSportSelection();
   const [pageIndex, setPageIndex] = useState(0);
   const [slideDir, setSlideDir] = useState(1);
   const viewportRef = useRef(null);
-  const perPage = useBannersPerPage(viewportRef);
-  const themes = useChampionshipBannerThemes(banners);
+  const { perPage, cardWidth: trackCardWidth } = useBannerCarouselLayout(viewportRef);
 
-  const pageCount = Math.max(1, Math.ceil(banners.length / perPage));
+  const orderedBanners = useMemo(
+    () => sortChampionshipBannersForSport(banners, sport),
+    [banners, sport],
+  );
+
+  const themes = useChampionshipBannerThemes(orderedBanners);
+
+  const pageCount = Math.max(1, Math.ceil(orderedBanners.length / perPage));
+
+  useEffect(() => {
+    setPageIndex(0);
+  }, [sport, orderedBanners.length]);
 
   useEffect(() => {
     setPageIndex((p) => Math.min(p, pageCount - 1));
@@ -164,8 +191,8 @@ export default function ChampionshipBannersSection({ banners = MOCK_CHAMPIONSHIP
 
   const pageBanners = useMemo(() => {
     const start = pageIndex * perPage;
-    return banners.slice(start, start + perPage);
-  }, [banners, pageIndex, perPage]);
+    return orderedBanners.slice(start, start + perPage);
+  }, [orderedBanners, pageIndex, perPage]);
 
   const goPage = useCallback(
     (delta) => {
@@ -191,7 +218,7 @@ export default function ChampionshipBannersSection({ banners = MOCK_CHAMPIONSHIP
         <div
           className="champ-banner-carousel"
           style={{
-            "--champ-banner-width": `${BANNER_WIDTH}px`,
+            "--champ-banner-width": `${trackCardWidth}px`,
             "--champ-banner-height": `${BANNER_HEIGHT}px`,
             "--champ-banner-gap": `${BANNER_GAP}px`,
           }}
@@ -211,7 +238,9 @@ export default function ChampionshipBannersSection({ banners = MOCK_CHAMPIONSHIP
               <div
                 id={regionId}
                 key={pageIndex}
-                className={`champ-banner-track champ-banner-track--slide-${slideDir > 0 ? "next" : "prev"}`}
+                className={`champ-banner-track champ-banner-track--slide-${slideDir > 0 ? "next" : "prev"}${
+                  pageBanners.length < perPage ? " champ-banner-track--partial" : ""
+                }`}
                 role="list"
                 aria-live="polite"
               >

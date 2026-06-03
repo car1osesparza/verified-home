@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-/** Athlete resources live on /resources#athletes-transfers (same content as nav “Athletes”). */
+/** Athlete resources live on /recruits#hs-athletes (same content as nav “Athletes”). */
 export default function ForAthletesPage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/resources#athletes-transfers");
+    router.replace("/recruits#hs-athletes");
   }, [router]);
 
   return (

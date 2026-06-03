@@ -1,9 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { resourcesSectionPath } from "../lib/home-routes";
-import { HS_FOOTBALL, SPORTS } from "../lib/site-data";
+import { SPORTS } from "../lib/site-data";
 import { getSelectedSport, setSelectedSport } from "../lib/sport-preference";
 
 const SportSelectionContext = createContext(undefined);
@@ -13,7 +11,6 @@ const SportSelectionContext = createContext(undefined);
  * Persists via `setSelectedSport` / `va:selected-sport` (see `lib/sport-preference.js`).
  */
 export function SportSelectionProvider({ children }) {
-  const router = useRouter();
   const [sport, setSport] = useState(undefined);
 
   useEffect(() => {
@@ -47,15 +44,11 @@ export function SportSelectionProvider({ children }) {
         setSelectedSport("");
         return;
       }
-      if (next === HS_FOOTBALL) {
-        router.push(resourcesSectionPath("hs-football-coaches"));
-        return;
-      }
       if (SPORTS.includes(next)) {
         setSelectedSport(next);
       }
     },
-    [router],
+    [],
   );
 
   const value = useMemo(

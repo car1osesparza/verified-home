@@ -1,53 +1,25 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import TestimonialCard from "./TestimonialCard";
 import TestimonialsAllModal from "./TestimonialsAllModal";
 
-const DESKTOP_BATCH = 6;
-const MOBILE_BATCH = 4;
-const BATCH_BREAKPOINT_PX = 960;
-
-function useExpandBatchSize() {
-  const [batchSize, setBatchSize] = useState(DESKTOP_BATCH);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.matchMedia) {
-      return undefined;
-    }
-    try {
-      const mq = window.matchMedia(`(min-width: ${BATCH_BREAKPOINT_PX}px)`);
-      const update = () => setBatchSize(mq.matches ? DESKTOP_BATCH : MOBILE_BATCH);
-      update();
-      if (typeof mq.addEventListener === "function") {
-        mq.addEventListener("change", update);
-        return () => mq.removeEventListener("change", update);
-      }
-      mq.addListener(update);
-      return () => mq.removeListener(update);
-    } catch {
-      setBatchSize(DESKTOP_BATCH);
-      return undefined;
-    }
-  }, []);
-
-  return batchSize;
-}
+/** Homepage preview: first three in catalog order (before “Show more”). */
+const PREVIEW_COUNT = 3;
 
 export default function TestimonialsExpandLayout({ items, loading, fetchError, sportKey }) {
-  const batchSize = useExpandBatchSize();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const previewItems = useMemo(() => items.slice(0, batchSize), [items, batchSize]);
+  const previewItems = useMemo(() => items.slice(0, PREVIEW_COUNT), [items]);
   const showMoreButton = !loading && !fetchError && items.length > previewItems.length;
 
-  const skeletonSlots = batchSize;
+  const skeletonSlots = PREVIEW_COUNT;
 
   return (
     <div className="t-expand">
       {loading && (
         <div
-          className={`t-expand-grid t-expand-skeleton${batchSize >= DESKTOP_BATCH ? " t-expand-grid--wide" : ""}`}
+          className="t-expand-grid t-expand-skeleton t-expand-grid--preview-three"
           aria-busy="true"
         >
           {Array.from({ length: skeletonSlots }, (_, i) => (
@@ -77,7 +49,7 @@ export default function TestimonialsExpandLayout({ items, loading, fetchError, s
       {!loading && !fetchError && (
         <>
           <div
-            className={`t-expand-grid${batchSize >= DESKTOP_BATCH ? " t-expand-grid--wide" : ""}`}
+            className="t-expand-grid t-expand-grid--preview-three"
             role="list"
             aria-label="Customer testimonials preview"
           >

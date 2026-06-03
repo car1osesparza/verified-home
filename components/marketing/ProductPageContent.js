@@ -1,7 +1,9 @@
 "use client";
 
+import { useMemo } from "react";
 import { Typography } from "antd";
-import { PRODUCT_WORKFLOW_SHOWCASES } from "../../lib/product-workflow-showcases";
+import { getProductWorkflowShowcasesForSport } from "../../lib/product-workflow-showcases";
+import { useSportSelection } from "../SportSelectionProvider";
 import ProductWorkflowMedia from "./ProductWorkflowMedia";
 
 const { Title } = Typography;
@@ -20,7 +22,9 @@ const PLATFORM_BENEFITS = [
 ];
 
 export default function ProductPageContent() {
-  const workflowCards = PRODUCT_WORKFLOW_SHOWCASES;
+  const { sport } = useSportSelection();
+
+  const workflowCards = useMemo(() => getProductWorkflowShowcasesForSport(sport), [sport]);
   const workflowCardCount = workflowCards.length;
 
   return (
@@ -50,6 +54,11 @@ export default function ProductPageContent() {
           <Title level={3} className="headline-match-pricing">
             Built for the full recruiting workflow
           </Title>
+          {!sport ? (
+            <p className="product-workflow-sport-hint lead">
+              Select your sport above to see the workflow tools built for your program.
+            </p>
+          ) : null}
           <div className="product-workflow-showcases">
             {workflowCards.map((item, index) => (
               <article className="product-workflow-card" key={item.id}>

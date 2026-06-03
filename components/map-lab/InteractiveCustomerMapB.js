@@ -132,9 +132,20 @@ function getPinHitRadius(visualR) {
   return Math.max(visualR + PIN_HIT_PAD, PIN_HIT_MIN_R);
 }
 
+/** Tooltip anchor from a logo tile button (relative to map unit container). */
+function getLogoTileTooltipPosition(anchorEl, containerEl) {
+  if (!anchorEl || !containerEl) return null;
+  const anchor = anchorEl.getBoundingClientRect();
+  const container = containerEl.getBoundingClientRect();
+  return {
+    x: anchor.left + anchor.width / 2 - container.left,
+    y: anchor.top - container.top,
+  };
+}
+
 /** Pin anchor in viewport pixel coordinates (for HTML tooltip). */
-function getPinTooltipPosition(school, projection, viewTransform, svgEl, viewportEl) {
-  if (!svgEl || !viewportEl || !Number.isFinite(school.lat) || !Number.isFinite(school.lng)) {
+function getPinTooltipPosition(school, projection, viewTransform, svgEl, containerEl) {
+  if (!svgEl || !containerEl || !Number.isFinite(school.lat) || !Number.isFinite(school.lng)) {
     return null;
   }
   const xy = projection([school.lng, school.lat]);
@@ -147,10 +158,10 @@ function getPinTooltipPosition(school, projection, viewTransform, svgEl, viewpor
   if (!ctm) return null;
 
   const screen = pt.matrixTransform(ctm);
-  const vpRect = viewportEl.getBoundingClientRect();
+  const container = containerEl.getBoundingClientRect();
   return {
-    x: screen.x - vpRect.left,
-    y: screen.y - vpRect.top,
+    x: screen.x - container.left,
+    y: screen.y - container.top,
   };
 }
 
@@ -170,13 +181,14 @@ export default function InteractiveCustomerMapB({
   const [logoSlideDir, setLogoSlideDir] = useState(1);
   const [viewTransform, setViewTransform] = useState(DEFAULT_VIEW);
   const [isPanning, setIsPanning] = useState(false);
+  const mapUnitRef = useRef(null);
   const viewportRef = useRef(null);
   const svgRef = useRef(null);
+  const logoTooltipAnchorRef = useRef(null);
   const panSessionRef = useRef(null);
   const suppressMapClickRef = useRef(false);
   const wheelFrameRef = useRef(null);
   const wheelAccumRef = useRef({ factor: 1, x: MAP_VIEW_CENTER.x, y: MAP_VIEW_CENTER.y });
-  const savedViewRef = useRef(null);
   const viewTransformRef = useRef(DEFAULT_VIEW);
   const hoverClearTimerRef = useRef(null);
 
@@ -259,6 +271,16 @@ export default function InteractiveCustomerMapB({
     viewTransformRef.current = viewTransform;
   }, [viewTransform]);
 
+  /** Always start from the default country view (no persisted pan/zoom). */
+  useEffect(() => {
+    setViewTransform(DEFAULT_VIEW);
+    setSelectedState(null);
+    setSelectedSchool(null);
+    setHoveredSchool(null);
+    setHoverState(null);
+    setLogoPage(0);
+  }, []);
+
   /** State drill-down uses pan/zoom (not a separate projection) so wheel/+/- behave like country view. */
   useEffect(() => {
     if (!selectedState || loading) return;
@@ -288,12 +310,17 @@ export default function InteractiveCustomerMapB({
       setTooltipPos(null);
       return;
     }
+    const logoAnchor = logoTooltipAnchorRef.current;
+    if (logoAnchor) {
+      setTooltipPos(getLogoTileTooltipPosition(logoAnchor, mapUnitRef.current));
+      return;
+    }
     const pos = getPinTooltipPosition(
       hoveredSchool,
       projection,
       viewTransform,
       svgRef.current,
-      viewportRef.current
+      mapUnitRef.current || viewportRef.current
     );
     setTooltipPos(pos);
   }, [hoveredSchool, projection, viewTransform]);
@@ -323,6 +350,16 @@ export default function InteractiveCustomerMapB({
   );
 
   const showPinTooltip = useCallback((school) => {
+    logoTooltipAnchorRef.current = null;
+    if (hoverClearTimerRef.current) {
+      window.clearTimeout(hoverClearTimerRef.current);
+      hoverClearTimerRef.current = null;
+    }
+    setHoveredSchool(school);
+  }, []);
+
+  const showLogoBandTooltip = useCallback((school, event) => {
+    logoTooltipAnchorRef.current = event.currentTarget;
     if (hoverClearTimerRef.current) {
       window.clearTimeout(hoverClearTimerRef.current);
       hoverClearTimerRef.current = null;
@@ -335,6 +372,7 @@ export default function InteractiveCustomerMapB({
       window.clearTimeout(hoverClearTimerRef.current);
     }
     hoverClearTimerRef.current = window.setTimeout(() => {
+      logoTooltipAnchorRef.current = null;
       setHoveredSchool(null);
       setTooltipPos(null);
       hoverClearTimerRef.current = null;
@@ -436,10 +474,7 @@ export default function InteractiveCustomerMapB({
     };
   }, [loading, error, clientToSvg, zoomAtViewBoxPoint]);
 
-  const focusState = useCallback((abbr, { saveReturnView = false } = {}) => {
-    if (saveReturnView && savedViewRef.current == null) {
-      savedViewRef.current = viewTransformRef.current;
-    }
+  const focusState = useCallback((abbr) => {
     setSelectedState(abbr);
     setSelectedSchool(null);
     setHoveredSchool(null);
@@ -470,7 +505,7 @@ export default function InteractiveCustomerMapB({
       clearStateZoom();
       return;
     }
-    focusState(abbr, { saveReturnView: savedViewRef.current == null });
+    focusState(abbr);
   }
 
   function handleViewportPointerDown(e) {
@@ -519,7 +554,7 @@ export default function InteractiveCustomerMapB({
     if (selectedState) return;
     const st = stateBySchoolId.get(school.id);
     if (st) {
-      focusState(st, { saveReturnView: savedViewRef.current == null });
+      focusState(st);
     }
   }
 
@@ -571,6 +606,8 @@ export default function InteractiveCustomerMapB({
                   active={selectedSchool?.id === school.id}
                   dimmed={false}
                   hideTitle
+                  onHover={showLogoBandTooltip}
+                  onHoverEnd={hidePinTooltip}
                   onSelect={handleSchoolSelect}
                 />
               ))}
@@ -602,6 +639,8 @@ export default function InteractiveCustomerMapB({
                     active={selectedSchool?.id === school.id}
                     dimmed={false}
                     hideTitle
+                    onHover={showLogoBandTooltip}
+                    onHoverEnd={hidePinTooltip}
                     onSelect={handleSchoolSelect}
                   />
                 ))}
@@ -748,18 +787,20 @@ export default function InteractiveCustomerMapB({
             </g>
               </g>
             </svg>
-            {hoveredSchool && tooltipPos ? (
-              <div
-                className="icmb-pin-tooltip"
-                style={{ left: tooltipPos.x, top: tooltipPos.y }}
-                role="tooltip"
-              >
-                {hoveredSchool.schoolName}
-              </div>
-            ) : null}
           </div>
         </div>
   );
+
+  const mapTooltip =
+    hoveredSchool && tooltipPos ? (
+      <div
+        className="icmb-pin-tooltip"
+        style={{ left: tooltipPos.x, top: tooltipPos.y }}
+        role="tooltip"
+      >
+        {hoveredSchool.schoolName}
+      </div>
+    ) : null;
 
   if (homepageLayout) {
     return (
@@ -767,9 +808,10 @@ export default function InteractiveCustomerMapB({
         <div className="map-inner icmb-home-split">
           <div className="map-dominance-col">{statsSlot}</div>
           <div className="icmb-home-map-col">
-            <div className="icmb-home-map-unit">
+            <div ref={mapUnitRef} className="icmb-home-map-unit">
               {logoSection}
               {mapSection}
+              {mapTooltip}
             </div>
           </div>
         </div>
@@ -779,9 +821,10 @@ export default function InteractiveCustomerMapB({
 
   return (
     <div className={shellClass}>
-      <div className="icmb-stage">
+      <div ref={mapUnitRef} className="icmb-stage">
         {logoSection}
         {mapSection}
+        {mapTooltip}
       </div>
     </div>
   );

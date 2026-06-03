@@ -3,6 +3,7 @@
 import ProductPageContent from "../components/marketing/ProductPageContent";
 import PricingPageContent from "../components/marketing/PricingPageContent";
 import HeroSportPicker from "../components/HeroSportPicker";
+import HomeHeroVideo from "../components/marketing/HomeHeroVideo";
 import HomeMapDominanceBlock from "../components/HomeMapDominanceBlock";
 import { useSportSelection } from "../components/SportSelectionProvider";
 import ChampionshipBannersSection from "../components/ChampionshipBannersSection";
@@ -14,7 +15,8 @@ export default function HomePage() {
   return (
     <div className="artboard">
       <section className="b-hero">
-        <div className="b-hero-grad" />
+        <HomeHeroVideo />
+        <div className="b-hero-grad" aria-hidden="true" />
         <div className="b-hero-inner">
           <div className="hero-big-stat">1,701</div>
           <div className="hero-big-sub">College programs trust Verified Athletics</div>

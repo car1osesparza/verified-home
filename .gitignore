@@ -2,3 +2,7 @@
 node_modules
 .next
 out
+
+# Hero source upload (keep web/mobile encodes only)
+public/video/VerifiedHero.mp4
+public/video/*.sb-*

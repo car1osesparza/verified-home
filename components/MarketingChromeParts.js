@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SPORTS } from "../lib/site-data";
+import { openCalendlyForSport } from "../lib/sport-calendly";
 import { openSportRequiredModal } from "../lib/sport-preference";
 import { assetPath } from "../lib/asset-path";
 import SportSelectWithClear from "./SportSelectWithClear";
@@ -74,7 +75,7 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
         >
           Pricing
         </Link>
-        <Link href="/resources" onClick={closeMobileMenu}>
+        <Link href="/recruits" onClick={closeMobileMenu}>
           Athletes/HS Coaches
         </Link>
         <Link href="/about" onClick={closeMobileMenu}>
@@ -98,14 +99,13 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
           className={`nav-btn-demo${hasSport ? " sport-selected" : ""}`}
           data-requires-sport="true"
           title="Select your sport for a tailored demo experience."
-          onClickCapture={(e) => {
+          onClick={() => {
             closeMobileMenu();
-            if (hasSport) {
+            if (!hasSport) {
+              openSportRequiredModal();
               return;
             }
-            e.preventDefault();
-            e.stopPropagation();
-            openSportRequiredModal();
+            openCalendlyForSport(sport);
           }}
         >
           Book a Demo
@@ -139,9 +139,9 @@ export function MarketingFooter() {
           >
             College Coaches
           </Link>
-          <Link href="/resources#hs-football-coaches">HS Coaches</Link>
-          <Link href="/resources#athletes-transfers">Athletes</Link>
-          <Link href="/resources#recruiting-academy">Recruiting Academy</Link>
+          <Link href="/recruits#hs-football-coaches">HS Coaches</Link>
+          <Link href="/recruits#hs-athletes">Athletes</Link>
+          <Link href="/recruits#recruiting-academy">Recruiting Academy</Link>
         </div>
         <div>
           <div className="footer-col-head">Company</div>

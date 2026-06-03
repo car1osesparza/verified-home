@@ -7,13 +7,15 @@
     "dev": "next dev",
     "dev:clean": "(chmod -R u+w .next 2>/dev/null || true) && rm -rf .next && next dev",
     "build": "next build",
+    "prebuild:static": "npm run sync:testimonials",
     "build:static": "NEXT_STATIC_EXPORT=true next build",
     "build:static:local": "NEXT_PUBLIC_BASE_PATH=/verified-home NEXT_STATIC_EXPORT=true next build",
     "preview": "node scripts/ensure-server-next.js && next start",
     "preview:static": "npx --yes serve@14 out -l 3080",
     "prestart": "node scripts/ensure-server-next.js",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "sync:testimonials": "node scripts/sync-testimonials-catalog.mjs"
   },
   "keywords": [],
   "author": "",

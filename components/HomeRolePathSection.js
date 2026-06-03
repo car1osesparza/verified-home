@@ -56,7 +56,7 @@ export default function HomeRolePathSection({ sport, onSportChange }) {
               Recruiting Academy guides, HS football coach resources, and transfer portal explainers - no account
               required, always free.
             </div>
-            <Link href="/resources" className="res-btn">
+            <Link href="/recruits" className="res-btn">
               Explore Free Resources
             </Link>
           </div>
