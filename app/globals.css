@@ -4483,29 +4483,26 @@ html.recruits-page-active {
 
 .sport-select-wrap {
   position: relative;
-  display: inline-flex;
-  align-items: center;
+  display: inline-block;
   max-width: 100%;
   vertical-align: middle;
-  gap: 4px;
 }
 
 .sport-select-wrap select {
   position: relative;
   z-index: 1;
-  flex: 1 1 auto;
-  min-width: 0;
 }
 
 .sport-select-wrap--has-value select {
   background-image: none !important;
-  padding-right: 10px !important;
 }
 
 .sport-select-clear {
-  position: static;
-  z-index: 2;
-  flex: 0 0 auto;
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 12px;
   width: 28px;
   height: 28px;
   padding: 0;
@@ -4529,6 +4526,7 @@ html.recruits-page-active {
 }
 
 .sport-select-wrap--v-nav.sport-select-wrap--compact .sport-select-clear {
+  right: 10px;
   width: 22px;
   height: 22px;
   font-size: 17px;
