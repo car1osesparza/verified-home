@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { SPORTS } from "../lib/site-data";
+import { SPORT_DROPDOWN_OPTIONS } from "../lib/site-data";
+import { APP_LOGIN_URL, RECRUITING_ACADEMY_URL } from "../lib/external-links";
+import { recruitsSectionPath } from "../lib/recruits-path";
 import { openCalendlyForSport } from "../lib/sport-calendly";
 import { openSportRequiredModal } from "../lib/sport-preference";
 import { assetPath } from "../lib/asset-path";
@@ -75,8 +77,11 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
         >
           Pricing
         </Link>
-        <Link href="/recruits" onClick={closeMobileMenu}>
-          Athletes/HS Coaches
+        <Link href={recruitsSectionPath("hs-football-coaches")} onClick={closeMobileMenu}>
+          HS Coaches
+        </Link>
+        <Link href={recruitsSectionPath("hs-athletes")} onClick={closeMobileMenu}>
+          Athletes
         </Link>
         <Link href="/about" onClick={closeMobileMenu}>
           About Us
@@ -85,7 +90,7 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
       <div className={`dark-nav-cta ${mobileMenuOpen ? "is-open" : ""}`}>
         <div className="dark-nav-sport">
           <SportSelectWithClear
-            sports={SPORTS}
+            options={SPORT_DROPDOWN_OPTIONS}
             value={sport || ""}
             onValueChange={onSportChange}
             selectClassName={`nav-sel${hasSport ? " live" : ""}`}
@@ -98,7 +103,6 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
           type="button"
           className={`nav-btn-demo${hasSport ? " sport-selected" : ""}`}
           data-requires-sport="true"
-          title="Select your sport for a tailored demo experience."
           onClick={() => {
             closeMobileMenu();
             if (!hasSport) {
@@ -110,9 +114,9 @@ export function MarketingTopNav({ sport, hasSport, onSportChange }) {
         >
           Book a Demo
         </button>
-        <Link href="/login" className="nav-login" onClick={closeMobileMenu}>
+        <a href={APP_LOGIN_URL} className="nav-login" onClick={closeMobileMenu}>
           Log In
-        </Link>
+        </a>
       </div>
     </nav>
   );
@@ -139,9 +143,11 @@ export function MarketingFooter() {
           >
             College Coaches
           </Link>
-          <Link href="/recruits#hs-football-coaches">HS Coaches</Link>
-          <Link href="/recruits#hs-athletes">Athletes</Link>
-          <Link href="/recruits#recruiting-academy">Recruiting Academy</Link>
+          <Link href={recruitsSectionPath("hs-football-coaches")}>HS Coaches</Link>
+          <Link href={recruitsSectionPath("hs-athletes")}>Athletes</Link>
+          <a href={RECRUITING_ACADEMY_URL} target="_blank" rel="noreferrer">
+            Recruiting Academy
+          </a>
         </div>
         <div>
           <div className="footer-col-head">Company</div>

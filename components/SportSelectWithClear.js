@@ -6,6 +6,8 @@
  */
 export default function SportSelectWithClear({
   sports,
+  /** @type {{ value: string, label: string }[] | undefined} */
+  options,
   value,
   onValueChange,
   selectClassName = "",
@@ -15,6 +17,12 @@ export default function SportSelectWithClear({
   variant = "dark",
 }) {
   const hasSport = Boolean(value);
+  const optionList =
+    options ??
+    (sports ?? []).map((label) => ({
+      value: label,
+      label,
+    }));
 
   return (
     <div
@@ -33,14 +41,12 @@ export default function SportSelectWithClear({
         aria-label="Sport"
         onChange={(event) => {
           const next = event.target.value;
-          if (typeof onValueChange === "function") {
-            onValueChange(next);
-          }
+          onValueChange?.(next);
         }}
       >
         <option value="">{emptyLabel}</option>
-        {sports.map((label) => (
-          <option key={label} value={label}>
+        {optionList.map(({ value: optValue, label }) => (
+          <option key={optValue} value={optValue}>
             {label}
           </option>
         ))}

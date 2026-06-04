@@ -1,63 +1,23 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { SPORTS } from "../lib/site-data";
-import { getSelectedSport, setSelectedSport } from "../lib/sport-preference";
+import { createContext, useContext, useMemo } from "react";
+import { usePreferredSportSelection } from "../lib/preferred-sport";
 
 const SportSelectionContext = createContext(undefined);
 
 /**
  * Single source of truth for the selected sport across nav, homepage, pricing, and modals.
- * Persists via `setSelectedSport` / `va:selected-sport` (see `lib/sport-preference.js`).
  */
 export function SportSelectionProvider({ children }) {
-  const [sport, setSport] = useState(undefined);
-
-  useEffect(() => {
-    const stored = getSelectedSport(SPORTS);
-    if (stored) {
-      setSport(stored);
-    }
-  }, []);
-
-  useEffect(() => {
-    const onSportUpdated = (event) => {
-      const nextSport = event.detail?.sport;
-      if (nextSport === "" || nextSport == null) {
-        setSport(undefined);
-        return;
-      }
-      if (SPORTS.includes(nextSport)) {
-        setSport(nextSport);
-      }
-    };
-
-    window.addEventListener("va:selected-sport", onSportUpdated);
-    return () => window.removeEventListener("va:selected-sport", onSportUpdated);
-  }, []);
-
-  /** Pass `""` or `undefined` to clear. Updates React state and persisted preference together. */
-  const applySport = useCallback(
-    (value) => {
-      const next = value ?? "";
-      if (!next) {
-        setSelectedSport("");
-        return;
-      }
-      if (SPORTS.includes(next)) {
-        setSelectedSport(next);
-      }
-    },
-    [],
-  );
+  const selection = usePreferredSportSelection();
 
   const value = useMemo(
     () => ({
-      sport,
-      hasSport: Boolean(sport),
-      applySport,
+      sport: selection.sport,
+      hasSport: selection.hasSport,
+      applySport: selection.applySport,
     }),
-    [sport, applySport],
+    [selection.sport, selection.hasSport, selection.applySport],
   );
 
   return <SportSelectionContext.Provider value={value}>{children}</SportSelectionContext.Provider>;

@@ -62,6 +62,13 @@ export default function ProductPageContent() {
           <div className="product-workflow-showcases">
             {workflowCards.map((item, index) => (
               <article className="product-workflow-card" key={item.id}>
+                <div className="product-workflow-media">
+                  <ProductWorkflowMedia
+                    showcase={item}
+                    index={index}
+                    total={workflowCardCount}
+                  />
+                </div>
                 <div className="product-workflow-copy">
                   <h4>{item.title}</h4>
                   <p>{item.description}</p>
@@ -70,13 +77,6 @@ export default function ProductPageContent() {
                       <li key={point}>{point}</li>
                     ))}
                   </ul>
-                </div>
-                <div className="product-workflow-media">
-                  <ProductWorkflowMedia
-                    showcase={item}
-                    index={index}
-                    total={workflowCardCount}
-                  />
                 </div>
               </article>
             ))}

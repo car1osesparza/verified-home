@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import SportDemoCtaBlock from "./SportDemoCtaBlock";
+import { recruitsSectionPath } from "../lib/recruits-path";
 
-/** Homepage hero: sport prompt, “I coach:” + picker, athlete/HS resources link. */
+/** Homepage hero: sport prompt, “I coach:” + picker, HS coaches / athletes links. */
 export default function HeroSportPicker({ sport, onSportChange }) {
   return (
     <div className="b-hero-sport-tail">
@@ -23,9 +24,12 @@ export default function HeroSportPicker({ sport, onSportChange }) {
             className="b-hero-sport-cta"
           />
         </div>
-        <div className="b-hero-resources-pill">
-          <Link href="/recruits#hs-athletes" className="b-hero-resources-pill-link">
-            Are you an athlete or HS coach? Click here
+        <div className="b-hero-resources-pills">
+          <Link href={recruitsSectionPath("hs-football-coaches")} className="b-hero-resources-pill-link">
+            HS Coaches
+          </Link>
+          <Link href={recruitsSectionPath("hs-athletes")} className="b-hero-resources-pill-link">
+            Athletes
           </Link>
         </div>
       </div>

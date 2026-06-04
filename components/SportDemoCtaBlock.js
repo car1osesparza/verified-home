@@ -2,7 +2,7 @@
 
 import { getDemoSpecialistForSport } from "../lib/demo-specialist";
 import { openCalendlyForSport } from "../lib/sport-calendly";
-import { SPORTS } from "../lib/site-data";
+import { SPORT_DROPDOWN_OPTIONS } from "../lib/site-data";
 import { openSportRequiredModal } from "../lib/sport-preference";
 import SportSelectWithClear from "./SportSelectWithClear";
 
@@ -73,9 +73,11 @@ export default function SportDemoCtaBlock({
           `You'll be connected to a ${sport} specialist.`
         )
       ) : isPricing ? (
-        <span className="pricing-demo-note-highlight">Select your sport for a tailored demo experience.</span>
+        "Choose a sport above to connect with the right specialist for your program."
       ) : (
-        <span className="hero-note-highlight">Select your sport for a tailored demo experience.</span>
+        <span className="hero-note-highlight">
+          Pick a sport to tailor what you see on this page; product and pricing update for your sport.
+        </span>
       )}
     </div>
   ) : null;
@@ -84,7 +86,7 @@ export default function SportDemoCtaBlock({
     <div className={className} style={useCoachFlex ? { display: "contents" } : undefined}>
       <div className={rowClass}>
         <SportSelectWithClear
-          sports={SPORTS}
+          options={SPORT_DROPDOWN_OPTIONS}
           value={sport}
           onValueChange={onSportChange}
           selectClassName={selectClass}
@@ -108,7 +110,6 @@ export default function SportDemoCtaBlock({
                 type="button"
                 className={`btn red${hasSport ? " sport-selected" : ""}`}
                 data-requires-sport="true"
-                title="Select your sport for a tailored demo experience."
                 onClick={handleBookDemoClick}
               >
                 Book a Demo
@@ -119,7 +120,6 @@ export default function SportDemoCtaBlock({
               type="button"
               className={`btn red${hasSport ? " sport-selected" : ""}`}
               data-requires-sport="true"
-              title="Select your sport for a tailored demo experience."
               onClick={handleBookDemoClick}
             >
               Book a Demo

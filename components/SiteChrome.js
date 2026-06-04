@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ConfigProvider, Modal, Select } from "antd";
 import { SPORTS } from "../lib/site-data";
+import { handleSportDropdownChange } from "../lib/sport-dropdown";
 import { openCalendlyForSport } from "../lib/sport-calendly";
 import { getSelectedSport } from "../lib/sport-preference";
 import HashScroll from "./HashScroll";
@@ -72,8 +73,12 @@ function SiteChromeInner({ children }) {
         },
       }}
     >
-      <div style={{ minHeight: "100vh" }}>
-        <MarketingTopNav sport={sport} hasSport={hasSport} onSportChange={applySport} />
+      <div className="site-shell">
+        <MarketingTopNav
+          sport={sport}
+          hasSport={hasSport}
+          onSportChange={handleSportDropdownChange}
+        />
         <HashScroll />
         <main>{children}</main>
 

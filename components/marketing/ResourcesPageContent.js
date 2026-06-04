@@ -7,12 +7,13 @@ import { Card } from "antd";
 import HomeMapDominanceBlock from "../HomeMapDominanceBlock";
 import { MAP_DOMINANCE_HEADLINE_RESOURCES } from "../../lib/home-map-dominance-copy";
 import AthletesHeroVideo from "./AthletesHeroVideo";
+import TransferSurveyModal from "./TransferSurveyModal";
+import { RECRUITING_ACADEMY_URL } from "../../lib/external-links";
 import { isRecruitsPath } from "../../lib/recruits-path";
 
 const LIVE = {
-  recruitingAcademy: "https://verifiedathletics.com/recruiting-academy",
-  athletes: "https://verifiedathletics.com/athletes",
-  allSportsCoaches: "https://verifiedathletics.com/all-sports-coaches",
+  recruitingAcademy: RECRUITING_ACADEMY_URL,
+  collegeSelector: "https://app.verifiedathletics.com/college-selector",
   hsCoach: "https://app.verifiedathletics.com/hs-coach",
 };
 
@@ -25,12 +26,14 @@ const TOC = [
   { id: "recruiting-academy", label: "Recruiting Academy" },
 ];
 
-/** Deep links that pointed at the old combined athletes section. */
 const LEGACY_SECTION_HASH = {
   "athletes-transfers": "hs-athletes",
 };
 
 const SECTION_IDS = new Set(TOC.map((t) => t.id));
+
+const homeProductHref = { pathname: "/", hash: "product" };
+const homePricingHref = { pathname: "/", hash: "pricing" };
 
 function resolveSectionFromHash(hash) {
   if (!hash || hash.length < 2) {
@@ -51,16 +54,22 @@ function Checklist({ items }) {
   );
 }
 
-function AthletesResourcesHero() {
+const HS_ATHLETES_HERO_BULLETS = [
+  "Get matched with college football programs based on your athletic, academic, and college preferences",
+  "Gain exposure to college coaches nationwide across all levels of college football",
+  "View real evaluations and feedback from college coaches",
+  "Learn about the recruiting process through the Verified Athletics Recruiting Academy",
+];
+
+function AthletesVideoHero() {
   return (
     <div className="resources-athletes-hero">
       <AthletesHeroVideo variant="background" />
       <div className="resources-athletes-hero-grad" aria-hidden="true" />
       <div className="resources-athletes-hero-inner">
-        <h2 className="resources-athletes-hero-title">Get seen. Stay organized. Move faster.</h2>
+        <h2 className="resources-athletes-hero-title">Take Control of your Recruiting Journey.</h2>
         <p className="resources-athletes-hero-lead">
-          Verified helps athletes increase exposure and simplify communication with college programs—without
-          charging athlete fees.
+          Verified helps athletes build exposure and prepare for every recruiting opportunity.
         </p>
       </div>
     </div>
@@ -71,27 +80,56 @@ export default function ResourcesPageContent() {
   const pathname = usePathname();
   const [activeSection, setActiveSection] = useState(DEFAULT_SECTION);
   const [navOffsetPx, setNavOffsetPx] = useState(68);
+  const [transferSurveyOpen, setTransferSurveyOpen] = useState(false);
   const tocRef = useRef(null);
 
-  const selectSection = useCallback((id) => {
-    if (!SECTION_IDS.has(id) || typeof window === "undefined") {
-      return;
-    }
-    const scrollY = window.scrollY;
-    setActiveSection(id);
-    const nextHash = `#${id}`;
-    const nextUrl = `${window.location.pathname}${window.location.search}${nextHash}`;
-    if (window.location.hash !== nextHash) {
-      window.history.replaceState(null, "", nextUrl);
-    }
-    requestAnimationFrame(() => window.scrollTo(0, scrollY));
-  }, []);
+  const scrollToSectionTop = useCallback(
+    (id) => {
+      if (typeof window === "undefined") {
+        return;
+      }
+
+      const run = () => {
+        const nav = document.querySelector(".dark-nav");
+        const toc = tocRef.current;
+        const navH = nav ? Math.ceil(nav.getBoundingClientRect().height) : navOffsetPx;
+        const tocH = toc ? Math.ceil(toc.getBoundingClientRect().height) : 0;
+        const offset = navH + tocH + 12;
+
+        const anchor = document.getElementById(`resources-panel-${id}`);
+        if (anchor) {
+          const top = anchor.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: Math.max(0, top), left: 0, behavior: "auto" });
+          return;
+        }
+
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      };
+
+      requestAnimationFrame(run);
+    },
+    [navOffsetPx],
+  );
+
+  const selectSection = useCallback(
+    (id) => {
+      if (!SECTION_IDS.has(id) || typeof window === "undefined") {
+        return;
+      }
+      setActiveSection(id);
+      const nextHash = `#${id}`;
+      const nextUrl = `${window.location.pathname}${window.location.search}${nextHash}`;
+      if (window.location.hash !== nextHash) {
+        window.history.replaceState(null, "", nextUrl);
+      }
+    },
+    [],
+  );
 
   const applySectionFromHash = useCallback(() => {
     if (typeof window === "undefined") {
       return;
     }
-    const scrollY = window.scrollY;
     const id = resolveSectionFromHash(window.location.hash);
     setActiveSection(id);
     const nextHash = `#${id}`;
@@ -102,7 +140,6 @@ export default function ResourcesPageContent() {
         `${window.location.pathname}${window.location.search}${nextHash}`,
       );
     }
-    requestAnimationFrame(() => window.scrollTo(0, scrollY));
   }, []);
 
   useLayoutEffect(() => {
@@ -112,6 +149,13 @@ export default function ResourcesPageContent() {
     applySectionFromHash();
   }, [pathname, applySectionFromHash]);
 
+  useLayoutEffect(() => {
+    if (!isRecruitsPath(pathname)) {
+      return;
+    }
+    scrollToSectionTop(activeSection);
+  }, [activeSection, pathname, scrollToSectionTop]);
+
   useEffect(() => {
     if (!isRecruitsPath(pathname)) {
       return undefined;
@@ -120,7 +164,6 @@ export default function ResourcesPageContent() {
     return () => window.removeEventListener("hashchange", applySectionFromHash);
   }, [pathname, applySectionFromHash]);
 
-  /** Next.js client links to #section on /resources may not fire hashchange. */
   useEffect(() => {
     if (!isRecruitsPath(pathname)) {
       return undefined;
@@ -144,19 +187,22 @@ export default function ResourcesPageContent() {
         return;
       }
       event.preventDefault();
-      const scrollY = window.scrollY;
       const id = resolveSectionFromHash(url.hash);
       setActiveSection(id);
       const nextUrl = `${url.pathname}${url.search}${url.hash}`;
       if (window.location.hash !== url.hash) {
         window.history.replaceState(null, "", nextUrl);
       }
-      requestAnimationFrame(() => window.scrollTo(0, scrollY));
     };
 
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, [pathname]);
+
+  useEffect(() => {
+    document.documentElement.classList.add("recruits-page-active");
+    return () => document.documentElement.classList.remove("recruits-page-active");
+  }, []);
 
   useEffect(() => {
     const measureChrome = () => {
@@ -192,16 +238,14 @@ export default function ResourcesPageContent() {
         <div className="resources-page-content">
           <div className="container">
             <header className="resources-hero">
-              <h1 className="resources-h1">
-                Free resources for high school coaches, athletes, and families
-              </h1>
+              <h1 className="resources-h1">Recruits</h1>
             </header>
           </div>
 
           <nav
             ref={tocRef}
             className="resources-toc resources-toc--tabs"
-            aria-label="Resource categories"
+            aria-label="Recruits categories"
           >
             <div className="container resources-toc-inner" role="tablist">
               {TOC.map(({ id, label }) => (
@@ -224,6 +268,7 @@ export default function ResourcesPageContent() {
           <div className="resources-panels">
             {activeSection === "hs-football-coaches" && (
               <div className="container">
+                <div id="resources-panel-hs-football-coaches" className="resources-panel-anchor" />
                 <section
                   role="tabpanel"
                   aria-labelledby="resources-tab-hs-football-coaches"
@@ -243,6 +288,20 @@ export default function ResourcesPageContent() {
                   >
                     Claim Your Team
                   </a>
+
+                  <section className="resources-funnel resources-funnel--inline" aria-labelledby="resources-funnel-heading">
+                    <h2 id="resources-funnel-heading" className="resources-funnel-heading">
+                      Are you a college coach?
+                    </h2>
+                    <div className="resources-funnel-actions">
+                      <Link href={homeProductHref} className="btn light">
+                        View product
+                      </Link>
+                      <Link href={homePricingHref} className="btn red">
+                        View pricing
+                      </Link>
+                    </div>
+                  </section>
                 </section>
               </div>
             )}
@@ -253,31 +312,17 @@ export default function ResourcesPageContent() {
                 aria-labelledby="resources-tab-hs-athletes"
                 className="resources-section resources-section--athletes resources-panel"
               >
-                <AthletesResourcesHero />
-
+                <div id="resources-panel-hs-athletes" className="resources-panel-anchor" />
+                <AthletesVideoHero />
                 <div className="container resources-section-body">
-                  <Card title="High School & JUCO Football Athletes">
-                    <p className="resources-prose">
-                      Create a structured profile that can be shared across college programs nationwide.
-                    </p>
-                    <p className="resources-prose resources-prose-strong">What you get</p>
-                    <Checklist
-                      items={[
-                        "AI-assisted school matching",
-                        "Profile distribution across coach networks",
-                        "Coach evaluations and feedback visibility",
-                      ]}
-                    />
-                    <p className="resources-prose">
-                      Use the Recruiting Academy to understand how to position yourself and move through the
-                      process.
-                    </p>
-                  </Card>
+                  <Checklist items={HS_ATHLETES_HERO_BULLETS} />
                   <div className="resources-cta-row">
-                    <a className="btn light resources-ext-link" href={LIVE.athletes} target="_blank" rel="noreferrer">
-                      Go to Athlete Hub
-                    </a>
-                    <a className="btn red resources-ext-link" href={LIVE.athletes} target="_blank" rel="noreferrer">
+                    <a
+                      className="btn red resources-ext-link"
+                      href={LIVE.collegeSelector}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       Get Started
                     </a>
                   </div>
@@ -291,25 +336,26 @@ export default function ResourcesPageContent() {
                 aria-labelledby="resources-tab-transfer-athletes"
                 className="resources-section resources-section--athletes resources-panel"
               >
-                <AthletesResourcesHero />
-
+                <div id="resources-panel-transfer-athletes" className="resources-panel-anchor" />
+                <AthletesVideoHero />
                 <div className="container resources-section-body">
-                  <h2 className="resources-h2">Resources for NCAA transfer athletes</h2>
-                  <p className="lead">
-                    If you&apos;re in the transfer portal, Verified helps college coaches find and evaluate you.
-                  </p>
                   <Card title="NCAA Transfer Athletes">
-                    <p className="resources-prose resources-prose-strong">How it works</p>
-                    <Checklist
-                      items={[
-                        "Complete your transfer survey",
-                        "Get added to the database coaches already use",
-                        "Stay visible as programs evaluate transfer options",
-                      ]}
-                    />
-                    <a className="btn red resources-card-cta" href={LIVE.athletes} target="_blank" rel="noreferrer">
+                    <p className="resources-prose">
+                      The transfer portal is crowded and difficult for coaches to navigate. Verified
+                      Athletics organizes key player information in one place so coaches can evaluate
+                      athletes faster and more efficiently.
+                    </p>
+                    <p className="resources-prose">
+                      By completing your profile, you make it easier for college programs to find,
+                      understand, and contact you.
+                    </p>
+                    <button
+                      type="button"
+                      className="btn red resources-card-cta"
+                      onClick={() => setTransferSurveyOpen(true)}
+                    >
                       Request Transfer Survey
-                    </a>
+                    </button>
                   </Card>
                 </div>
               </section>
@@ -317,12 +363,15 @@ export default function ResourcesPageContent() {
 
             {activeSection === "recruiting-academy" && (
               <div className="container">
+                <div id="resources-panel-recruiting-academy" className="resources-panel-anchor" />
                 <section
                   role="tabpanel"
                   aria-labelledby="resources-tab-recruiting-academy"
                   className="resources-section resources-panel"
                 >
-                  <h2 className="resources-h2">Learn how college recruiting actually works</h2>
+                  <h2 className="resources-h2">
+                    Learn how college recruiting actually works with the Football Recruiting Academy
+                  </h2>
                   <p className="lead">
                     A complete guide to the recruiting process—from discovery through commitment.
                   </p>
@@ -330,17 +379,13 @@ export default function ResourcesPageContent() {
                     <p className="resources-prose resources-prose-strong">Topics include</p>
                     <Checklist
                       items={[
-                        "What college coaches evaluate on and off the field",
-                        "Division options and pathways",
-                        "Recruiting timelines by level",
-                        "How coaches build and manage recruiting boards",
-                        "How contacts, offers, and commitments happen",
+                        "What College Coaches Actually Look For First",
+                        "Are You Really Being Recruited — Or Just Being Contacted?",
+                        "Why Waiting Too Long Can Cost You a Scholarship",
+                        "The Recruiting Timeline Most Athletes Get Wrong",
+                        "Why Most Athletes End Up Playing at a Different Level Than Expected",
                       ]}
                     />
-                    <p className="resources-prose">
-                      Use the Academy to understand the process, avoid common mistakes, and prepare for what
-                      coaches are actually looking for.
-                    </p>
                     <a
                       className="btn red resources-card-cta"
                       href={LIVE.recruitingAcademy}
@@ -353,25 +398,11 @@ export default function ResourcesPageContent() {
                 </section>
               </div>
             )}
-
-            <div className="container">
-              <section className="resources-funnel" aria-labelledby="resources-funnel-heading">
-                <h2 id="resources-funnel-heading" className="resources-funnel-heading">
-                  Are you a college coach?
-                </h2>
-                <div className="resources-funnel-actions">
-                  <Link href="/#product" className="btn light">
-                    View product
-                  </Link>
-                  <Link href="/#pricing" className="btn red">
-                    View pricing
-                  </Link>
-                </div>
-              </section>
-            </div>
           </div>
         </div>
       </div>
+
+      <TransferSurveyModal open={transferSurveyOpen} onClose={() => setTransferSurveyOpen(false)} />
     </div>
   );
 }

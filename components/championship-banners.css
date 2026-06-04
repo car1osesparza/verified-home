@@ -153,19 +153,38 @@
 }
 
 .champ-banner-logo-hero {
-  flex: 0 0 38%;
+  flex: 0 0 auto;
   width: 100%;
   min-height: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4px 8px 6px;
+  padding: 4px 8px 2px;
   margin-bottom: 4px;
+  gap: 6px;
+}
+
+.champ-banner-school {
+  margin: 0;
+  max-width: 100%;
+  padding: 0 4px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--champ-primary-text, #fff);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .champ-banner-logo {
   max-width: 88%;
-  max-height: 100%;
+  max-height: 72px;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -291,6 +310,84 @@
   }
 }
 
+/* Mobile: stacked cards with prev/next peeking in shadow */
+.champ-banner-stack-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.champ-banner-stack-viewport {
+  position: relative;
+  width: 100%;
+  height: calc(var(--champ-banner-height, 304px) + 16px);
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.champ-banner-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.champ-banner-stack .champ-banner-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  transition:
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.38s ease,
+    filter 0.38s ease;
+  will-change: transform, opacity;
+}
+
+.champ-banner-stack .champ-banner-card--active {
+  z-index: 3;
+  opacity: 1;
+  filter: none;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.champ-banner-stack .champ-banner-card--prev {
+  z-index: 1;
+  opacity: 0.42;
+  filter: brightness(0.45) saturate(0.85);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+  transform: translate(calc(-50% - 58%), -50%) scale(0.8);
+  pointer-events: none;
+}
+
+.champ-banner-stack .champ-banner-card--next {
+  z-index: 1;
+  opacity: 0.42;
+  filter: brightness(0.45) saturate(0.85);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+  transform: translate(calc(-50% + 58%), -50%) scale(0.8);
+  pointer-events: none;
+}
+
+.champ-banner-stack .champ-banner-card--hidden {
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.72);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .champ-banner-stack .champ-banner-card {
+    transition: none;
+  }
+}
+
 @media (max-width: 640px) {
   .champ-banner-card {
     --champ-banner-width: 200px;
@@ -306,5 +403,13 @@
     width: 32px !important;
     height: 32px !important;
     min-width: 32px !important;
+  }
+
+  .champ-banner-stack .champ-banner-card--prev {
+    transform: translate(calc(-50% - 52%), -50%) scale(0.78);
+  }
+
+  .champ-banner-stack .champ-banner-card--next {
+    transform: translate(calc(-50% + 52%), -50%) scale(0.78);
   }
 }

@@ -3,32 +3,59 @@
 import ProductWorkflowGif, { workflowDemoPhaseMs } from "./ProductWorkflowGif";
 import { resolveWorkflowMediaSrc } from "../../lib/product-workflow-showcases";
 
+function WorkflowMediaFrame({ children, className = "" }) {
+  return (
+    <div className={`product-workflow-media-frame${className ? ` ${className}` : ""}`}>
+      <div className="product-workflow-media-visual">{children}</div>
+      <div className="product-workflow-media-spacer" aria-hidden="true" />
+    </div>
+  );
+}
+
 /**
- * Renders a workflow card visual: GIF, still, or a labeled placeholder until assets ship.
- *
- * @param {{ showcase: import("../../lib/product-workflow-showcases").ProductWorkflowShowcase; index: number; total: number }} props
+ * Renders a workflow card visual: GIF, still, video, or placeholder until assets ship.
  */
 export default function ProductWorkflowMedia({ showcase, index, total }) {
   const { title, media } = showcase;
   const src = resolveWorkflowMediaSrc(media);
   const alt = `${title} — recruiting workflow`;
-  const objectPosition = media.objectPosition ?? "50% 50%";
+  const objectPosition = media.objectPosition ?? "top center";
 
   if (src && media.kind === "gif") {
     return (
-      <ProductWorkflowGif
-        alt={alt}
-        src={src}
-        playbackIndex={index}
-        phaseMs={workflowDemoPhaseMs(index, total)}
-        objectPosition={objectPosition}
-      />
+      <WorkflowMediaFrame>
+        <ProductWorkflowGif
+          alt={alt}
+          src={src}
+          playbackIndex={index}
+          phaseMs={workflowDemoPhaseMs(index, total)}
+          objectPosition={objectPosition}
+          bare
+        />
+      </WorkflowMediaFrame>
+    );
+  }
+
+  if (src && media.kind === "video") {
+    return (
+      <WorkflowMediaFrame>
+        <video
+          className="product-workflow-image product-workflow-video"
+          src={src}
+          autoPlay
+          loop
+          muted
+          playsInline
+          aria-label={alt}
+          style={{ objectPosition }}
+        />
+      </WorkflowMediaFrame>
     );
   }
 
   if (src) {
     return (
-      <div className="product-workflow-media-frame">
+      <WorkflowMediaFrame>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
@@ -37,11 +64,12 @@ export default function ProductWorkflowMedia({ showcase, index, total }) {
           style={{ objectPosition }}
           decoding="async"
         />
-      </div>
+      </WorkflowMediaFrame>
     );
   }
 
-  const kindLabel = media.kind === "gif" ? "GIF" : "Screenshot";
+  const kindLabel =
+    media.kind === "gif" ? "GIF" : media.kind === "video" ? "Video" : "Screenshot";
 
   return (
     <div

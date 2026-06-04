@@ -110,7 +110,7 @@ export default function AboutPage() {
         </Paragraph>
 
         <Title level={3}>Meet the Team</Title>
-        {salesSpecialist ? (
+        {salesSpecialist && sport !== "Men's Basketball" ? (
           <p className="about-sales-specialist-note" role="status">
             For <strong>{sport}</strong>, your Verified contact is{" "}
             <strong>{salesSpecialist.name}</strong> — {salesSpecialist.role}.
@@ -135,7 +135,8 @@ export default function AboutPage() {
 
         <div className="about-team-grid">
           {TEAM.map((member) => {
-            const isSpecialist = salesSpecialist?.name === member.name;
+            const isSpecialist =
+              sport !== "Men's Basketball" && salesSpecialist?.name === member.name;
             return (
               <article
                 key={member.name}

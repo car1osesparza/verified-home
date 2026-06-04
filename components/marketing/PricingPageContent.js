@@ -1,14 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Card, Col, Row, Typography } from "antd";
-import {
-  getPricingConfigForSport,
-  isFootballSport,
-} from "../../lib/pricing-data";
-import { ATHLETIC_DEPARTMENT } from "../../lib/site-data";
+import { getPricingConfigForSport, isFootballSport } from "../../lib/pricing-data";
+import { handleSportDropdownChange } from "../../lib/sport-dropdown";
 import { openSportRequiredModal } from "../../lib/sport-preference";
+import { recruitsSectionPath } from "../../lib/recruits-path";
 import { useSportSelection } from "../SportSelectionProvider";
 import SportDemoCtaBlock from "../SportDemoCtaBlock";
 
@@ -18,7 +16,7 @@ function PricingPostGridNotes() {
   return (
     <div className="pricing-post-grid-notes">
       <Paragraph className="pricing-inline-note">
-        Ask about multi-team and athletic department pricing discounts for schools adding multiple programs.
+        Ask about discounts for adding multiple programs.
       </Paragraph>
       <Paragraph className="pricing-inline-note pricing-inline-note--fine">
         *3 Year pricing includes 5.5% increase in years 2 &amp; 3
@@ -27,15 +25,24 @@ function PricingPostGridNotes() {
   );
 }
 
-function AthletesHsCoachesNote() {
+function PricingIntroCopy() {
   return (
-    <Paragraph className="pricing-note">
-      <strong>Free for Athletes and HS Coaches:</strong> Athlete and high school coach access remains free.{" "}
-      <Link href="/recruits" className="pricing-inline-cta-link">
-        Go to Athlete/HS Coaches
-      </Link>
-      .
-    </Paragraph>
+    <div className="pricing-intro-stack">
+      <Paragraph className="pricing-intro-para">
+        Verified Athletics packages vary by sport because recruiting workflows, data needs, and transfer
+        dynamics vary by sport.
+      </Paragraph>
+      <Paragraph className="pricing-intro-para">
+        Select your sport to see relevant packages and pricing.
+      </Paragraph>
+      <Paragraph className="pricing-intro-para pricing-note">
+        <strong>Free for Athletes and HS Coaches:</strong> Athlete and high school coach access remains free.{" "}
+        <Link href={recruitsSectionPath("hs-athletes")} className="pricing-inline-cta-link">
+          Go to Athlete/HS Coaches
+        </Link>
+        .
+      </Paragraph>
+    </div>
   );
 }
 
@@ -97,26 +104,13 @@ function PricingTierGrid({ config, contractTerm }) {
 }
 
 export default function PricingPageContent({ afterTierGridSlot = null, tightSectionBottom = false }) {
-  const { sport, hasSport, applySport } = useSportSelection();
+  const { sport, hasSport } = useSportSelection();
+  const onSportDropdownChange = useCallback((value) => handleSportDropdownChange(value), []);
   const [contractTerm, setContractTerm] = useState("3-year");
 
   const pricingConfig = useMemo(() => getPricingConfigForSport(sport), [sport]);
 
-  const isFootball = isFootballSport(sport);
-  const isAthleticDepartment = sport === ATHLETIC_DEPARTMENT;
-
-  const pricingTitle = useMemo(() => {
-    if (!sport) {
-      return "Recruiting intelligence packages";
-    }
-    if (isFootball) {
-      return "Football recruiting intelligence packages";
-    }
-    if (isAthleticDepartment) {
-      return "Athletic department pricing";
-    }
-    return `Pricing for college ${sport} programs`;
-  }, [sport, isFootball, isAthleticDepartment]);
+  const pricingTitle = sport ? `${sport} Pricing and Packages` : "Pricing and Packages";
 
   return (
     <div
@@ -125,35 +119,25 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
       }`}
     >
       <div className="container pricing-page">
-        {!sport ? (
-          <>
-            <Title className="headline-match-pricing">Recruiting intelligence packages</Title>
-            <Paragraph className="lead pricing-intro-lead">
-              Verified Athletics packages vary by sport because recruiting workflows, data needs, and transfer
-              dynamics vary by sport.
-            </Paragraph>
-            <Paragraph className="pricing-prompt">Select your sport to see relevant packages and pricing.</Paragraph>
+        <Title className="headline-match-pricing">{pricingTitle}</Title>
+        <PricingIntroCopy />
 
-            <AthletesHsCoachesNote />
+        <SportDemoCtaBlock
+          sport={sport ?? ""}
+          onSportChange={onSportDropdownChange}
+          surface="pricing"
+          className="pricing-demo-cta-wrap"
+        />
 
-            <SportDemoCtaBlock sport="" onSportChange={applySport} surface="pricing" className="pricing-demo-cta-wrap" />
-          </>
-        ) : (
+        {sport ? (
           <>
-            <Title className="headline-match-pricing">{pricingTitle}</Title>
-            <Paragraph className="lead pricing-intro-lead">
-              {isFootball
-                ? "Sport-specific pricing for college football programs using transfer intelligence and recruiting workflow tools."
-                : "Sport-specific pricing for college programs using transfer intelligence and recruiting workflow tools."}
-            </Paragraph>
-            {!isFootball && (
-              <Paragraph className="pricing-note pricing-intro-follow pricing-dept-cta">
+            {!isFootballSport(sport) ? (
+              <Paragraph className="pricing-note pricing-dept-cta">
                 Department &amp; multi-team options are available for non-football programs.{" "}
                 <button
                   type="button"
                   className="pricing-inline-cta-link"
                   data-requires-sport="true"
-                  title="Select your sport for a tailored demo experience."
                   onClickCapture={(e) => {
                     if (hasSport) {
                       return;
@@ -166,15 +150,7 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
                   Book a demo for a custom quote.
                 </button>
               </Paragraph>
-            )}
-            <AthletesHsCoachesNote />
-
-            <SportDemoCtaBlock
-              sport={sport}
-              onSportChange={applySport}
-              surface="pricing"
-              className="pricing-demo-cta-wrap"
-            />
+            ) : null}
 
             <div className="pricing-contract-toggle" role="group" aria-label="Contract term">
               <button
@@ -199,7 +175,7 @@ export default function PricingPageContent({ afterTierGridSlot = null, tightSect
 
             {afterTierGridSlot}
           </>
-        )}
+        ) : null}
       </div>
     </div>
   );

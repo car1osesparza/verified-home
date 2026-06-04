@@ -1,5 +1,7 @@
 "use client";
 
+import { useCallback, useLayoutEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import ProductPageContent from "../components/marketing/ProductPageContent";
 import PricingPageContent from "../components/marketing/PricingPageContent";
 import HeroSportPicker from "../components/HeroSportPicker";
@@ -8,9 +10,24 @@ import HomeMapDominanceBlock from "../components/HomeMapDominanceBlock";
 import { useSportSelection } from "../components/SportSelectionProvider";
 import ChampionshipBannersSection from "../components/ChampionshipBannersSection";
 import TestimonialsClientOnly from "../components/TestimonialsClientOnly";
+import { handleSportDropdownChange } from "../lib/sport-dropdown";
+import { anchorHomePricingScrollIfInView } from "../lib/home-pricing-scroll-anchor";
 
 export default function HomePage() {
-  const { sport, applySport } = useSportSelection();
+  const pathname = usePathname();
+  const { sport } = useSportSelection();
+  const onSportDropdownChange = useCallback((value) => handleSportDropdownChange(value), []);
+  const prevSportRef = useRef(sport);
+
+  useLayoutEffect(() => {
+    const onHome = pathname === "/" || pathname === "";
+    if (!onHome || prevSportRef.current === sport) {
+      prevSportRef.current = sport;
+      return;
+    }
+    prevSportRef.current = sport;
+    anchorHomePricingScrollIfInView();
+  }, [sport, pathname]);
 
   return (
     <div className="artboard">
@@ -28,7 +45,7 @@ export default function HomePage() {
           <p className="hero-p">
             Built for coaches who need better players, faster answers, and less recruiting chaos.
           </p>
-          <HeroSportPicker sport={sport ?? ""} onSportChange={applySport} />
+          <HeroSportPicker sport={sport ?? ""} onSportChange={onSportDropdownChange} />
         </div>
       </section>
 

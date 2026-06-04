@@ -1,32 +1,17 @@
 "use client";
 
-import { Button, Card, Form, Input, Typography } from "antd";
-
-const { Title, Paragraph } = Typography;
+import { useEffect } from "react";
+import { APP_LOGIN_URL } from "../../lib/external-links";
 
 export default function LoginPage() {
+  useEffect(() => {
+    window.location.replace(APP_LOGIN_URL);
+  }, []);
+
   return (
     <div className="section">
-      <div className="container" style={{ maxWidth: 520 }}>
-        <Card>
-          <Title level={2}>Log In</Title>
-          <Paragraph>Access your Verified Athletics account.</Paragraph>
-          <Paragraph style={{ marginBottom: 16, color: "#4c617f" }}>
-            Prototype login page. Connect this form to your authentication flow when backend endpoints
-            are ready.
-          </Paragraph>
-          <Form layout="vertical">
-            <Form.Item label="Email">
-              <Input type="email" placeholder="coach@program.edu" />
-            </Form.Item>
-            <Form.Item label="Password">
-              <Input.Password placeholder="Enter password" />
-            </Form.Item>
-            <Button type="primary" block>
-              Sign in
-            </Button>
-          </Form>
-        </Card>
+      <div className="container" style={{ maxWidth: 520, textAlign: "center" }}>
+        <p style={{ margin: 0, color: "#4c617f" }}>Redirecting to Verified Athletics…</p>
       </div>
     </div>
   );

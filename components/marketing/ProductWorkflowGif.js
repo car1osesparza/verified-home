@@ -40,7 +40,8 @@ export default function ProductWorkflowGif({
   src: srcProp,
   phaseMs = 0,
   playbackIndex = 0,
-  objectPosition = "50% 50%",
+  objectPosition = "top center",
+  bare = false,
 }) {
   const [active, setActive] = useState(phaseMs === 0);
   const src = srcProp ?? workflowSrc(playbackIndex);
@@ -55,21 +56,23 @@ export default function ProductWorkflowGif({
     return () => window.clearTimeout(id);
   }, [phaseMs]);
 
-  return (
-    <div className="product-workflow-media-frame">
-      {active ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          key={`workflow-gif-${playbackIndex}`}
-          src={src}
-          alt={alt}
-          className="product-workflow-image"
-          style={{ objectPosition }}
-          decoding="async"
-        />
-      ) : (
-        <div className="product-workflow-image product-workflow-image--pending" aria-hidden="true" />
-      )}
-    </div>
+  const visual = active ? (
+    /* eslint-disable-next-line @next/next/no-img-element */
+    <img
+      key={`workflow-gif-${playbackIndex}`}
+      src={src}
+      alt={alt}
+      className="product-workflow-image"
+      style={{ objectPosition }}
+      decoding="async"
+    />
+  ) : (
+    <div className="product-workflow-image product-workflow-image--pending" aria-hidden="true" />
   );
+
+  if (bare) {
+    return visual;
+  }
+
+  return <div className="product-workflow-media-frame">{visual}</div>;
 }

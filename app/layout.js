@@ -22,7 +22,7 @@ const alfaSlabOne = Alfa_Slab_One({
 });
 
 export const metadata = {
-  title: "Verified Athletics - Direction B",
+  title: "Verified Athletics",
   description: "Proof-first recruiting homepage rebuilt in Next.js + Ant Design.",
 };
 
