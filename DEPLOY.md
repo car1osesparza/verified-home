@@ -46,7 +46,7 @@ These are only for **GitHub Pages** (static HTML in `out/`):
 
 ## Large files
 
-Hero background videos live in `public/video/` (committed encodes). First visit may take time to load the desktop file (~42 MB).
+Hero background videos live in `public/video/` (committed encodes). First visit may take time to load the desktop file (~25 MB). Mobile uses `VerifiedHero.mobile.mp4` (~2 MB).
 
 ## GitHub Pages (optional)
 

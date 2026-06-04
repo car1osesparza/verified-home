@@ -8,7 +8,7 @@ export default function ForAthletesPage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/recruits#hs-athletes");
+    router.replace("/recruits/#hs-athletes");
   }, [router]);
 
   return (

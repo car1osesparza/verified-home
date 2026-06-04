@@ -17,7 +17,7 @@ export default function HsCoachesPage() {
         </Paragraph>
         <Paragraph className="lead">
           Looking for athlete-specific resources?{" "}
-          <Link href="/recruits#hs-athletes">Go to Athletes</Link>.
+          <Link href="/recruits/#hs-athletes">Go to Athletes</Link>.
         </Paragraph>
       </div>
     </div>

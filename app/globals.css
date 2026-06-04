@@ -39,9 +39,14 @@ body {
   font-family: var(--font-body, "Montserrat", sans-serif);
 }
 
+html {
+  height: 100%;
+}
+
 .site-shell {
   display: flex;
   flex-direction: column;
+  min-height: 100%;
   min-height: 100dvh;
 }
 
@@ -51,6 +56,7 @@ body {
 
 .site-shell > .footer {
   flex-shrink: 0;
+  position: relative;
 }
 
 button,
@@ -2037,20 +2043,6 @@ html.recruits-page-active {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.b-hero-video--mobile {
-  display: none;
-}
-
-@media (max-width: 767px) {
-  .b-hero-video--desktop {
-    display: none;
-  }
-
-  .b-hero-video--mobile {
-    display: block;
-  }
 }
 
 .b-hero-grad {
@@ -4298,8 +4290,20 @@ html.recruits-page-active {
 }
 
 @media (max-width: 640px) {
-  /* iOS overscroll below the footer shows html background, not body */
-  html {
+  /* iOS overscroll / dvh gap below footer: match footer blue on canvas + bleed */
+  html,
+  body {
+    background: var(--blue);
+  }
+
+  .site-shell {
+    min-height: auto;
+  }
+
+  .footer::after {
+    content: "";
+    display: block;
+    height: max(48px, env(safe-area-inset-bottom, 0px));
     background: var(--blue);
   }
 

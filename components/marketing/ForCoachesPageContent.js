@@ -11,7 +11,7 @@ export function CoachesFooterSection() {
       <Title level={3}>Not a college coach?</Title>
       <Paragraph className="coaches-body-copy">Choose the experience built for your role.</Paragraph>
       <div className="coaches-footer-links">
-        <Link href="/recruits#hs-athletes">For Athletes</Link>
+        <Link href="/recruits/#hs-athletes">For Athletes</Link>
         <Link href="/hs-coaches">For HS Coaches</Link>
       </div>
     </section>
