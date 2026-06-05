@@ -7,3 +7,9 @@ out
 public/video/VerifiedHero.mp4
 public/video/Timeline 3.mp4
 public/video/*.sb-*
+
+# Workflow superseded / unused (replaced by per-card assets in lib/product-workflow-showcases.js)
+public/workflow/workflow-board.png
+public/workflow/workflow-recruit-demo.gif
+public/workflow/Activity Feed.mp4
+public/workflow/Camp Data.mp4

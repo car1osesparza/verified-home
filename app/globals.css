@@ -75,14 +75,6 @@ textarea,
   border-radius: 999px !important;
 }
 
-.legacyFrame {
-  width: 100%;
-  min-height: 100vh;
-  border: 0;
-  display: block;
-  background: #fff;
-}
-
 /* Direction B homepage system */
 .b-home {
   background: var(--off-white);
@@ -2214,20 +2206,11 @@ html.recruits-page-active {
 }
 
 /* Homepage hero: athlete / HS coach resources pill button */
-.b-hero-resources-pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin: clamp(14px, 2vw, 22px) auto 0;
-  max-width: min(560px, 100%);
-}
-
 .b-hero-resources-pill {
   display: flex;
   justify-content: center;
-  flex: 1 1 200px;
-  max-width: 260px;
+  margin: clamp(14px, 2vw, 22px) auto 0;
+  max-width: min(520px, 100%);
   padding: 4px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -2303,12 +2286,8 @@ html.recruits-page-active {
     max-width: 100%;
   }
 
-  .b-hero-resources-pills {
-    margin-top: 12px;
-  }
-
   .b-hero-resources-pill {
-    flex: 1 1 100%;
+    margin-top: 12px;
     max-width: 100%;
   }
 }
@@ -2537,156 +2516,6 @@ html.recruits-page-active {
   width: 100%;
   max-width: min(1200px, calc(100% - 32px));
   margin: 0 auto;
-}
-
-.pm-alt-dock-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: default;
-  background: rgba(15, 23, 42, 0.18);
-}
-
-.pm-alt-dock {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
-  max-width: calc(100vw - 24px);
-}
-
-.pm-alt-dock-fab {
-  border: none;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 12px;
-  font-weight: 700;
-  font-family: var(--font-body, Inter, sans-serif);
-  cursor: pointer;
-  background: #0d1b2a;
-  color: #fff;
-  box-shadow: 0 6px 20px rgba(3, 16, 31, 0.35);
-}
-
-.pm-alt-dock-fab:hover {
-  background: #152a45;
-}
-
-.pm-alt-dock-fab--close {
-  width: 42px;
-  height: 42px;
-  padding: 0;
-  border-radius: 50%;
-  font-size: 26px;
-  line-height: 1;
-  font-weight: 400;
-}
-
-.pm-alt-dock-fab--close:hover {
-  background: #152a45;
-}
-
-.pm-alt-dock-panel {
-  width: min(320px, calc(100vw - 32px));
-  padding: 14px 14px 12px;
-  border-radius: 12px;
-  background: #fff;
-  color: var(--text);
-  box-shadow: 0 12px 40px rgba(3, 16, 31, 0.22);
-  text-align: left;
-}
-
-.pm-alt-dock-title {
-  font-size: 14px;
-  font-weight: 800;
-  font-family: var(--font-head, Inter, sans-serif);
-  margin-bottom: 4px;
-}
-
-.pm-alt-dock-hint {
-  margin: 0 0 12px;
-  font-size: 12px;
-  line-height: 1.45;
-  color: var(--gray-600);
-}
-
-.pm-alt-dock-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.pm-alt-dock-option {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  padding: 10px 10px;
-  border-radius: 8px;
-  border: 1px solid var(--gray-200);
-  cursor: pointer;
-  margin: 0;
-}
-
-.pm-alt-dock-option.is-active {
-  border-color: rgba(202, 37, 43, 0.45);
-  background: rgba(202, 37, 43, 0.06);
-}
-
-.pm-alt-dock-option input {
-  margin-top: 3px;
-}
-
-.pm-alt-dock-option > span {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.pm-alt-dock-sub {
-  display: block;
-  font-size: 12px;
-  color: var(--gray-600);
-  font-weight: 500;
-}
-
-.pm-alt-dock-title--spaced {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--gray-200);
-}
-
-.pm-alt-dock-option--checkbox.is-active {
-  border-color: var(--gray-200);
-  background: transparent;
-}
-
-.pm-alt-dock-inline-link {
-  color: var(--blue);
-}
-
-.map-lab-variant-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 12px 24px 0;
-  font-size: 0.85rem;
-  color: rgba(238, 244, 251, 0.65);
-}
-
-.map-lab-variant-bar a {
-  color: #c8ff24;
 }
 
 .home-map-compact-b {

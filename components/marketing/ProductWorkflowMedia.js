@@ -1,6 +1,5 @@
 "use client";
 
-import ProductWorkflowGif, { workflowDemoPhaseMs } from "./ProductWorkflowGif";
 import { resolveWorkflowMediaSrc } from "../../lib/product-workflow-showcases";
 
 function WorkflowMediaFrame({ children, className = "" }) {
@@ -13,28 +12,13 @@ function WorkflowMediaFrame({ children, className = "" }) {
 }
 
 /**
- * Renders a workflow card visual: GIF, still, video, or placeholder until assets ship.
+ * Renders a workflow card visual: still, video, or placeholder until assets ship.
  */
-export default function ProductWorkflowMedia({ showcase, index, total }) {
+export default function ProductWorkflowMedia({ showcase }) {
   const { title, media } = showcase;
   const src = resolveWorkflowMediaSrc(media);
   const alt = `${title} — recruiting workflow`;
   const objectPosition = media.objectPosition ?? "top center";
-
-  if (src && media.kind === "gif") {
-    return (
-      <WorkflowMediaFrame>
-        <ProductWorkflowGif
-          alt={alt}
-          src={src}
-          playbackIndex={index}
-          phaseMs={workflowDemoPhaseMs(index, total)}
-          objectPosition={objectPosition}
-          bare
-        />
-      </WorkflowMediaFrame>
-    );
-  }
 
   if (src && media.kind === "video") {
     return (
@@ -68,8 +52,7 @@ export default function ProductWorkflowMedia({ showcase, index, total }) {
     );
   }
 
-  const kindLabel =
-    media.kind === "gif" ? "GIF" : media.kind === "video" ? "Video" : "Screenshot";
+  const kindLabel = media.kind === "video" ? "Video" : "Screenshot";
 
   return (
     <div

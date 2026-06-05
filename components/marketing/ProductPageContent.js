@@ -25,7 +25,6 @@ export default function ProductPageContent() {
   const { sport } = useSportSelection();
 
   const workflowCards = useMemo(() => getProductWorkflowShowcasesForSport(sport), [sport]);
-  const workflowCardCount = workflowCards.length;
 
   return (
     <div className="section marketing-page product-page">
@@ -60,14 +59,10 @@ export default function ProductPageContent() {
             </p>
           ) : null}
           <div className="product-workflow-showcases">
-            {workflowCards.map((item, index) => (
+            {workflowCards.map((item) => (
               <article className="product-workflow-card" key={item.id}>
                 <div className="product-workflow-media">
-                  <ProductWorkflowMedia
-                    showcase={item}
-                    index={index}
-                    total={workflowCardCount}
-                  />
+                  <ProductWorkflowMedia showcase={item} />
                 </div>
                 <div className="product-workflow-copy">
                   <h4>{item.title}</h4>
